@@ -11,15 +11,23 @@ typedef enum e_type
     WORD,
     REDIRECT,
     PIPE,
-    NULL
-} t_type
+    T_NULL
+} t_type;
+
+typedef struct s_flag
+{
+    int     pipe;
+    int     redirect;
+} t_flag;
 
 typedef struct s_node
 {
     char    *str;
     int     type;
+    t_flag  *flag;
 } t_node;
 
-
+int make_token(char *line, t_node *head);
+int run_command(t_node *head);
 
 # endif

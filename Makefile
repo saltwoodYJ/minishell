@@ -3,20 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yejinam <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2022/12/10 18:36:17 by yejinam          ###   ########.fr        #
+#    Updated: 2022/12/15 16:12:09 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror
 
 NAME = minishell
 
-SRCS = minishell.c
+SRCS = minishell.c run_command.c parsing.c
 
 OBJS = $(SRCS:%.c=%.o)
 
