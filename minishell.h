@@ -18,6 +18,7 @@ typedef struct s_node
 {
     char    *str;
     int     type;
+    t_node  *next;
 } t_node;
 
 int make_token(char *line, t_node *head);
