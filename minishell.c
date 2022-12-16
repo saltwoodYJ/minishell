@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/15 18:06:10 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/16 18:58:52 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,28 @@ int main(int ac, char **av, char **envp)
 	t_node *new = ft_lstnew("ls", WORD);
 	head -> next = new;
 	t_node *new2 = ft_lstnew("-al", WORD);
-	head -> next -> next = new2;
-	
+	new -> next = new2;
+	t_node *new3 = ft_lstnew("<", REDIRECT);
+	new2 -> next = new3;
+	t_node *new4 = ft_lstnew("a", WORD);
+	new3 -> next = new4;
+	t_node *new5 = ft_lstnew("|", PIPE);
+	new4 -> next = new5;
+	t_node *new6 = ft_lstnew("grep", WORD);
+	new5 -> next = new6;
+	t_node *new7 = ft_lstnew("a", WORD);
+	new6 -> next = new7;
+	t_node *new8 = ft_lstnew("|", PIPE);
+	new7 -> next = new8;
+	t_node *new9 = ft_lstnew("ls", WORD);
+	new8 -> next = new9;
+
+	// t_node *curr = head->next;
+	// while (curr != NULL)
+	// {
+	// 	printf("%s ", curr->str);
+	// 	curr = curr->next;
+	// }
 	// while (1)
 	// {
 		/* 한 줄씩 읽어오기 */

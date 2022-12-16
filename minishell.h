@@ -26,11 +26,15 @@ typedef struct s_data
 {
 	char 	**envp;
 	t_node 	*head;
+	t_node	*curr;
+	int		pipe_num;
 } t_data;
 
 int make_token(char *line, t_node *head);
 
 /* run command */
 int run_command(t_node *head, char **envp);
+int	make_fork(t_data *data);
+void make_exec(t_data *data);
 
 # endif
