@@ -28,7 +28,6 @@ char	*ft_search_path(char **envp, char *first_cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_exit(char *str, int code);
 void	ft_putstr_err(char *s1, char *s2);
-void	exec_here_doc(int ac, char **av, char **envp);
 void	ft_free(char **s1, char **s2);
 
 #endif 
