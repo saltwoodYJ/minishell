@@ -12,7 +12,7 @@
 
 CC = cc
 
-CFLAGS = #-fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror #-fsanitize=address -g3 
 
 NAME = minishell
 
@@ -26,7 +26,7 @@ OBJS = $(SRCS:%.c=%.o)
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) -lreadline $(INCLUDES) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
 
 clean :
 	rm -rf $(OBJS) $(BONUS_OBJS)

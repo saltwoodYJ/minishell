@@ -1,0 +1,22 @@
+total 84
+drwxrwxrwx 1 hyeon hyeon   512 Dec 18 15:21 .
+drwxrwxrwx 1 hyeon hyeon   512 Dec 18 00:53 ..
+drwxrwxrwx 1 hyeon hyeon   512 Dec 18 00:57 .git
+drwxrwxrwx 1 hyeon hyeon   512 Dec 18 15:14 .vscode
+-rwxrwxrwx 1 hyeon hyeon  1389 Dec 18 14:38 Makefile
+-rwxrwxrwx 1 hyeon hyeon  1084 Dec 18 15:19 a
+-rwxrwxrwx 1 hyeon hyeon  2162 Dec 18 00:57 ft_split.c
+-rwxrwxrwx 1 hyeon hyeon  2840 Dec 18 15:12 ft_split.o
+-rwxrwxrwx 1 hyeon hyeon     0 Dec 18 15:21 ls
+-rwxrwxrwx 1 hyeon hyeon     0 Dec 18 00:57 make_redirect.c
+-rwxrwxrwx 1 hyeon hyeon 22336 Dec 18 15:12 minishell
+-rwxrwxrwx 1 hyeon hyeon  2703 Dec 18 14:41 minishell.c
+-rwxrwxrwx 1 hyeon hyeon   662 Dec 18 14:33 minishell.h
+-rwxrwxrwx 1 hyeon hyeon  2952 Dec 18 15:12 minishell.o
+-rwxrwxrwx 1 hyeon hyeon    87 Dec 18 00:57 parsing.c
+-rwxrwxrwx 1 hyeon hyeon  1080 Dec 18 15:12 parsing.o
+-rwxrwxrwx 1 hyeon hyeon  1562 Dec 18 00:57 pipex.h
+-rwxrwxrwx 1 hyeon hyeon  2097 Dec 18 00:57 pipex_util.c
+-rwxrwxrwx 1 hyeon hyeon  2808 Dec 18 15:12 pipex_util.o
+-rwxrwxrwx 1 hyeon hyeon  5340 Dec 18 15:14 run_command.c
+-rwxrwxrwx 1 hyeon hyeon  7128 Dec 18 15:12 run_command.o

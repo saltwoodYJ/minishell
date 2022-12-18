@@ -1,8 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include "pipex.h"
@@ -24,17 +24,19 @@ typedef struct s_node
 
 typedef struct s_data
 {
-	char 	**envp;
 	t_node 	*head;
 	t_node	*curr;
+	char 	**envp;
 	int		pipe_num;
+	int		stdin_fd;
+	int		stdout_fd;
 } t_data;
 
 int make_token(char *line, t_node *head);
 
 /* run command */
 int run_command(t_node *head, char **envp);
-int	make_fork(t_data *data);
+int	make_fork(t_data *data, int prev_fd);
 void make_exec(t_data *data);
 
 # endif

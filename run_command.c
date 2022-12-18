@@ -147,19 +147,56 @@ int make_input(t_data *data, int input)
 	return (fd);
 }
 
-void check_redirect(t_data *data, int *input, int *output)
+void	input_redirect(t_data *data)
 {
 	t_node *temp;
+	int		input_fd;
 
-	*input = 0;
-	*output = 0;
-	temp = data->head->next;
-	while (temp != NULL)
+	temp = data->curr;
+	while (temp != NULL && temp->type != PIPE)
 	{
-		if (!ft_strncmp(temp->str, "<", 1) || !ft_strncmp(temp->str, "<<", 2))
-			(*input)++;
-		else if (!ft_strncmp(temp->str, ">", 1) || !ft_strncmp(temp->str, ">>", 2))
-			(*output)++;
+		if (temp->type == REDIRECT && ft_strncmp(temp->str, "<", 1) == 0)
+		{
+			temp = temp -> next;
+			input_fd = open(temp->str, O_RDONLY);
+			if (input_fd < 0)
+			{
+				dup2(data->stdin_fd, 0);
+				printf("No such file or directory");
+				exit(0);
+			}
+			else
+			{
+				dup2(input_fd, 0);
+				// close(prev_input);
+				// prev_input = input_fd;
+			}
+		}
+		temp = temp-> next;
+	}
+}
+
+void	output_redirect(t_data *data)
+{
+	t_node *temp;
+	int		output_fd;
+
+	temp = data->curr;
+	while (temp != NULL && temp->type != PIPE)
+	{
+		if (temp->type == REDIRECT && ft_strncmp(temp->str, ">", 1) == 0)
+		{
+			temp = temp -> next;
+			output_fd = open(temp->str, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			if (output_fd < 0)
+			{
+				dup2(data->stdout_fd, 1);
+				printf("No such file or directory");
+				exit(0);
+			}
+			else
+				dup2(output_fd, 1);
+		}
 		temp = temp-> next;
 	}
 }
@@ -177,7 +214,6 @@ void make_exec(t_data *data)
 		return ; //오류 처리
 
 	path = get_path(data->envp, cmd[0], path);
-	printf("path: %s", path);
 	if (!path)
 	{
 		ft_putstr_err(cmd[0], ": command not found");
@@ -189,64 +225,33 @@ void make_exec(t_data *data)
 	exit(0);
 }
 
-int	child_do(t_data *data, int prev_fd, int input, int output, int fd[2])
-{
-	int		input_fd;
-	int		output_fd;
-	
-	dup2(fd[1], 1);
-	close(fd[1]);
-	close(fd[0]);
-	if (input > 0)
-	{
-		input_fd = make_input(&data, input);
-		if (input_fd)
-		{
-			dup2(input_fd, 0);
-			close(input_fd);
-		}
-	}
-	else if (output > 0)
-	{
-		output_fd = make_output(&data, output);
-		if (output_fd)
-		{
-			dup2(output_fd, 1);
-			close(output_fd);
-		}
-	}
-	return (prev_fd);
-}
-
-int	make_fork(t_data *data, int input, int output)
+int	make_fork(t_data *data, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
-	int		prev_fd;
 
 	if (pipe(fd) == -1)
 		ft_exit("pipe_error", 1);
 	pid = fork();
 	if (pid < 0)
 		ft_exit("fork_error", 1);
-	
 	if (pid > 0) //부모
 	{
-		close(fd[0]);
+		close(fd[1]);
 		close(prev_fd);
-		prev_fd = fd[0];
+		prev_fd = dup(fd[0]);
 	}
-
 	if (pid == 0) //자식
 	{
 		dup2(prev_fd, 0);
 		close(prev_fd);
 		dup2(fd[1], 1);
-		close(fd[0]);
-		prev_fd = child_do(data, prev_fd, input, output, fd[2]);
+		input_redirect(data);
+		output_redirect(data);
+		close(fd[1]);
 		make_exec(data);
 	}
-	return (0);
+	return (prev_fd);
 }
 
 int count_pipe(t_node *head)
@@ -272,6 +277,9 @@ int run_command(t_node *head, char **envp)
 	int		fd;
 	int		input;
 	int		output;
+	int		prev_fd;
+	int		i;
+
 	data.head = head;
 	data.curr = head->next;
 	data.envp = envp;
@@ -281,23 +289,32 @@ int run_command(t_node *head, char **envp)
 		exit(0);
 	}
 	pipe_num = count_pipe(head);
-	while (pipe_num)
+	prev_fd = dup(0);
+	data.stdin_fd = dup(0);
+	data.stdout_fd = dup(1);
+	i = 0;
+	while (i < pipe_num)
 	{
 		/* 리다이렉션이 있으면?*/
-		check_redirect(&data, &input, &output);
 		/* 살행 가능한 빌트인 함수인지 확인 */
-		make_fork(&data, input, output);
+		prev_fd = make_fork(&data, prev_fd);
 		while (data.curr != NULL && data.curr->type != PIPE)
+		{
+			if (data.curr->type == PIPE)
+				break;
 			data.curr = data.curr->next;
+		}
 		data.curr = data.curr->next;
-		pipe_num--;
+		i++;
 	}
-	int i = 0;
-	while (i < 2)
+	i = 0;
+	while (i < pipe_num)
 	{
 		waitpid(0, 0, WNOHANG);
 		i++;
 	}
+	input_redirect(&data);
+	output_redirect(&data);
 	make_exec(&data);
 	return (0);
 }
