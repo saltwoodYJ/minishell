@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/16 18:58:52 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:43:09 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,26 @@ int main(int ac, char **av, char **envp)
 	if (ac < 0 || av[0] == NULL)
 		return (0);
 	head = ft_lstnew(NULL, 0);
-	t_node *new = ft_lstnew("grep", WORD);
+	t_node *new = ft_lstnew("pwd", WORD);
 	head -> next = new;
-	t_node *new2 = ft_lstnew("a", WORD);
-	new -> next = new2;
-	t_node *new3 = ft_lstnew(">", REDIRECT);
-	new2 -> next = new3;
-	t_node *new4 = ft_lstnew("a", WORD);
-	new3 -> next = new4;
-	t_node *new5 = ft_lstnew("<", REDIRECT);
-	new4 -> next = new5;
-	t_node *new6 = ft_lstnew("b", WORD);
-	new5 -> next = new6;
-	t_node *new7 = ft_lstnew("|", PIPE);
-	new6 -> next = new7;
-	t_node *new8 = ft_lstnew("/usr/bin/ls", WORD);
-	new7 -> next = new8;
-	t_node *new9 = ft_lstnew(">", REDIRECT);
-	new8 -> next = new9;	
-	t_node *new10 = ft_lstnew("c", WORD);
-	new9 -> next = new10;
+	// t_node *new2 = ft_lstnew("a", WORD);
+	// new -> next = new2;
+	// t_node *new3 = ft_lstnew(">>", REDIRECT);
+	// new2 -> next = new3;
+	// t_node *new4 = ft_lstnew("b", WORD);
+	// new3 -> next = new4;
+	// t_node *new5 = ft_lstnew("<", REDIRECT);
+	// new4 -> next = new5;
+	// t_node *new6 = ft_lstnew("b", WORD);
+	// new5 -> next = new6;
+	// t_node *new7 = ft_lstnew("|", PIPE);
+	// new6 -> next = new7;
+	// t_node *new8 = ft_lstnew("ls", WORD);
+	// new7 -> next = new8;
+	// t_node *new9 = ft_lstnew(">", REDIRECT);
+	// new8 -> next = new9;	
+	// t_node *new10 = ft_lstnew("c", WORD);
+	// new9 -> next = new10;
 
 	// t_node *curr = head->next;
 	// while (curr != NULL)

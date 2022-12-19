@@ -6,11 +6,11 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:40:29 by hyeokim2          #+#    #+#             */
-/*   Updated: 2022/10/11 20:50:50 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:00:19 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 int	ft_get_len(char	*s, char c)
 {

@@ -20,7 +20,7 @@ char	**search_cmd(t_data* data)
 	{
 		cmd[idx] =  data->curr->str;
 		idx++;
-		data->curr =  data->curr->next;
+		data->curr = data->curr->next;
 	}
 	cmd[idx] = 0;
 	return (cmd);
@@ -44,7 +44,7 @@ char	**search_origin_path(char **envp)
 	return (0);
 }
 
-char	*get_path(char **envp, char *first_cmd, char *path)
+char	*get_path(char **envp, char *first_cmd)
 {
 	int		i;
 	int		path_count;
@@ -67,7 +67,30 @@ char	*get_path(char **envp, char *first_cmd, char *path)
 			ft_free(0, &cmd_path);
 		i++;
 	}
-	ft_free(splited_path, 0);
-	ft_free(0, &temp_path);
+	// ft_free(splited_path, 0);
+	// ft_free(0, &temp_path);
 	return (cmd_path);
+}
+
+
+void exec_nonbuiltin(t_data *data)
+{
+	char 	**cmd;
+	char	*path;
+
+	/* cmd 합치기 */
+	cmd = search_cmd(data);
+	if (!cmd)
+		return ; //오류 처리
+
+	path = get_path(data->envp, cmd[0]);
+	if (!path)
+	{
+		ft_putstr_err(cmd[0], ": command not found");
+		// ft_free(cmd, 0); /* 문제!! */
+		exit(127);
+	}
+	execve(path, cmd, data->envp);
+	write(2, "execve error\n", 13);
+	exit(0);
 }

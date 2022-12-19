@@ -1,19 +1,22 @@
 
 #include "minishell.h"
 
-int	read_line(char *limiter, int infile)
+int	read_line(char *limiter, int infile, int len)
 {
 	char	*line;
+	char	*line_nl;
 
 	while (1)
 	{
 		line = readline("> ");
-		if (ft_strncmp(line, limiter, 7) == 0)
+		if (ft_strncmp(line, limiter, len) == 0)
 		{
 			free(line);
 			return (0);
 		}
-		write(infile, line, ft_strlen(line));
+		line_nl = ft_strjoin(line, "\n", 0, 0);
+		write(infile, line_nl, ft_strlen(line_nl));
+		free(line_nl);
 		free(line);
 	}
 }
@@ -31,7 +34,7 @@ int	make_here_doc(char *limiter)
 	tmp_file = open(tmp_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pid == 0)
 	{
-		read_line(limiter, tmp_file);
+		read_line(limiter, tmp_file, ft_strlen(limiter) + 1);
 		exit(0);
 	}
 	if (pid > 0)
@@ -49,14 +52,12 @@ int	make_here_doc(char *limiter)
 
 void	exec_here_doc(t_data *data, t_node *limiter)
 {
-    
 	if (limiter->type != WORD)
 	{
 		printf("unavailable limiter");
 		exit(1);
 	}
 	make_here_doc(limiter->str);
-	exit(0);
 }
 
 
@@ -69,7 +70,7 @@ void	input_redirect(t_data *data)
 	temp = data->curr;
 	while (temp != NULL && temp->type != PIPE)
 	{
-		if (temp->type == REDIRECT && (ft_strncmp(temp->str, "<", 1) == 0 ))
+		if (temp->type == REDIRECT && (ft_strncmp(temp->str, "<", 2) == 0))
 		{
 			temp = temp -> next;
 			input_fd = open(temp->str, O_RDONLY);
@@ -86,7 +87,7 @@ void	input_redirect(t_data *data)
 				// prev_input = input_fd;
 			}
 		}
-		else if (temp->type == REDIRECT && ft_strncmp(temp->str, "<<", 2) == 0)
+		if (temp->type == REDIRECT && (ft_strncmp(temp->str, "<<", 3) == 0))
 		{
 			temp = temp -> next;
 			exec_here_doc(data, temp);
@@ -103,10 +104,10 @@ void	output_redirect(t_data *data)
 	temp = data->curr;
 	while (temp != NULL && temp->type != PIPE)
 	{
-		if (temp->type == REDIRECT && (ft_strncmp(temp->str, ">", 1) == 0 || ft_strncmp(temp->str, ">>", 1) == 0))
+		if (temp->type == REDIRECT && (ft_strncmp(temp->str, ">", 2) == 0 || ft_strncmp(temp->str, ">>", 3) == 0))
 		{
 			temp = temp -> next;
-			if (ft_strncmp(temp->str, ">", 1) == 0)
+			if (ft_strncmp(temp->str, ">", 2) == 0)
 				output_fd = open(temp->str, O_RDWR | O_CREAT | O_TRUNC, 0644);
 			else
 				output_fd = open(temp->str, O_RDWR | O_CREAT | O_APPEND, 0644);

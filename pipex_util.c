@@ -6,11 +6,11 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:49:24 by hyeokim2          #+#    #+#             */
-/*   Updated: 2022/12/15 17:27:28 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/19 17:03:09 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 void	ft_free(char **s1, char **s2)
 {

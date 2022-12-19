@@ -6,17 +6,18 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2022/12/16 19:06:20 by hyeokim2         ###   ########.fr        #
+#    Updated: 2022/12/19 18:23:59 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = #-Wall -Wextra -Werror #-fsanitize=address -g3 
+CFLAGS = #-fsanitize=address -g3 #-Wall -Wextra -Werror #
 
 NAME = minishell
 
-SRCS = minishell.c run_command.c parsing.c pipex_util.c ft_split.c
+SRCS = minishell.c run_command.c parsing.c pipex_util.c ft_split.c set_redirect.c \
+non_builtin.c builtin.c error.c
 
 OBJS = $(SRCS:%.c=%.o)
 
@@ -26,7 +27,7 @@ OBJS = $(SRCS:%.c=%.o)
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -lreadline -o $(NAME)
 
 clean :
 	rm -rf $(OBJS) $(BONUS_OBJS)

@@ -1,58 +1,31 @@
 
 #include "minishell.h"
 
-int	ft_exit(char *str, int code)
-{
-	perror(str);
-	exit(code);
-}
+// void whereis_cmd()
+// {
 
-void	ft_putstr_err(char *s1, char *s2)
-{
-	int	i;
-
-	if (!s1 || !s2)
-		return ;
-	i = 0;
-	while (s1[i] != 0)
-	{
-		write(2, &s1[i], 1);
-		i++;
-	}
-	i = 0;
-	while (s2[i] != 0)
-	{
-		write(2, &s2[i], 1);
-		i++;
-	}
-	write(2, "\n", 1);
-}
+// }
 
 void make_exec(t_data *data)
 {
-	char 	**cmd;
-	char	*path;
-	int		input;
-	int		output;
+	t_node *temp;
 
-	/* cmd 합치기 */
-	cmd = search_cmd(data);
-	if (!cmd)
-		return ; //오류 처리
-
-	path = get_path(data->envp, cmd[0]);
-	if (!path)
+    temp = data->curr;
+	input_redirect(data);
+	output_redirect(data);
+	if (temp->type == WORD)
 	{
-		ft_putstr_err(cmd[0], ": command not found");
-		ft_free(cmd, 0);
-		exit(127);
+		if (!ft_strncmp(temp->str, "echo", 5) || !ft_strncmp(temp->str, "cd", 3) || \
+		!ft_strncmp(temp->str, "pwd", 4) || !ft_strncmp(temp->str, "export", 7) || \
+		!ft_strncmp(temp->str, "unset", 6) || !ft_strncmp(temp->str, "env", 4) || \
+		!ft_strncmp(temp->str, "exit", 5))
+			exec_builtin(data);
+		else
+			exec_nonbuiltin(data);
 	}
-	execve(path, cmd, data->envp);
-	write(2, "execve error\n", 13);
-	exit(0);
 }
 
-int	make_fork(t_data *data, int prev_fd)
+int	make_pipe(t_data *data, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -73,8 +46,6 @@ int	make_fork(t_data *data, int prev_fd)
 		dup2(prev_fd, 0);
 		close(prev_fd);
 		dup2(fd[1], 1);
-		input_redirect(data);
-		output_redirect(data);
 		close(fd[1]);
 		make_exec(data);
 	}
@@ -102,8 +73,6 @@ int run_command(t_node *head, char **envp)
 	t_data 	data;
 	int		pipe_num;
 	int		fd;
-	int		input;
-	int		output;
 	int		prev_fd;
 	int		i;
 
@@ -116,15 +85,12 @@ int run_command(t_node *head, char **envp)
 		exit(0);
 	}
 	pipe_num = count_pipe(head);
-	prev_fd = dup(0);
 	data.stdin_fd = dup(0);
 	data.stdout_fd = dup(1);
 	i = 0;
 	while (i < pipe_num)
 	{
-		/* 리다이렉션이 있으면?*/
-		/* 살행 가능한 빌트인 함수인지 확인 */
-		prev_fd = make_fork(&data, prev_fd);
+		prev_fd = make_pipe(&data, prev_fd);
 		while (data.curr != NULL && data.curr->type != PIPE)
 		{
 			if (data.curr->type == PIPE)
@@ -140,8 +106,6 @@ int run_command(t_node *head, char **envp)
 		waitpid(0, 0, WNOHANG);
 		i++;
 	}
-	input_redirect(&data);
-	output_redirect(&data);
 	make_exec(&data);
 	return (0);
 }
