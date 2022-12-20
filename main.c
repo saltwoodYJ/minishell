@@ -4,7 +4,7 @@
 #include <string.h> 
 
 int main(void) { 
-    char * path = "/" ; 
+    char *path = "../../desktop" ; 
     char dir[30] = "Current Directory: "; 
     int ch = chdir(path); 
     

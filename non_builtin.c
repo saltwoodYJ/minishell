@@ -1,29 +1,30 @@
 
 #include "minishell.h"
 
-char	**search_cmd(t_data* data)
+char	**search_cmd(t_cmd *cmd)
 {
-	char	**cmd;
-	t_node	*temp;
+	t_node	*curr;
+	char	**cmd_agrs;
 	int		idx;
 
-	temp = data->curr;
+	curr = cmd->head->next;
 	idx = 0;
-	while (temp != NULL && temp->type == WORD)
+	while (curr != NULL)
 	{
 		idx++;
-		temp = temp->next;
+		curr = curr->next;
 	}
-	cmd = (char **)malloc(sizeof(char *) * idx + 1);
+	cmd_agrs = (char **)malloc(sizeof(char *) * idx + 1);
 	idx = 0;
-	while (data->curr != NULL &&  data->curr->type == WORD)
+	curr = cmd->head->next;
+	while (curr != NULL)
 	{
-		cmd[idx] =  data->curr->str;
+		cmd_agrs[idx] = curr->str;
 		idx++;
-		data->curr = data->curr->next;
+		curr = curr->next;
 	}
-	cmd[idx] = 0;
-	return (cmd);
+	cmd_agrs[idx] = 0;
+	return (cmd_agrs);
 }
 
 char	**search_origin_path(char **envp)
@@ -73,24 +74,24 @@ char	*get_path(char **envp, char *first_cmd)
 }
 
 
-void exec_nonbuiltin(t_data *data)
+void exec_nonbuiltin(t_cmd *cmd)
 {
-	char 	**cmd;
+	char 	**cmd_args;
 	char	*path;
 
 	/* cmd 합치기 */
-	cmd = search_cmd(data);
+	cmd_args = search_cmd(cmd);
 	if (!cmd)
 		return ; //오류 처리
 
-	path = get_path(data->envp, cmd[0]);
+	path = get_path(cmd->info->envp, cmd_args[0]);
 	if (!path)
 	{
-		ft_putstr_err(cmd[0], ": command not found");
+		ft_putstr_err(cmd_args[0], ": command not found");
 		// ft_free(cmd, 0); /* 문제!! */
 		exit(127);
 	}
-	execve(path, cmd, data->envp);
+	execve(path, cmd_args, cmd->info->envp);
 	write(2, "execve error\n", 13);
 	exit(0);
 }

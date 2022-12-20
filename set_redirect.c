@@ -50,7 +50,7 @@ int	make_here_doc(char *limiter)
 	return (0);
 }
 
-void	exec_here_doc(t_data *data, t_node *limiter)
+void	exec_here_doc(t_node *limiter)
 {
 	if (limiter->type != WORD)
 	{
@@ -62,21 +62,21 @@ void	exec_here_doc(t_data *data, t_node *limiter)
 
 
 
-void	input_redirect(t_data *data)
+void	input_redirect(t_cmd *cmd)
 {
-	t_node *temp;
+	t_node *curr;
 	int		input_fd;
 
-	temp = data->curr;
-	while (temp != NULL && temp->type != PIPE)
+	curr = cmd->head->next;
+	while (curr != NULL)
 	{
-		if (temp->type == REDIRECT && (ft_strncmp(temp->str, "<", 2) == 0))
+		if (curr->type == REDIRECT && (ft_strncmp(curr->str, "<", 2) == 0))
 		{
-			temp = temp -> next;
-			input_fd = open(temp->str, O_RDONLY);
+			curr = curr->next;
+			input_fd = open(curr->str, O_RDONLY);
 			if (input_fd < 0)
 			{
-				dup2(data->stdin_fd, 0);
+				dup2(cmd->info->stdin_fd, 0);
 				printf("No such file or directory");
 				exit(0);
 			}
@@ -87,39 +87,39 @@ void	input_redirect(t_data *data)
 				// prev_input = input_fd;
 			}
 		}
-		if (temp->type == REDIRECT && (ft_strncmp(temp->str, "<<", 3) == 0))
+		if (curr->type == REDIRECT && (ft_strncmp(curr->str, "<<", 3) == 0))
 		{
-			temp = temp -> next;
-			exec_here_doc(data, temp);
+			curr = curr->next;
+			exec_here_doc(curr);
 		}
-		temp = temp-> next;
+		curr = curr->next;
 	}
 }
 
-void	output_redirect(t_data *data)
+void	output_redirect(t_cmd *cmd)
 {
-	t_node *temp;
+	t_node *curr;
 	int		output_fd;
 
-	temp = data->curr;
-	while (temp != NULL && temp->type != PIPE)
+	curr = cmd->head->next;
+	while (curr != NULL)
 	{
-		if (temp->type == REDIRECT && (ft_strncmp(temp->str, ">", 2) == 0 || ft_strncmp(temp->str, ">>", 3) == 0))
+		if (curr->type == REDIRECT && (ft_strncmp(curr->str, ">", 2) == 0 || ft_strncmp(curr->str, ">>", 3) == 0))
 		{
-			temp = temp -> next;
-			if (ft_strncmp(temp->str, ">", 2) == 0)
-				output_fd = open(temp->str, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			curr = curr->next;
+			if (ft_strncmp(curr->str, ">", 2) == 0)
+				output_fd = open(curr->str, O_RDWR | O_CREAT | O_TRUNC, 0644);
 			else
-				output_fd = open(temp->str, O_RDWR | O_CREAT | O_APPEND, 0644);
+				output_fd = open(curr->str, O_RDWR | O_CREAT | O_APPEND, 0644);
 			if (output_fd < 0)
 			{
-				dup2(data->stdout_fd, 1);
+				dup2(cmd->info->stdout_fd, 1);
 				printf("No such file or directory");
 				exit(0);
 			}
 			else
 				dup2(output_fd, 1);
 		}
-		temp = temp-> next;
+		curr = curr->next;
 	}
 }

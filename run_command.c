@@ -6,26 +6,26 @@
 
 // }
 
-void make_exec(t_data *data)
+void make_exec(t_cmd *cmd)
 {
-	t_node *temp;
+	t_node *curr;
 
-    temp = data->curr;
-	input_redirect(data);
-	output_redirect(data);
-	if (temp->type == WORD)
+    curr = cmd->head->next;
+	input_redirect(cmd);
+	output_redirect(cmd);
+	if (curr->type == WORD)
 	{
-		if (!ft_strncmp(temp->str, "echo", 5) || !ft_strncmp(temp->str, "cd", 3) || \
-		!ft_strncmp(temp->str, "pwd", 4) || !ft_strncmp(temp->str, "export", 7) || \
-		!ft_strncmp(temp->str, "unset", 6) || !ft_strncmp(temp->str, "env", 4) || \
-		!ft_strncmp(temp->str, "exit", 5))
-			exec_builtin(data);
+		if (!ft_strncmp(curr->str, "echo", 5) || !ft_strncmp(curr->str, "cd", 3) || \
+		!ft_strncmp(curr->str, "pwd", 4) || !ft_strncmp(curr->str, "export", 7) || \
+		!ft_strncmp(curr->str, "unset", 6) || !ft_strncmp(curr->str, "env", 4) || \
+		!ft_strncmp(curr->str, "exit", 5))
+			exec_builtin(cmd);
 		else
-			exec_nonbuiltin(data);
+			exec_nonbuiltin(cmd);
 	}
 }
 
-int	make_pipe(t_data *data, int prev_fd)
+int	make_pipe(t_cmd *cmd, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -47,65 +47,51 @@ int	make_pipe(t_data *data, int prev_fd)
 		close(prev_fd);
 		dup2(fd[1], 1);
 		close(fd[1]);
-		make_exec(data);
+		make_exec(cmd);
 	}
 	return (prev_fd);
 }
 
-int count_pipe(t_node *head)
-{
-	t_node *curr;
-	int pipe_num;
+// int count_pipe(t_node *head)
+// {
+// 	t_node *curr;
+// 	int pipe_num;
 
-	curr = head -> next;
-	pipe_num = 0;
-	while (curr != NULL)
-	{
-		if (curr->type == PIPE)
-			pipe_num++;
-		curr = curr -> next;
-	}
-	return (pipe_num);
-}
+// 	curr = head -> next;
+// 	pipe_num = 0;
+// 	while (curr != NULL)
+// 	{
+// 		if (curr->type == PIPE)
+// 			pipe_num++;
+// 		curr = curr -> next;
+// 	}
+// 	return (pipe_num);
+// }
 
-int run_command(t_node *head, char **envp)
+int run_command(t_data *data, char **envp)
 {
-	t_data 	data;
-	int		pipe_num;
-	int		fd;
+	t_info	info;
 	int		prev_fd;
 	int		i;
 
-	data.head = head;
-	data.curr = head->next;
-	data.envp = envp;
-	if (!data.curr)
-	{
-		printf("data error!\n");
-		exit(0);
-	}
-	pipe_num = count_pipe(head);
-	data.stdin_fd = dup(0);
-	data.stdout_fd = dup(1);
 	i = 0;
-	while (i < pipe_num)
+	data->pipe_num = 0;
+	info.stdin_fd = dup(0);
+	info.stdout_fd = dup(1);
+	info.envp = envp;
+	while (i < data->pipe_num)
 	{
-		prev_fd = make_pipe(&data, prev_fd);
-		while (data.curr != NULL && data.curr->type != PIPE)
-		{
-			if (data.curr->type == PIPE)
-				break;
-			data.curr = data.curr->next;
-		}
-		data.curr = data.curr->next;
+		data->cmd->info = &info;
+		// data->cmd[i].curr = data->cmd[i].head->next;
+		prev_fd = make_pipe(&(data->cmd[i]), prev_fd);
 		i++;
 	}
 	i = 0;
-	while (i < pipe_num)
+	while (i < data->pipe_num)
 	{
 		waitpid(0, 0, WNOHANG);
 		i++;
 	}
-	make_exec(&data);
+	make_exec(&(data->cmd[i]));
 	return (0);
 }

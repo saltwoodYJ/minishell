@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/19 21:43:09 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/20 21:32:00 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,20 @@ t_node	*ft_lstnew(char *content, int type)
 
 int main(int ac, char **av, char **envp)
 {
-	t_node *head;
+	t_data data;
+	
 	// char   *line;
-
 	if (ac < 0 || av[0] == NULL)
 		return (0);
-	head = ft_lstnew(NULL, 0);
-	t_node *new = ft_lstnew("pwd", WORD);
-	head -> next = new;
-	// t_node *new2 = ft_lstnew("a", WORD);
-	// new -> next = new2;
+	data.pipe_num = 0;
+
+	data.cmd = (t_cmd *)malloc(sizeof(t_cmd) * 2);
+	data.cmd[0].head = ft_lstnew(NULL, 0);
+	t_node *new = ft_lstnew("cd", WORD);
+	data.cmd[0].head -> next = new;
+	t_node *new2 = ft_lstnew("..", WORD);
+	new -> next = new2;
+
 	// t_node *new3 = ft_lstnew(">>", REDIRECT);
 	// new2 -> next = new3;
 	// t_node *new4 = ft_lstnew("b", WORD);
@@ -77,7 +81,8 @@ int main(int ac, char **av, char **envp)
 			// make_token(line, &head);
 
 			/* 명령어 실행. 우리가 실행시킬 명령어들이 맞는 지 확인하는 과정 필요 */
-			run_command(head, envp);
+			run_command(&data, envp);
+			ft_pwd();
 			// free(line);
 		// }
 	// }
