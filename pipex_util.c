@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:49:24 by hyeokim2          #+#    #+#             */
-/*   Updated: 2022/12/19 17:03:09 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:06:23 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	ft_free(char **s1, char **s2)
 		*s2 = 0;
 	}
 }
-
 
 char	*ft_strjoin(char const *s1, char const *s2, int i, int j)
 {
@@ -95,7 +94,9 @@ size_t	ft_double_strlen(char **str)
 	int	i;
 
 	i = 0;
-	while (str[i] != 0)
+	if (!str)
+		return (0);
+	while (str[i])
 		i++;
 	return (i);
 }

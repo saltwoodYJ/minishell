@@ -2,7 +2,18 @@
 
 void ft_echo(t_cmd *cmd)
 {
+	t_node *curr;
 
+	curr = cmd->head->next->next; /* echo의 다음 인자 */
+	if (ft_strncmp(curr->str, "-n", 3) == 0)
+	{
+		if (!curr->next)
+			printf("\n");
+		else
+			printf("%s", curr->next->str);
+	}
+	else
+		printf("%s\n", curr->str);
 }
 
 char *get_env_path(char **envp, char *str)
@@ -66,18 +77,80 @@ void ft_pwd()
 	free(path);
 }
 
+char	**add_env(t_cmd *cmd, char *value)
+{
+	char **new_envp;
+	int	len;
+	int value_len;
+	int	i;
+
+	i = 0;
+	len = ft_double_strlen(cmd->info->envp);
+	new_envp = (char **)malloc(sizeof(char *) * (len + 2));
+	value_len = ft_strlen(value);
+	while (cmd->info->envp[i])
+	{
+		if (ft_strncmp(cmd->info->envp[i], value, value_len+1) == '=') /* 이미 있는 키값 */
+		{
+			cmd->info->envp[i] = value;
+			i = 0;
+			while (i < len + 2)
+			{
+				free(new_envp[i]);
+				i++;
+			}
+			return (NULL);
+		}
+		new_envp[i] = cmd->info->envp[i];
+		i++;
+	}
+	new_envp[i] = value;
+	new_envp[++i] = 0;
+	return (new_envp);
+}
+
 void ft_export(t_cmd *cmd)
 {
 	t_node *curr;
+	char	**temp;
+	int		i;
 
-	curr = cmd->head->next;
-	
-
+	i = 0;
+	curr = cmd->head->next->next; /*export 다음 인자*/
+	temp = add_env(cmd, curr->str);
+	if (!temp)
+		return ;
+	// ft_free(cmd->info->envp, 0);
+	cmd->info->envp = temp;
+	ft_env(cmd);
 }
 
 void ft_unset(t_cmd *cmd)
 {
+	t_node *curr;
+	char **new_envp;
+	int	len;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
+	curr = cmd->head->next->next; /*export 다음 인자*/
+	len = ft_double_strlen(cmd->info->envp);
+	new_envp = (char **)malloc(sizeof(char *) * (len));
+	len = ft_strlen(curr->str);
+	while (cmd->info->envp[j])
+	{
+		if (ft_strncmp(cmd->info->envp[j], curr->str, len + 1) != '=')
+		{
+			new_envp[i] = cmd->info->envp[j];
+			i++;
+		}
+		j++;
+	}
+	new_envp[i] = 0;
+	cmd->info->envp = new_envp;
+	ft_env(cmd);
 }
 
 void ft_env(t_cmd *cmd)

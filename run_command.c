@@ -21,7 +21,7 @@ void make_exec(t_cmd *cmd)
 		!ft_strncmp(curr->str, "exit", 5))
 			exec_builtin(cmd);
 		else
-			exec_nonbuiltin(cmd);
+			exec_non_builtin(cmd);
 	}
 }
 
@@ -81,8 +81,8 @@ int run_command(t_data *data, char **envp)
 	info.envp = envp;
 	while (i < data->pipe_num)
 	{
-		data->cmd->info = &info;
-		// data->cmd[i].curr = data->cmd[i].head->next;
+		data->cmd[i].info = &info;
+		// data->cmd[i] .curr = data->cmd[i].head->next;
 		prev_fd = make_pipe(&(data->cmd[i]), prev_fd);
 		i++;
 	}
@@ -92,6 +92,7 @@ int run_command(t_data *data, char **envp)
 		waitpid(0, 0, WNOHANG);
 		i++;
 	}
+	data->cmd[i].info = &info;
 	make_exec(&(data->cmd[i]));
 	return (0);
 }

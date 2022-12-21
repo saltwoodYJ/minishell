@@ -74,7 +74,7 @@ char	*get_path(char **envp, char *first_cmd)
 }
 
 
-void exec_nonbuiltin(t_cmd *cmd)
+void exec_non_builtin(t_cmd *cmd)
 {
 	char 	**cmd_args;
 	char	*path;

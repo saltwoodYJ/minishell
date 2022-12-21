@@ -1,2 +1,34 @@
-bbbbb
-ccccc
+total 376
+drwxr-xr-x  33 hyeokim2  2022_seoul   1122 Dec 21 21:17 .
+drwxr-xr-x   7 hyeokim2  2022_seoul    238 Dec 15 15:32 ..
+drwxr-xr-x  15 hyeokim2  2022_seoul    510 Dec 20 21:52 .git
+drwxr-xr-x   4 hyeokim2  2022_seoul    136 Dec 19 14:47 .vscode
+-rw-r--r--   1 hyeokim2  2022_seoul   1411 Dec 21 18:10 Makefile
+drwxr-xr-x   2 hyeokim2  2022_seoul     68 Dec 20 20:37 a
+-rwxr-xr-x   1 hyeokim2  2022_seoul  49776 Dec 20 20:12 a.out
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Dec 20 20:45 a.txt
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Dec 21 21:17 ab
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Dec 21 21:24 b
+-rw-r--r--   1 hyeokim2  2022_seoul   2405 Dec 21 21:23 builtin.c
+-rw-r--r--   1 hyeokim2  2022_seoul   3672 Dec 21 18:10 builtin.o
+-rw-r--r--   1 hyeokim2  2022_seoul    316 Dec 19 17:21 error.c
+-rw-r--r--   1 hyeokim2  2022_seoul   1152 Dec 21 18:10 error.o
+-rw-r--r--   1 hyeokim2  2022_seoul   2067 Dec 19 15:00 ft_split.c
+-rw-r--r--   1 hyeokim2  2022_seoul   2120 Dec 21 18:10 ft_split.o
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Dec 20 20:26 ls
+-rw-r--r--   1 hyeokim2  2022_seoul    602 Dec 20 20:12 main.c
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Dec 15 19:13 make_redirect.c
+-rwxr-xr-x   1 hyeokim2  2022_seoul  51984 Dec 21 18:10 minishell
+-rw-r--r--   1 hyeokim2  2022_seoul   2712 Dec 21 17:52 minishell.c
+-rw-r--r--   1 hyeokim2  2022_seoul   1824 Dec 21 14:43 minishell.h
+-rw-r--r--   1 hyeokim2  2022_seoul   1240 Dec 21 18:10 minishell.o
+-rw-r--r--   1 hyeokim2  2022_seoul   1670 Dec 21 14:43 non_builtin.c
+-rw-r--r--   1 hyeokim2  2022_seoul   2288 Dec 21 18:10 non_builtin.o
+-rw-r--r--   1 hyeokim2  2022_seoul     82 Dec 15 17:28 parsing.c
+-rw-r--r--   1 hyeokim2  2022_seoul    208 Dec 21 18:10 parsing.o
+-rw-r--r--   1 hyeokim2  2022_seoul   2019 Dec 21 18:06 pipex_util.c
+-rw-r--r--   1 hyeokim2  2022_seoul   2072 Dec 21 18:10 pipex_util.o
+-rw-r--r--   1 hyeokim2  2022_seoul   1698 Dec 21 21:10 run_command.c
+-rw-r--r--   1 hyeokim2  2022_seoul   2536 Dec 21 18:10 run_command.o
+-rw-r--r--   1 hyeokim2  2022_seoul   2280 Dec 20 20:13 set_redirect.c
+-rw-r--r--   1 hyeokim2  2022_seoul   3152 Dec 21 18:10 set_redirect.o

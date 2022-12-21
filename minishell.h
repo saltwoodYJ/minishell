@@ -59,7 +59,7 @@ void	input_redirect(t_cmd *cmd);
 void	output_redirect(t_cmd *cmd);
 
 /*non builtin*/
-void	 exec_nonbuiltin(t_cmd *cmd);
+void	 exec_non_builtin(t_cmd *cmd);
 char	**search_cmd(t_cmd *cmd);
 char	**search_origin_path(char **envp);
 char	*get_path(char **envp, char *first_cmd);

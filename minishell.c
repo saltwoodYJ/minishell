@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/20 21:32:00 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/21 21:49:55 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_node	*ft_lstnew(char *content, int type)
 	curr = (t_node *)malloc(sizeof(t_node));
 	if (!curr)
 		return (0);
-	curr -> next = NULL;
-	curr -> str = content;
-	curr -> type = type;
+	curr->next = NULL;
+	curr->str = content;
+	curr->type = type;
 	return (curr);
 }
 
@@ -36,10 +36,10 @@ int main(int ac, char **av, char **envp)
 
 	data.cmd = (t_cmd *)malloc(sizeof(t_cmd) * 2);
 	data.cmd[0].head = ft_lstnew(NULL, 0);
-	t_node *new = ft_lstnew("cd", WORD);
+	t_node *new = ft_lstnew("unset", WORD);
 	data.cmd[0].head -> next = new;
-	t_node *new2 = ft_lstnew("..", WORD);
-	new -> next = new2;
+	t_node *new2 = ft_lstnew("HOME", WORD);
+	data.cmd[0].head -> next -> next = new2;
 
 	// t_node *new3 = ft_lstnew(">>", REDIRECT);
 	// new2 -> next = new3;
@@ -82,7 +82,6 @@ int main(int ac, char **av, char **envp)
 
 			/* 명령어 실행. 우리가 실행시킬 명령어들이 맞는 지 확인하는 과정 필요 */
 			run_command(&data, envp);
-			ft_pwd();
 			// free(line);
 		// }
 	// }
