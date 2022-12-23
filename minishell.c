@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/21 21:49:55 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:39:56 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int main(int ac, char **av, char **envp)
 
 			/* 명령어 실행. 우리가 실행시킬 명령어들이 맞는 지 확인하는 과정 필요 */
 			run_command(&data, envp);
+			dup2(data.cmd->info->stdin_fd, 0);
+			printf("status: %d", data.cmd->info->status);
 			// free(line);
 		// }
 	// }

@@ -29,6 +29,7 @@ int	make_pipe(t_cmd *cmd, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
+	int		status = 0;
 
 	if (pipe(fd) == -1)
 		ft_exit("pipe_error", 1);
@@ -48,7 +49,10 @@ int	make_pipe(t_cmd *cmd, int prev_fd)
 		dup2(fd[1], 1);
 		close(fd[1]);
 		make_exec(cmd);
+		printf("execve error!");
 	}
+    waitpid(pid, &status, 0);
+	cmd->info->status = status;
 	return (prev_fd);
 }
 

@@ -167,7 +167,20 @@ void ft_env(t_cmd *cmd)
 
 void ft_exit2(t_cmd *cmd)
 {
-
+	t_node *curr;
+	int		exit_code;
+	
+	curr = cmd->head->next->next;
+	/*종료 코드 저장!! */
+	if (curr && curr->str)
+	{
+		exit_code = ft_atoi(curr->str);
+		if (exit_code == -1)
+			printf("exit: %s: numeric argument required\n", curr->str);
+		// if (exit_code > 255)
+	}
+		exit(curr->str);
+	exit(0);
 }
 
 void exec_builtin(t_cmd *cmd)

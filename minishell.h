@@ -29,12 +29,12 @@ typedef struct s_info
 	int			stdin_fd;
 	int			stdout_fd;
 	char 		**envp;
+	int			status;
 } t_info;
 
 typedef struct s_cmd
 {
 	t_node 		*head; //1개의 cmd를 담은 링크드 리스트
-	// t_node		*curr;
 	t_info		*info;
 } t_cmd;
 
@@ -81,6 +81,7 @@ size_t	ft_strlen(char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_double_strlen(char **str);
 char	**ft_split(char const *s, char c);
+int		ft_atoi(const char *str);
 
 /* error */
 void	ft_putstr_err(char *s1, char *s2);
