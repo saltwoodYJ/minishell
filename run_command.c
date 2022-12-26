@@ -1,10 +1,15 @@
 
 #include "minishell.h"
 
-// void whereis_cmd()
-// {
-
-// }
+int check_builtin(char *str)
+{
+	if (!ft_strncmp(str, "echo", 5) || !ft_strncmp(str, "cd", 3) || \
+		!ft_strncmp(str, "pwd", 4) || !ft_strncmp(str, "export", 7) || \
+		!ft_strncmp(str, "unset", 6) || !ft_strncmp(str, "env", 4) || \
+		!ft_strncmp(str, "exit", 5) || !ft_strncmp(str, "$?", 3))
+		return (1);
+	return (0);
+}
 
 void make_exec(t_cmd *cmd)
 {
@@ -15,10 +20,7 @@ void make_exec(t_cmd *cmd)
 	output_redirect(cmd);
 	if (curr->type == WORD)
 	{
-		if (!ft_strncmp(curr->str, "echo", 5) || !ft_strncmp(curr->str, "cd", 3) || \
-		!ft_strncmp(curr->str, "pwd", 4) || !ft_strncmp(curr->str, "export", 7) || \
-		!ft_strncmp(curr->str, "unset", 6) || !ft_strncmp(curr->str, "env", 4) || \
-		!ft_strncmp(curr->str, "exit", 5))
+		if (check_builtin(curr->str))
 			exec_builtin(cmd);
 		else
 			exec_non_builtin(cmd);
@@ -39,64 +41,58 @@ int	make_pipe(t_cmd *cmd, int prev_fd)
 	if (pid > 0) //부모
 	{
 		close(fd[1]);
-		close(prev_fd);
-		prev_fd = dup(fd[0]);
+		close(prev_fd); //여기서 안쓰니까 닫기
+		prev_fd = dup(fd[0]); //리턴해줄 prev_fd
 	}
 	if (pid == 0) //자식
 	{
-		dup2(prev_fd, 0);
-		close(prev_fd);
-		dup2(fd[1], 1);
+		dup2(prev_fd, 0); //stdin으로 던져주기
+		close(prev_fd); //썼으니까 닫아주기 (파일은 더이상 안쓰니까)
+		dup2(fd[1], 1); //
 		close(fd[1]);
 		make_exec(cmd);
-		printf("execve error!");
+		dup2(cmd->info->stdout_fd, 1);
+		printf("execve error!\n");
+		if(errno == ENOEXEC) //errno 처리
+            exit(126);
+        else if(errno == ENOENT) //errno 처리
+            exit(127);
+        else
+            exit(EXIT_FAILURE);
 	}
-    waitpid(pid, &status, 0);
-	cmd->info->status = status;
+    // waitpid(pid, &status, 0);
+	// cmd->info->status = status; //공부좀해
 	return (prev_fd);
 }
-
-// int count_pipe(t_node *head)
-// {
-// 	t_node *curr;
-// 	int pipe_num;
-
-// 	curr = head -> next;
-// 	pipe_num = 0;
-// 	while (curr != NULL)
-// 	{
-// 		if (curr->type == PIPE)
-// 			pipe_num++;
-// 		curr = curr -> next;
-// 	}
-// 	return (pipe_num);
-// }
 
 int run_command(t_data *data, char **envp)
 {
 	t_info	info;
 	int		prev_fd;
 	int		i;
+	int		status;
 
 	i = 0;
-	data->pipe_num = 0;
+	data->pipe_num = 1;
 	info.stdin_fd = dup(0);
 	info.stdout_fd = dup(1);
 	info.envp = envp;
+	prev_fd = dup(0);
 	while (i < data->pipe_num)
 	{
 		data->cmd[i].info = &info;
-		// data->cmd[i] .curr = data->cmd[i].head->next;
 		prev_fd = make_pipe(&(data->cmd[i]), prev_fd);
 		i++;
 	}
 	i = 0;
 	while (i < data->pipe_num)
 	{
-		waitpid(0, 0, WNOHANG);
+		waitpid(0, &status, WNOHANG);
 		i++;
 	}
-	data->cmd[i].info = &info;
-	make_exec(&(data->cmd[i]));
+	if (data->pipe_num == 0 && check_builtin(data->cmd[i].head->next->str))
+		make_exec(&(data->cmd[i]));
+	else
+		make_pipe(&(data->cmd[i]), prev_fd);
 	return (0);
 }

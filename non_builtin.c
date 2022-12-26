@@ -53,7 +53,7 @@ char	*get_path(char **envp, char *first_cmd)
 	char	**splited_path;
 	char	*cmd_path;
 
-	if (access(first_cmd, X_OK) == 0)
+	if (access(first_cmd, X_OK) == 0) //access 쓰면 안돼
 		return (first_cmd);
 	splited_path = search_origin_path(envp);
 	path_count = ft_double_strlen(splited_path);

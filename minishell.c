@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/23 17:39:56 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/26 17:48:55 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,15 @@ int main(int ac, char **av, char **envp)
 		return (0);
 	data.pipe_num = 0;
 
-	data.cmd = (t_cmd *)malloc(sizeof(t_cmd) * 2);
+	data.cmd = (t_cmd *)malloc(sizeof(t_cmd) * 3);
 	data.cmd[0].head = ft_lstnew(NULL, 0);
 	t_node *new = ft_lstnew("unset", WORD);
 	data.cmd[0].head -> next = new;
 	t_node *new2 = ft_lstnew("HOME", WORD);
 	data.cmd[0].head -> next -> next = new2;
+	data.cmd[1].head = ft_lstnew(NULL, 0);
+	t_node *new3 = ft_lstnew("env1", WORD);
+	data.cmd[1].head -> next= new3;
 
 	// t_node *new3 = ft_lstnew(">>", REDIRECT);
 	// new2 -> next = new3;
@@ -83,7 +86,7 @@ int main(int ac, char **av, char **envp)
 			/* 명령어 실행. 우리가 실행시킬 명령어들이 맞는 지 확인하는 과정 필요 */
 			run_command(&data, envp);
 			dup2(data.cmd->info->stdin_fd, 0);
-			printf("status: %d", data.cmd->info->status);
+			dup2(data.cmd->info->stdout_fd, 1);
 			// free(line);
 		// }
 	// }

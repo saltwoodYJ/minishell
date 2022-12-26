@@ -71,7 +71,7 @@ void ft_pwd()
 	if (path == NULL)
 	{
 		printf("Error\n");
-		exit(1);
+		exit(1); //안돼
 	}
 	printf("%s\n", path);
 	free(path);
@@ -122,7 +122,7 @@ void ft_export(t_cmd *cmd)
 		return ;
 	// ft_free(cmd->info->envp, 0);
 	cmd->info->envp = temp;
-	ft_env(cmd);
+	// ft_env(cmd);
 }
 
 void ft_unset(t_cmd *cmd)
@@ -150,7 +150,7 @@ void ft_unset(t_cmd *cmd)
 	}
 	new_envp[i] = 0;
 	cmd->info->envp = new_envp;
-	ft_env(cmd);
+	// ft_env(cmd);
 }
 
 void ft_env(t_cmd *cmd)
@@ -176,11 +176,17 @@ void ft_exit2(t_cmd *cmd)
 	{
 		exit_code = ft_atoi(curr->str);
 		if (exit_code == -1)
-			printf("exit: %s: numeric argument required\n", curr->str);
-		// if (exit_code > 255)
+			printf("exit: %d: numeric argument required\n", 255);
+		if (exit_code > 255)
+			printf("exit: %s: undefined exit code\n", curr->str);
+		exit(exit_code);
 	}
-		exit(curr->str);
 	exit(0);
+}
+
+void ft_exit_code(t_cmd *cmd)
+{
+	printf("%d: command not found\n", cmd->info->status); //status 저장
 }
 
 void exec_builtin(t_cmd *cmd)
@@ -202,4 +208,6 @@ void exec_builtin(t_cmd *cmd)
 		ft_env(cmd);
 	else if (ft_strncmp(curr->str, "exit", 5) == 0)
 		ft_exit2(cmd);
+	else if (ft_strncmp(curr->str, "$?", 3) == 0)
+		ft_exit_code(cmd);
 }

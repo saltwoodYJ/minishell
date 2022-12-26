@@ -8,6 +8,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
+#include <errno.h>
 
 typedef enum e_type
 {
@@ -65,6 +66,7 @@ char	**search_origin_path(char **envp);
 char	*get_path(char **envp, char *first_cmd);
 
 /* builtin */
+int 	check_builtin(char *str);
 void 	exec_builtin(t_cmd *cmd);
 void 	ft_echo(t_cmd *cmd);
 void 	ft_cd(t_cmd *cmd);

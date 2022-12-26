@@ -76,7 +76,7 @@ void	input_redirect(t_cmd *cmd)
 			input_fd = open(curr->str, O_RDONLY);
 			if (input_fd < 0)
 			{
-				dup2(cmd->info->stdin_fd, 0);
+				// dup2(cmd->info->stdin_fd, 0);
 				printf("No such file or directory");
 				exit(0);
 			}
@@ -113,7 +113,7 @@ void	output_redirect(t_cmd *cmd)
 				output_fd = open(curr->str, O_RDWR | O_CREAT | O_APPEND, 0644);
 			if (output_fd < 0)
 			{
-				dup2(cmd->info->stdout_fd, 1);
+				// dup2(cmd->info->stdout_fd, 1);
 				printf("No such file or directory");
 				exit(0);
 			}
