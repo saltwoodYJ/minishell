@@ -62,12 +62,12 @@ void	exec_here_doc(t_node *limiter)
 
 
 
-void	input_redirect(t_cmd *cmd)
+void	input_redirect(t_main_node *main_node)
 {
-	t_node *curr;
-	int		input_fd;
+	t_infile_node	*curr;
+	int				input_fd;
 
-	curr = cmd->head->next;
+	curr = main_node->node_head->infile_node;
 	while (curr != NULL)
 	{
 		if (curr->type == REDIRECT && (ft_strncmp(curr->str, "<", 2) == 0))
@@ -78,14 +78,9 @@ void	input_redirect(t_cmd *cmd)
 			{
 				// dup2(cmd->info->stdin_fd, 0);
 				printf("No such file or directory");
-				exit(0);
 			}
 			else
-			{
 				dup2(input_fd, 0);
-				// close(prev_input);
-				// prev_input = input_fd;
-			}
 		}
 		if (curr->type == REDIRECT && (ft_strncmp(curr->str, "<<", 3) == 0))
 		{

@@ -1,31 +1,31 @@
 
 #include "minishell.h"
 
-char	**search_cmd(t_cmd *cmd)
-{
-	t_node	*curr;
-	char	**cmd_agrs;
-	int		idx;
+// char	**search_cmd(t_cmd *cmd)
+// {
+// 	t_node	*curr;
+// 	char	**cmd_agrs;
+// 	int		idx;
 
-	curr = cmd->head->next;
-	idx = 0;
-	while (curr != NULL)
-	{
-		idx++;
-		curr = curr->next;
-	}
-	cmd_agrs = (char **)malloc(sizeof(char *) * idx + 1);
-	idx = 0;
-	curr = cmd->head->next;
-	while (curr != NULL)
-	{
-		cmd_agrs[idx] = curr->str;
-		idx++;
-		curr = curr->next;
-	}
-	cmd_agrs[idx] = 0;
-	return (cmd_agrs);
-}
+// 	curr = cmd->head->next;
+// 	idx = 0;
+// 	while (curr != NULL)
+// 	{
+// 		idx++;
+// 		curr = curr->next;
+// 	}
+// 	cmd_agrs = (char **)malloc(sizeof(char *) * idx + 1);
+// 	idx = 0;
+// 	curr = cmd->head->next;
+// 	while (curr != NULL)
+// 	{
+// 		cmd_agrs[idx] = curr->str;
+// 		idx++;
+// 		curr = curr->next;
+// 	}
+// 	cmd_agrs[idx] = 0;
+// 	return (cmd_agrs);
+// }
 
 char	**search_origin_path(char **envp)
 {
@@ -74,24 +74,24 @@ char	*get_path(char **envp, char *first_cmd)
 }
 
 
-void exec_non_builtin(t_cmd *cmd)
+void exec_non_builtin(t_main_node *main_node)
 {
 	char 	**cmd_args;
 	char	*path;
 
 	/* cmd 합치기 */
-	cmd_args = search_cmd(cmd);
-	if (!cmd)
-		return ; //오류 처리
-
-	path = get_path(cmd->info->envp, cmd_args[0]);
+	// cmd_args = search_cmd(cmd);
+	// if (!cmd)
+	// 	return ; //오류 처리
+	cmd_args = main_node->node_head->cmd;
+	path = get_path(main_node->ev, cmd_args[0]);
 	if (!path)
 	{
 		ft_putstr_err(cmd_args[0], ": command not found");
 		// ft_free(cmd, 0); /* 문제!! */
 		exit(127);
 	}
-	execve(path, cmd_args, cmd->info->envp);
+	execve(path, cmd_args, main_node->ev);
 	write(2, "execve error\n", 13);
 	exit(0);
 }

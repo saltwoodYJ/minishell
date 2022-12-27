@@ -22,7 +22,7 @@ typedef struct s_infile_node
 typedef struct s_outfile_node
 {
 	char					*file;
-	t_outfile_type			type; //0이면 덮어씌우기 1이면 append
+	int						type; //0이면 덮어씌우기 1이면 append
 	struct s_outfile_node	*next;
 }	t_outfile_node;
 
@@ -51,33 +51,33 @@ typedef struct s_main_node
 int make_token(char *line, t_node *head);
 
 /* run command */
-int run_command(t_data *data, char **envp);
-int	make_pipe(t_cmd *cmd, int prev_fd);
-void make_exec(t_cmd *cmd);
+int run_command(t_main_node *main_node);
+int	make_pipe(t_main_node *main_node, int prev_fd);
+void make_exec(t_main_node *main_node);
 
 /*redirect*/
 int		read_line(char *limiter, int infile, int len);
 int		make_here_doc(char *limiter);
 void	exec_here_doc(t_node *limiter);
-void	input_redirect(t_cmd *cmd);
-void	output_redirect(t_cmd *cmd);
+void	input_redirect(t_main_node *main_node);
+void	output_redirect(t_main_node *main_node);
 
 /*non builtin*/
-void	 exec_non_builtin(t_cmd *cmd);
-char	**search_cmd(t_cmd *cmd);
+void	 exec_non_builtin(t_main_node *main_node);
+char	**search_cmd(t_main_node *main_node);
 char	**search_origin_path(char **envp);
 char	*get_path(char **envp, char *first_cmd);
 
 /* builtin */
 int 	check_builtin(char *str);
-void 	exec_builtin(t_cmd *cmd);
-void 	ft_echo(t_cmd *cmd);
-void 	ft_cd(t_cmd *cmd);
+void 	exec_builtin(t_main_node *main_node);
+void 	ft_echo(t_main_node *main_node);
+void 	ft_cd(t_main_node *main_node);
 void 	ft_pwd();
-void 	ft_export(t_cmd *cmd);
-void 	ft_unset(t_cmd *cmd);
-void 	ft_env(t_cmd *cmd);
-void 	ft_exit2(t_cmd *cmd);
+void 	ft_export(t_main_node *main_node);
+void 	ft_unset(t_main_node *main_node);
+void 	ft_env(t_main_node *main_node);
+void 	ft_exit2(t_main_node *main_node);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);

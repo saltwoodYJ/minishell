@@ -11,23 +11,19 @@ int check_builtin(char *str)
 	return (0);
 }
 
-void make_exec(t_cmd *cmd)
+void make_exec(t_main_node *main_node)
 {
 	t_node *curr;
 
-    curr = cmd->head->next;
-	input_redirect(cmd);
-	output_redirect(cmd);
-	if (curr->type == WORD)
-	{
-		if (check_builtin(curr->str))
-			exec_builtin(cmd);
-		else
-			exec_non_builtin(cmd);
-	}
+	// input_redirect(main_node);
+	// output_redirect(main_node);
+	if (check_builtin(main_node->node_head->cmd[0]))
+		exec_builtin(main_node);
+	else
+		exec_non_builtin(main_node);
 }
 
-int	make_pipe(t_cmd *cmd, int prev_fd)
+int	make_pipe(t_main_node *main_node, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -50,8 +46,8 @@ int	make_pipe(t_cmd *cmd, int prev_fd)
 		close(prev_fd); //썼으니까 닫아주기 (파일은 더이상 안쓰니까)
 		dup2(fd[1], 1); //
 		close(fd[1]);
-		make_exec(cmd);
-		dup2(cmd->info->stdout_fd, 1);
+		make_exec(main_node);
+		dup2(main_node->output_fd, 1);
 		printf("execve error!\n");
 		if(errno == ENOEXEC) //errno 처리
             exit(126);
@@ -65,7 +61,7 @@ int	make_pipe(t_cmd *cmd, int prev_fd)
 	return (prev_fd);
 }
 
-int run_command(t_data *data, char **envp)
+int run_command(t_main_node *main_node)
 {
 	int		prev_fd;
 	int		i;
@@ -73,21 +69,22 @@ int run_command(t_data *data, char **envp)
 
 	i = 0;
 	prev_fd = dup(0);
-	while (i < data->pipe_num)
+	main_node->node_head = main_node->node_head->next;
+	while (i < main_node->cmd_num - 1)
 	{
-		data->cmd[i].info = &info;
-		prev_fd = make_pipe(&(data->cmd[i]), prev_fd);
+		prev_fd = make_pipe(main_node, prev_fd);
 		i++;
+		main_node->node_head = main_node->node_head->next;
 	}
 	i = 0;
-	while (i < data->pipe_num)
+	while (i < main_node->cmd_num - 1)
 	{
 		waitpid(0, &status, WNOHANG);
 		i++;
 	}
-	if (data->pipe_num == 0 && check_builtin(data->cmd[i].head->next->str))
-		make_exec(&(data->cmd[i]));
+	if (main_node->cmd_num == 1 && check_builtin(main_node->node_head->cmd[0]))
+		make_exec(main_node);
 	else
-		make_pipe(&(data->cmd[i]), prev_fd);
+		make_pipe(main_node, prev_fd);
 	return (0);
 }
