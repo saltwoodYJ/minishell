@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_node	*ft_lstnew(char *content, int type)
+t_node	*ft_lstnew(int idx, char **cmd)
 {
 	t_node	*curr;
 
@@ -20,21 +20,26 @@ t_node	*ft_lstnew(char *content, int type)
 	if (!curr)
 		return (0);
 	curr->next = NULL;
-	curr->str = content;
-	curr->type = type;
+	curr->cmd = cmd;
+	curr->heardoc_node = NULL;
+	curr->infile_node = NULL;
+	curr->outfile_node = NULL;
 	return (curr);
 }
 
 int main(int ac, char **av, char **envp)
 {
-	t_data data;
+	t_main_node main_node;
 	
 	// char   *line;
 	if (ac < 0 || av[0] == NULL)
 		return (0);
-	data.pipe_num = 0;
-
-	data.cmd = (t_cmd *)malloc(sizeof(t_cmd) * 3);
+	main_node.ev = evnp;
+	main_node.input_fd = dup(0);
+	main_node.output_fd = dup(1);
+	main_node.cmd_num = 2;
+	main_node.status = 0;
+	main_node.node_head = ft_lstnew(NULL, 0);
 	data.cmd[0].head = ft_lstnew(NULL, 0);
 	t_node *new = ft_lstnew("unset", WORD);
 	data.cmd[0].head -> next = new;

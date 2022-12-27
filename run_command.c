@@ -67,16 +67,11 @@ int	make_pipe(t_cmd *cmd, int prev_fd)
 
 int run_command(t_data *data, char **envp)
 {
-	t_info	info;
 	int		prev_fd;
 	int		i;
 	int		status;
 
 	i = 0;
-	data->pipe_num = 1;
-	info.stdin_fd = dup(0);
-	info.stdout_fd = dup(1);
-	info.envp = envp;
 	prev_fd = dup(0);
 	while (i < data->pipe_num)
 	{

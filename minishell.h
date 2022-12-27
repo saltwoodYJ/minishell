@@ -10,40 +10,43 @@
 # include <fcntl.h>
 #include <errno.h>
 
-typedef enum e_type
+typedef struct s_infile_node
 {
-	WORD,
-	REDIRECT,
-	PIPE,
-	T_NULL
-} t_type;
+	int						is_heardoc; // 0이면 infile 1이면 heredoc
+	char					*file;
+	struct s_infile_node	*hnext; //heredoc
+	struct s_infile_node	*next; //그냥 infile
+}	t_infile_node;
+
+// >,>>
+typedef struct s_outfile_node
+{
+	char					*file;
+	t_outfile_type			type; //0이면 덮어씌우기 1이면 append
+	struct s_outfile_node	*next;
+}	t_outfile_node;
 
 typedef struct s_node
 {
-	char           *str;
-	int            type;
-	struct s_node  *next;
-} t_node;
+	int				idx;
+	char			**cmd;
+//	char			*cmd_path[2]; 
+	t_infile_node	*heardoc_node;
+	t_infile_node	*infile_node;
+	t_outfile_node	*outfile_node;
+	struct s_node	*next;
+}	t_node;
 
-typedef struct s_info
+typedef struct s_main_node
 {
-	int			stdin_fd;
-	int			stdout_fd;
-	char 		**envp;
-	int			status;
-} t_info;
-
-typedef struct s_cmd
-{
-	t_node 		*head; //1개의 cmd를 담은 링크드 리스트
-	t_info		*info;
-} t_cmd;
-
-typedef struct s_data
-{
-	int     pipe_num; //pipe 개수
-	t_cmd 	*cmd;
-} t_data;
+	char	**ev;
+	//char	**path; //
+	int		input_fd;
+	int   output_fd;
+	int		cmd_num;
+	int 	status;
+	t_node	*node_head;
+}	t_main_node;
 
 int make_token(char *line, t_node *head);
 
