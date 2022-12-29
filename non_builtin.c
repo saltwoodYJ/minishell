@@ -35,7 +35,7 @@ char	**search_origin_path(char **envp)
 	i = 0;
 	while (envp[i] != 0)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strcmp(envp[i], "PATH=") == 0)
 		{
 			origin_path = envp[i] + 5;
 			return (ft_split(origin_path, ':'));

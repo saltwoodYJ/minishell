@@ -5,7 +5,7 @@ void ft_echo(t_main_node *main_node)
 	char **cmd;
 
 	cmd = main_node->node_head->cmd; /* echo의 다음 인자 */
-	if (ft_strncmp(cmd[0], "-n", 3) == 0)
+	if (ft_strcmp(cmd[0], "-n") == 0)
 	{
 		if (!cmd[1])
 			printf("\n");
@@ -27,7 +27,7 @@ char *get_env_path(char **envp, char *str)
 	var_len = ft_strlen(var);
 	while (envp[i] != 0)
 	{
-		if (ft_strncmp(envp[i], var, var_len) == 0)
+		if (ft_strcmp(envp[i], var) == 0)
 		{
 			free(var);
 			return (envp[i] + var_len);
@@ -50,7 +50,7 @@ void ft_cd(t_main_node *main_node)
 			printf("ch error\n");
 		return ;
 	}
-	// if (ft_strncmp(curr->cmd[0], "$", 2) == 0)
+	// if (ft_strcmp(curr->cmd[0], "$", 2) == 0)
 	// {
 	// 	curr = curr->next; 
 	// 	path = get_env_path(data, temp->str);
@@ -90,7 +90,7 @@ char	**add_env(t_main_node *main_node, char *value)
 	value_len = ft_strlen(value);
 	while (main_node->ev[i])
 	{
-		if (ft_strncmp(main_node->ev[i], value, value_len+1) == '=') /* 이미 있는 키값 */
+		if (ft_strcmp(main_node->ev[i], value) == '=') /* 이미 있는 키값 */
 		{
 			main_node->ev[i] = value;
 			i = 0;
@@ -109,6 +109,18 @@ char	**add_env(t_main_node *main_node, char *value)
 	return (new_envp);
 }
 
+void show_export(t_main_node *main_node)
+{
+	int i;
+
+	i = 0;
+	while (main_node->ev[i])
+	{
+		printf("declare -x %s\n", main_node->ev[i]);
+		i++;
+	}
+}
+
 void ft_export(t_main_node *main_node)
 {
 	char 	*arg;
@@ -116,6 +128,11 @@ void ft_export(t_main_node *main_node)
 	int		i;
 
 	i = 0;
+	if (main_node->node_head->cmd[1] == NULL)
+	{
+		show_export(main_node);
+		return ;
+	}
 	arg = main_node->node_head->cmd[1]; /*export 다음 인자*/
 	temp = add_env(main_node, arg);
 	if (!temp)
@@ -138,10 +155,9 @@ void ft_unset(t_main_node *main_node)
 	cmd = main_node->node_head->cmd[1]; /*export 다음 인자*/
 	len = ft_double_strlen(main_node->ev);
 	new_envp = (char **)malloc(sizeof(char *) * (len));
-	len = ft_strlen(cmd);
 	while (main_node->ev[i])
 	{
-		if (ft_strncmp(main_node->ev[j], cmd, len + 1) != '=')
+		if (ft_strcmp(main_node->ev[j], cmd) != '=')
 		{
 			new_envp[i] = main_node->ev[j];
 			i++;
@@ -195,20 +211,20 @@ void exec_builtin(t_main_node *main_node)
     t_node *curr;
 
     curr = main_node->node_head;
-    if (ft_strncmp(curr->cmd[0], "echo", 5) == 0)
+    if (ft_strcmp(curr->cmd[0], "echo") == 0)
 		ft_echo(main_node);
-	else if (ft_strncmp(curr->cmd[0], "cd", 3) == 0)
+	else if (ft_strcmp(curr->cmd[0], "cd") == 0)
 		ft_cd(main_node);
-	else if (ft_strncmp(curr->cmd[0], "pwd", 4) == 0)
+	else if (ft_strcmp(curr->cmd[0], "pwd") == 0)
 		ft_pwd();
-	else if (ft_strncmp(curr->cmd[0], "export", 7) == 0)
+	else if (ft_strcmp(curr->cmd[0], "export") == 0)
 		ft_export(main_node);
-	else if (ft_strncmp(curr->cmd[0], "unset", 6) == 0)
+	else if (ft_strcmp(curr->cmd[0], "unset") == 0)
 		ft_unset(main_node);
-	else if (ft_strncmp(curr->cmd[0], "env", 4) == 0)
+	else if (ft_strcmp(curr->cmd[0], "env") == 0)
 		ft_env(main_node);
-	else if (ft_strncmp(curr->cmd[0], "exit", 5) == 0)
+	else if (ft_strcmp(curr->cmd[0], "exit") == 0)
 		ft_exit(main_node);
-	else if (ft_strncmp(curr->cmd[0], "$?", 3) == 0)
+	else if (ft_strcmp(curr->cmd[0], "$?") == 0)
 		ft_exit_code(main_node);
 }

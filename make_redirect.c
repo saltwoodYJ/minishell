@@ -9,7 +9,7 @@
 // 	while (1)
 // 	{
 // 		line = readline("> ");
-// 		if (ft_strncmp(line, limiter, len) == 0)
+// 		if (ft_strcmp(line, limiter) == 0)
 // 		{
 // 			free(line);
 // 			return (0);
@@ -70,7 +70,7 @@
 // 	curr = main_node->node_head->infile_node;
 // 	while (curr != NULL)
 // 	{
-// 		if (curr->type == REDIRECT && (ft_strncmp(curr->str, "<", 2) == 0))
+// 		if (curr->type == REDIRECT && (ft_strcmp(curr->str, "<", 2) == 0))
 // 		{
 // 			curr = curr->next;
 // 			input_fd = open(curr->str, O_RDONLY);
@@ -82,7 +82,7 @@
 // 			else
 // 				dup2(input_fd, 0);
 // 		}
-// 		if (curr->type == REDIRECT && (ft_strncmp(curr->str, "<<", 3) == 0))
+// 		if (curr->type == REDIRECT && (ft_strcmp(curr->str, "<<", 3) == 0))
 // 		{
 // 			curr = curr->next;
 // 			exec_here_doc(curr);
@@ -99,10 +99,10 @@
 // 	curr = cmd->head->next;
 // 	while (curr != NULL)
 // 	{
-// 		if (curr->type == REDIRECT && (ft_strncmp(curr->str, ">", 2) == 0 || ft_strncmp(curr->str, ">>", 3) == 0))
+// 		if (curr->type == REDIRECT && (ft_strcmp(curr->str, ">", 2) == 0 || ft_strcmp(curr->str, ">>", 3) == 0))
 // 		{
 // 			curr = curr->next;
-// 			if (ft_strncmp(curr->str, ">", 2) == 0)
+// 			if (ft_strcmp(curr->str, ">", 2) == 0)
 // 				output_fd = open(curr->str, O_RDWR | O_CREAT | O_TRUNC, 0644);
 // 			else
 // 				output_fd = open(curr->str, O_RDWR | O_CREAT | O_APPEND, 0644);

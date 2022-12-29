@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/29 14:36:04 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/29 16:12:43 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ int main(int ac, char **av, char **envp)
 	main_node.ev = envp;
 	main_node.input_fd = dup(0);
 	main_node.output_fd = dup(1);
-	main_node.cmd_num = 2;
+	main_node.cmd_num = 1;
 	main_node.status = 0;
 	main_node.node_head = ft_lstnew(0, NULL);
-	char *arg[] = {"unset", "HOME", NULL};
+	char *arg[] = {"export", NULL};
 	t_node *new = ft_lstnew(0, arg);
 	main_node.node_head -> next = new;
-	char *arg2[] = {"env", NULL};
-	t_node *new2 = ft_lstnew(1, arg2);
-	new -> next = new2;
+	// char *arg2[] = {"env", NULL};
+	// t_node *new2 = ft_lstnew(1, arg2);
+	// new -> next = new2;
 
 	// t_node *new3 = ft_lstnew(">>", REDIRECT);
 	// new2 -> next = new3;
