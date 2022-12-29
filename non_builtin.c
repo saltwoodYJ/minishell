@@ -92,6 +92,12 @@ void exec_non_builtin(t_main_node *main_node)
 		exit(127);
 	}
 	execve(path, cmd_args, main_node->ev);
-	write(2, "execve error\n", 13);
-	exit(0);
+	dup2(main_node->output_fd, 1);
+	printf("execve error!\n");
+	if (errno == ENOEXEC) //errno 처리
+        exit(126);
+    else if(errno == ENOENT) //errno 처리
+        exit(127);
+    else
+        exit(EXIT_FAILURE);
 }

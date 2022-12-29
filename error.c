@@ -1,11 +1,5 @@
 #include "minishell.h"
 
-int	ft_exit(char *str, int code)
-{
-	perror(str);
-	exit(code);
-}
-
 void	ft_putstr_err(char *s1, char *s2)
 {
 	int	i;

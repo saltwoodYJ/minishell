@@ -30,10 +30,10 @@ int	make_pipe(t_main_node *main_node, int prev_fd)
 	int		status = 0;
 
 	if (pipe(fd) == -1)
-		ft_exit("pipe_error", 1);
+		printf("pipe_error");
 	pid = fork();
 	if (pid < 0)
-		ft_exit("fork_error", 1);
+		printf("fork_error");
 	if (pid > 0) //부모
 	{
 		close(fd[1]);
@@ -47,14 +47,6 @@ int	make_pipe(t_main_node *main_node, int prev_fd)
 		dup2(fd[1], 1); //
 		close(fd[1]);
 		make_exec(main_node);
-		dup2(main_node->output_fd, 1);
-		printf("execve error!\n");
-		if(errno == ENOEXEC) //errno 처리
-            exit(126);
-        else if(errno == ENOENT) //errno 처리
-            exit(127);
-        else
-            exit(EXIT_FAILURE);
 	}
     // waitpid(pid, &status, 0);
 	// cmd->info->status = status; //공부좀해

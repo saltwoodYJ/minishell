@@ -59,8 +59,8 @@ void make_exec(t_main_node *main_node);
 int		read_line(char *limiter, int infile, int len);
 int		make_here_doc(char *limiter);
 void	exec_here_doc(t_node *limiter);
-void	input_redirect(t_main_node *main_node);
-void	output_redirect(t_main_node *main_node);
+// void	input_redirect(t_main_node *main_node);
+// void	output_redirect(t_main_node *main_node);
 
 /*non builtin*/
 void	 exec_non_builtin(t_main_node *main_node);
@@ -77,7 +77,7 @@ void 	ft_pwd();
 void 	ft_export(t_main_node *main_node);
 void 	ft_unset(t_main_node *main_node);
 void 	ft_env(t_main_node *main_node);
-void 	ft_exit2(t_main_node *main_node);
+void 	ft_exit(t_main_node *main_node);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);
@@ -90,6 +90,5 @@ int		ft_atoi(const char *str);
 
 /* error */
 void	ft_putstr_err(char *s1, char *s2);
-int		ft_exit(char *str, int code);
 
 # endif

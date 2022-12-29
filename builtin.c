@@ -71,7 +71,7 @@ void ft_pwd()
 	if (path == NULL)
 	{
 		printf("Error\n");
-		exit(1); //안돼
+		return ; //안돼
 	}
 	printf("%s\n", path);
 	free(path);
@@ -127,7 +127,7 @@ void ft_export(t_main_node *main_node)
 
 void ft_unset(t_main_node *main_node)
 {
-	t_node *curr;
+	char *cmd;
 	char **new_envp;
 	int	len;
 	int	i;
@@ -135,13 +135,13 @@ void ft_unset(t_main_node *main_node)
 
 	i = 0;
 	j = 0;
-	curr = main_node->node_head->cmd[1]; /*export 다음 인자*/
+	cmd = main_node->node_head->cmd[1]; /*export 다음 인자*/
 	len = ft_double_strlen(main_node->ev);
 	new_envp = (char **)malloc(sizeof(char *) * (len));
-	len = ft_strlen(curr->cmd[1]);
+	len = ft_strlen(cmd);
 	while (main_node->ev[i])
 	{
-		if (ft_strncmp(main_node->ev[j], curr->cmd[1], len + 1) != '=')
+		if (ft_strncmp(main_node->ev[j], cmd, len + 1) != '=')
 		{
 			new_envp[i] = main_node->ev[j];
 			i++;
@@ -165,7 +165,7 @@ void ft_env(t_main_node *main_node)
 	}
 }
 
-void ft_exit2(t_main_node *main_node)
+void ft_exit(t_main_node *main_node)
 {
 	t_node *curr;
 	int		exit_code;
@@ -208,7 +208,7 @@ void exec_builtin(t_main_node *main_node)
 	else if (ft_strncmp(curr->cmd[0], "env", 4) == 0)
 		ft_env(main_node);
 	else if (ft_strncmp(curr->cmd[0], "exit", 5) == 0)
-		ft_exit2(main_node);
+		ft_exit(main_node);
 	else if (ft_strncmp(curr->cmd[0], "$?", 3) == 0)
 		ft_exit_code(main_node);
 }
