@@ -6,7 +6,7 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2022/12/21 18:10:15 by hyeokim2         ###   ########.fr        #
+#    Updated: 2022/12/29 15:39:58 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS = #-fsanitize=address -g3 #-Wall -Wextra -Werror #
 
 NAME = minishell
 
-SRCS = minishell.c run_command.c parsing.c pipex_util.c ft_split.c set_redirect.c \
+SRCS = minishell.c run_command.c parsing.c pipex_util.c ft_split.c make_redirect.c \
 non_builtin.c builtin.c error.c
 
 OBJS = $(SRCS:%.c=%.o)
