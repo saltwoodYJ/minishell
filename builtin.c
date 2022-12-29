@@ -183,7 +183,7 @@ void ft_env(t_main_node *main_node)
 
 void ft_exit(t_main_node *main_node)
 {
-	t_node *curr;
+	t_cmd_node *curr;
 	int		exit_code;
 	
 	curr = main_node->node_head;
@@ -208,7 +208,7 @@ void ft_exit_code(t_main_node *main_node)
 
 void exec_builtin(t_main_node *main_node)
 {
-    t_node *curr;
+    t_cmd_node *curr;
 
     curr = main_node->node_head;
     if (ft_strcmp(curr->cmd[0], "echo") == 0)

@@ -6,17 +6,17 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2022/12/29 16:12:43 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2022/12/29 19:42:12 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node	*ft_lstnew(int idx, char **cmd)
+t_cmd_node	*ft_lstnew(int idx, char **cmd)
 {
-	t_node	*curr;
+	t_cmd_node	*curr;
 
-	curr = (t_node *)malloc(sizeof(t_node));
+	curr = (t_cmd_node *)malloc(sizeof(t_cmd_node));
 	if (!curr)
 		return (0);
 	curr->next = NULL;
@@ -27,7 +27,50 @@ t_node	*ft_lstnew(int idx, char **cmd)
 	return (curr);
 }
 
-int main(int ac, char **av, char **envp)
+
+#include "minishell.h"
+
+int main(int ac, char **av, char **ev)
+{
+	char   *line;
+	t_main_node	*main;
+	t_cmd_node *now;
+	char **str;
+	int	i=	0;
+
+	while (1)
+	{
+		/* 한 줄씩 읽어오기 */
+		line = readline("Minishell$ ");
+		if (line)
+		{
+			main = malloc(sizeof(t_main_node));
+			add_history(line);
+			make_token(line, main);
+			main->ev = ev;
+			main->input_fd = dup(0);
+			main->output_fd = dup(1);
+/* test
+			i = 0;
+			now = main->node_head->next;
+			str = now->cmd;
+			while (str[i])
+			{
+				printf("\n%s", str[i]);
+				i++;
+			}
+*/
+			run_command(main);
+			free(line);
+			free(main);
+			main = NULL;
+		}
+
+	}
+	return (0);
+}
+
+int no_main(int ac, char **av, char **envp)
 {
 	t_main_node main_node;
 	
@@ -41,30 +84,30 @@ int main(int ac, char **av, char **envp)
 	main_node.status = 0;
 	main_node.node_head = ft_lstnew(0, NULL);
 	char *arg[] = {"export", NULL};
-	t_node *new = ft_lstnew(0, arg);
+	t_cmd_node *new = ft_lstnew(0, arg);
 	main_node.node_head -> next = new;
 	// char *arg2[] = {"env", NULL};
-	// t_node *new2 = ft_lstnew(1, arg2);
+	// t_cmd_node *new2 = ft_lstnew(1, arg2);
 	// new -> next = new2;
 
-	// t_node *new3 = ft_lstnew(">>", REDIRECT);
+	// t_cmd_node *new3 = ft_lstnew(">>", REDIRECT);
 	// new2 -> next = new3;
-	// t_node *new4 = ft_lstnew("b", WORD);
+	// t_cmd_node *new4 = ft_lstnew("b", WORD);
 	// new3 -> next = new4;
-	// t_node *new5 = ft_lstnew("<", REDIRECT);
+	// t_cmd_node *new5 = ft_lstnew("<", REDIRECT);
 	// new4 -> next = new5;
-	// t_node *new6 = ft_lstnew("b", WORD);
+	// t_cmd_node *new6 = ft_lstnew("b", WORD);
 	// new5 -> next = new6;
-	// t_node *new7 = ft_lstnew("|", PIPE);
+	// t_cmd_node *new7 = ft_lstnew("|", PIPE);
 	// new6 -> next = new7;
-	// t_node *new8 = ft_lstnew("ls", WORD);
+	// t_cmd_node *new8 = ft_lstnew("ls", WORD);
 	// new7 -> next = new8;
-	// t_node *new9 = ft_lstnew(">", REDIRECT);
+	// t_cmd_node *new9 = ft_lstnew(">", REDIRECT);
 	// new8 -> next = new9;	
-	// t_node *new10 = ft_lstnew("c", WORD);
+	// t_cmd_node *new10 = ft_lstnew("c", WORD);
 	// new9 -> next = new10;
 
-	// t_node *curr = head->next;
+	// t_cmd_node *curr = head->next;
 	// while (curr != NULL)
 	// {
 	// 	printf("%s ", curr->str);

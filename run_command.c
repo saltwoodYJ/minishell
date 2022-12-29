@@ -11,9 +11,9 @@ int check_builtin(char *str)
 	return (0);
 }
 
-void make_exec(t_main_node *main_node)
+void make_exec(t_main_node *main_node, int flag)
 {
-	t_node *curr;
+	t_cmd_node *curr;
 
 	// input_redirect(main_node);
 	// output_redirect(main_node);
@@ -21,6 +21,8 @@ void make_exec(t_main_node *main_node)
 		exec_builtin(main_node);
 	else
 		exec_non_builtin(main_node);
+	if (flag != -1)
+		exit(0);
 }
 
 int	make_pipe(t_main_node *main_node, int prev_fd)
@@ -46,11 +48,34 @@ int	make_pipe(t_main_node *main_node, int prev_fd)
 		close(prev_fd); //썼으니까 닫아주기 (파일은 더이상 안쓰니까)
 		dup2(fd[1], 1); //
 		close(fd[1]);
-		make_exec(main_node);
+		make_exec(main_node, 0);
 	}
-    // waitpid(pid, &status, 0);
-	// cmd->info->status = status; //공부좀해
+    waitpid(pid, &status, 0);
+	// if (WIFEXITED(status))
+	// 	cmd->info->status = WEXITSTATUS(status); //공부좀해
 	return (prev_fd);
+}
+
+int	last_command(t_main_node *main_node, int prev_fd)
+{
+	pid_t	pid;
+	int		status = 0;
+
+	pid = fork();
+	if (pid < 0)
+		printf("fork_error");
+	if (pid > 0) //부모
+		close(prev_fd); //여기서 안쓰니까 닫기
+	if (pid == 0) //자식
+	{
+		dup2(prev_fd, 0); //stdin으로 던져주기
+		close(prev_fd); //썼으니까 닫아주기 (파일은 더이상 안쓰니까)
+		make_exec(main_node, 0);
+	}
+    waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		main_node->status = WEXITSTATUS(status); //공부좀해
+	return (0);
 }
 
 int run_command(t_main_node *main_node)
@@ -59,24 +84,23 @@ int run_command(t_main_node *main_node)
 	int		i;
 	int		status;
 
-	i = 0;
+	i = -1;
 	prev_fd = dup(0);
 	main_node->node_head = main_node->node_head->next;
-	while (i < main_node->cmd_num - 1)
+	while (++i < main_node->cmd_num - 1)
 	{
 		prev_fd = make_pipe(main_node, prev_fd);
-		i++;
 		main_node->node_head = main_node->node_head->next;
 	}
-	i = 0;
-	while (i < main_node->cmd_num - 1)
-	{
-		waitpid(0, &status, WNOHANG);
-		i++;
-	}
+	i = -1;
+	while (++i < main_node->cmd_num - 1)
+		waitpid(0, &status, 0);
 	if (main_node->cmd_num == 1 && check_builtin(main_node->node_head->cmd[0]))
-		make_exec(main_node);
+		make_exec(main_node, -1);
 	else
-		make_pipe(main_node, prev_fd);
+	{
+		last_command(main_node, prev_fd);
+		waitpid(0, &status, 0);
+	}
 	return (0);
 }

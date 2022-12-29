@@ -50,7 +50,7 @@
 // 	return (0);
 // }
 
-// void	exec_here_doc(t_node *limiter)
+// void	exec_here_doc(t_cmd_node *limiter)
 // {
 // 	if (limiter->type != WORD)
 // 	{
@@ -93,7 +93,7 @@
 
 // void	output_redirect(t_cmd *cmd)
 // {
-// 	t_node *curr;
+// 	t_cmd_node *curr;
 // 	int		output_fd;
 
 // 	curr = cmd->head->next;
