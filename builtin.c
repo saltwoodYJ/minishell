@@ -1,16 +1,16 @@
 #include "minishell.h"
 
-void ft_echo(t_main_node *main_node)
+void ft_echo(t_main_node *main)
 {
 	char **cmd;
 
-	cmd = main_node->node_head->cmd; /* echo의 다음 인자 */
-	if (ft_strcmp(cmd[0], "-n") == 0)
+	cmd = main->node_head->cmd; /* echo의 다음 인자 */
+	if (ft_strcmp(cmd[1], "-n") == 0)
 	{
-		if (!cmd[1])
+		if (!cmd[2])
 			printf("\n");
 		else
-			printf("%s", cmd[1]);
+			printf("%s", cmd[2]);
 	}
 	else
 		printf("%s\n", cmd[1]);
@@ -37,17 +37,15 @@ char *get_env_path(char **envp, char *str)
 	return (NULL);
 }
 
-void ft_cd(t_main_node *main_node)
+void ft_cd(t_main_node *main)
 {
-	char	*arg;
 	char	*path;
 
-	arg = main_node->node_head->cmd[1];
-	if (!arg) /* cd만 있을경우 */
+	if (!main->node_head->cmd[1]) /* cd만 있을경우 */
 	{
-		path = get_env_path(main_node->ev, "HOME");
+		path = get_env_path(main->ev, "HOME");
 		if (chdir(path) != 0) //실패
-			printf("ch error\n");
+			printf("chdir exec error\n");
 		return ;
 	}
 	// if (ft_strcmp(curr->cmd[0], "$", 2) == 0)
@@ -58,7 +56,7 @@ void ft_cd(t_main_node *main_node)
 	// 		path = get_env_path(data, "HOME");
 	// }
 	else
-		path = arg; //현재 위치에서 구해야
+		path = main->node_head->cmd[1]; //현재 위치에서 구해야
 	if (chdir(path) != 0) //실패
 		printf("cd: %s : No such file or directory\n", path);
 }
@@ -77,7 +75,7 @@ void ft_pwd()
 	free(path);
 }
 
-char	**add_env(t_main_node *main_node, char *value)
+char	**add_env(t_main_node *main, char *value)
 {
 	char **new_envp;
 	int	len;
@@ -85,14 +83,14 @@ char	**add_env(t_main_node *main_node, char *value)
 	int	i;
 
 	i = 0;
-	len = ft_double_strlen(main_node->ev);
+	len = ft_double_strlen(main->ev);
 	new_envp = (char **)malloc(sizeof(char *) * (len + 2));
 	value_len = ft_strlen(value);
-	while (main_node->ev[i])
+	while (main->ev[i])
 	{
-		if (ft_strcmp(main_node->ev[i], value) == '=') /* 이미 있는 키값 */
+		if (ft_strcmp(main->ev[i], value) == '=') /* 이미 있는 키값 */
 		{
-			main_node->ev[i] = value;
+			main->ev[i] = value;
 			i = 0;
 			while (i < len + 2)
 			{
@@ -101,7 +99,7 @@ char	**add_env(t_main_node *main_node, char *value)
 			}
 			return (NULL);
 		}
-		new_envp[i] = main_node->ev[i];
+		new_envp[i] = main->ev[i];
 		i++;
 	}
 	new_envp[i] = value;
@@ -109,40 +107,40 @@ char	**add_env(t_main_node *main_node, char *value)
 	return (new_envp);
 }
 
-void show_export(t_main_node *main_node)
+void show_export(t_main_node *main)
 {
 	int i;
 
 	i = 0;
-	while (main_node->ev[i])
+	while (main->ev[i])
 	{
-		printf("declare -x %s\n", main_node->ev[i]);
+		printf("declare -x %s\n", main->ev[i]);
 		i++;
 	}
 }
 
-void ft_export(t_main_node *main_node)
+void ft_export(t_main_node *main)
 {
 	char 	*arg;
 	char	**temp;
 	int		i;
 
 	i = 0;
-	if (main_node->node_head->cmd[1] == NULL)
+	if (main->node_head->cmd[1] == NULL)
 	{
 		show_export(main_node);
 		return ;
 	}
-	arg = main_node->node_head->cmd[1]; /*export 다음 인자*/
+	arg = main->node_head->cmd[1]; /*export 다음 인자*/
 	temp = add_env(main_node, arg);
 	if (!temp)
 		return ;
-	// ft_free(main_node->ev, 0);
-	main_node->ev = temp;
+	// ft_free(main->ev, 0);
+	main->ev = temp;
 	// ft_env(main_node);
 }
 
-void ft_unset(t_main_node *main_node)
+void ft_unset(t_main_node *main)
 {
 	char *cmd;
 	char **new_envp;
@@ -152,41 +150,41 @@ void ft_unset(t_main_node *main_node)
 
 	i = 0;
 	j = 0;
-	cmd = main_node->node_head->cmd[1]; /*export 다음 인자*/
-	len = ft_double_strlen(main_node->ev);
+	cmd = main->node_head->cmd[1]; /*export 다음 인자*/
+	len = ft_double_strlen(main->ev);
 	new_envp = (char **)malloc(sizeof(char *) * (len));
-	while (main_node->ev[i])
+	while (main->ev[i])
 	{
-		if (ft_strcmp(main_node->ev[j], cmd) != '=')
+		if (ft_strcmp(main->ev[j], cmd) != '=')
 		{
-			new_envp[i] = main_node->ev[j];
+			new_envp[i] = main->ev[j];
 			i++;
 		}
 		j++;
 	}
 	new_envp[i] = 0;
-	main_node->ev = new_envp;
+	main->ev = new_envp;
 	// ft_env(main_node);
 }
 
-void ft_env(t_main_node *main_node)
+void ft_env(t_main_node *main)
 {
 	int i;
 
 	i = 0;
-	while (main_node->ev[i])
+	while (main->ev[i])
 	{
-		printf("%s\n", main_node->ev[i]);
+		printf("%s\n", main->ev[i]);
 		i++;
 	}
 }
 
-void ft_exit(t_main_node *main_node)
+void ft_exit(t_main_node *main)
 {
 	t_cmd_node *curr;
 	int		exit_code;
 	
-	curr = main_node->node_head;
+	curr = main->node_head;
 	/*종료 코드 저장!! */
 	if (curr->cmd[1])
 	{
@@ -197,20 +195,20 @@ void ft_exit(t_main_node *main_node)
 			printf("exit: %s: undefined exit code\n", curr->cmd[1]);
 		exit(exit_code);
 	}
-	main_node->status = 0;
+	main->status = 0;
 	exit(0);
 }
 
-void ft_exit_code(t_main_node *main_node)
+void ft_exit_code(t_main_node *main)
 {
-	printf("%d: command not found\n", main_node->status); //status 저장
+	printf("%d: command not found\n", main->status); //status 저장
 }
 
-void exec_builtin(t_main_node *main_node)
+void exec_builtin(t_main_node *main)
 {
     t_cmd_node *curr;
 
-    curr = main_node->node_head;
+    curr = main->node_head;
     if (ft_strcmp(curr->cmd[0], "echo") == 0)
 		ft_echo(main_node);
 	else if (ft_strcmp(curr->cmd[0], "cd") == 0)

@@ -11,13 +11,13 @@ int check_builtin(char *str)
 	return (0);
 }
 
-void make_exec(t_main_node *main_node, int flag)
+void make_exec(t_main_node *main, int flag)
 {
 	t_cmd_node *curr;
 
-	// input_redirect(main_node);
-	// output_redirect(main_node);
-	if (check_builtin(main_node->node_head->cmd[0]))
+	input_redirect(main_node);
+	output_redirect(main_node);
+	if (check_builtin(main->node_head->cmd[0]))
 		exec_builtin(main_node);
 	else
 		exec_non_builtin(main_node);
@@ -25,7 +25,7 @@ void make_exec(t_main_node *main_node, int flag)
 		exit(0);
 }
 
-int	make_pipe(t_main_node *main_node, int prev_fd)
+int	make_pipe(t_main_node *main, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -51,12 +51,12 @@ int	make_pipe(t_main_node *main_node, int prev_fd)
 		make_exec(main_node, 0);
 	}
     waitpid(pid, &status, 0);
-	// if (WIFEXITED(status))
-	// 	cmd->info->status = WEXITSTATUS(status); //공부좀해
+	if (WIFEXITED(status))
+		main->status = WEXITSTATUS(status); //공부좀해
 	return (prev_fd);
 }
 
-int	last_command(t_main_node *main_node, int prev_fd)
+int	last_command(t_main_node *main, int prev_fd)
 {
 	pid_t	pid;
 	int		status = 0;
@@ -74,11 +74,11 @@ int	last_command(t_main_node *main_node, int prev_fd)
 	}
     waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		main_node->status = WEXITSTATUS(status); //공부좀해
+		main->status = WEXITSTATUS(status); //공부좀해
 	return (0);
 }
 
-int run_command(t_main_node *main_node)
+int run_command(t_main_node *main)
 {
 	int		prev_fd;
 	int		i;
@@ -86,16 +86,16 @@ int run_command(t_main_node *main_node)
 
 	i = -1;
 	prev_fd = dup(0);
-	main_node->node_head = main_node->node_head->next;
-	while (++i < main_node->cmd_num - 1)
+	main->node_head = main->node_head->next;
+	while (++i < main->cmd_num - 1)
 	{
 		prev_fd = make_pipe(main_node, prev_fd);
-		main_node->node_head = main_node->node_head->next;
+		main->node_head = main->node_head->next;
 	}
 	i = -1;
-	while (++i < main_node->cmd_num - 1)
+	while (++i < main->cmd_num - 1)
 		waitpid(0, &status, 0);
-	if (main_node->cmd_num == 1 && check_builtin(main_node->node_head->cmd[0]))
+	if (main->cmd_num == 1 && check_builtin(main->node_head->cmd[0]))
 		make_exec(main_node, -1);
 	else
 	{

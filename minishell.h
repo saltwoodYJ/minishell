@@ -1,8 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -22,6 +22,12 @@ typedef enum e_type
 	T_NULL
 } t_type;
 
+typedef enum cmd_type
+{
+	FORK,
+
+}
+
 typedef	struct s_parsing_node
 {
 	char			*str;
@@ -33,6 +39,7 @@ typedef struct s_infile_node
 {
 	int						is_heardoc; // 0이면 infile 1이면 heredoc
 	char					*file;
+	char					*limiter;
 	struct s_infile_node	*hnext; //heredoc
 	struct s_infile_node	*next; //그냥 infile
 }	t_infile_node;
@@ -87,33 +94,33 @@ int get_cmd_num(t_parsing_node *parsing);
 void    init_cmd_node(t_cmd_node *node);
 
 /* run command */
-int run_command(t_main_node *main_node);
-int	make_pipe(t_main_node *main_node, int prev_fd);
-void make_exec(t_main_node *main_node, int flag);
+int run_command(t_main_node *main);
+int	make_pipe(t_main_node *main, int prev_fd);
+void make_exec(t_main_node *main, int flag);
 
 /*redirect*/
 int		read_line(char *limiter, int infile, int len);
-int		make_here_doc(char *limiter);
-void	exec_here_doc(t_cmd_node *limiter);
-// void	input_redirect(t_main_node *main_node);
-// void	output_redirect(t_main_node *main_node);
+char	*make_heredoc(char *limiter);
+void	exec_heredoc(t_cmd_node *limiter);
+// void	input_redirect(t_main_node *main);
+// void	output_redirect(t_main_node *main);
 
 /*non builtin*/
-void	 exec_non_builtin(t_main_node *main_node);
-char	**search_cmd(t_main_node *main_node);
+void	 exec_non_builtin(t_main_node *main);
+char	**search_cmd(t_main_node *main);
 char	**search_origin_path(char **envp);
 char	*get_path(char **envp, char *first_cmd);
 
 /* builtin */
 int 	check_builtin(char *str);
-void 	exec_builtin(t_main_node *main_node);
-void 	ft_echo(t_main_node *main_node);
-void 	ft_cd(t_main_node *main_node);
+void 	exec_builtin(t_main_node *main);
+void 	ft_echo(t_main_node *main);
+void 	ft_cd(t_main_node *main);
 void 	ft_pwd();
-void 	ft_export(t_main_node *main_node);
-void 	ft_unset(t_main_node *main_node);
-void 	ft_env(t_main_node *main_node);
-void 	ft_exit(t_main_node *main_node);
+void 	ft_export(t_main_node *main);
+void 	ft_unset(t_main_node *main);
+void 	ft_env(t_main_node *main);
+void 	ft_exit(t_main_node *main);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);

@@ -74,7 +74,7 @@ char	*get_path(char **envp, char *first_cmd)
 }
 
 
-void exec_non_builtin(t_main_node *main_node)
+void exec_non_builtin(t_main_node *main)
 {
 	char 	**cmd_args;
 	char	*path;
@@ -83,16 +83,16 @@ void exec_non_builtin(t_main_node *main_node)
 	// cmd_args = search_cmd(cmd);
 	// if (!cmd)
 	// 	return ; //오류 처리
-	cmd_args = main_node->node_head->cmd;
-	path = get_path(main_node->ev, cmd_args[0]);
+	cmd_args = main->node_head->cmd;
+	path = get_path(main->ev, cmd_args[0]);
 	if (!path)
 	{
 		ft_putstr_err(cmd_args[0], ": command not found");
 		// ft_free(cmd, 0); /* 문제!! */
 		exit(127);
 	}
-	execve(path, cmd_args, main_node->ev);
-	dup2(main_node->output_fd, 1);
+	execve(path, cmd_args, main->ev);
+	dup2(main->output_fd, 1);
 	printf("execve error!\n");
 	if (errno == ENOEXEC) //errno 처리
         exit(126);

@@ -27,7 +27,7 @@ OBJS = $(SRCS:%.c=%.o)
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -lreadline -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
 
 clean :
 	rm -rf $(OBJS) $(BONUS_OBJS)
