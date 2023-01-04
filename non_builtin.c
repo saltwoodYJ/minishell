@@ -1,32 +1,6 @@
 
 #include "minishell.h"
 
-// char	**search_cmd(t_cmd *cmd)
-// {
-// 	t_cmd_node	*curr;
-// 	char	**cmd_agrs;
-// 	int		idx;
-
-// 	curr = cmd->head->next;
-// 	idx = 0;
-// 	while (curr != NULL)
-// 	{
-// 		idx++;
-// 		curr = curr->next;
-// 	}
-// 	cmd_agrs = (char **)malloc(sizeof(char *) * idx + 1);
-// 	idx = 0;
-// 	curr = cmd->head->next;
-// 	while (curr != NULL)
-// 	{
-// 		cmd_agrs[idx] = curr->str;
-// 		idx++;
-// 		curr = curr->next;
-// 	}
-// 	cmd_agrs[idx] = 0;
-// 	return (cmd_agrs);
-// }
-
 char	**search_origin_path(char **envp)
 {
 	int		i;
@@ -53,7 +27,7 @@ char	*get_path(char **envp, char *first_cmd)
 	char	**splited_path;
 	char	*cmd_path;
 
-	if (access(first_cmd, X_OK) == 0) //access 쓰면 안돼
+	if (access(first_cmd, X_OK) == 0)
 		return (first_cmd);
 	splited_path = search_origin_path(envp);
 	path_count = ft_double_strlen(splited_path);
@@ -87,13 +61,14 @@ void exec_non_builtin(t_main_node *main)
 	path = get_path(main->ev, cmd_args[0]);
 	if (!path)
 	{
-		ft_putstr_err(cmd_args[0], ": command not found");
-		// ft_free(cmd, 0); /* 문제!! */
+		printf("minishell: command not found: %s\n", cmd_args[0]);
+		main->status = 127;
+		ft_free(cmd_args, 0); /* 문제!! */
 		exit(127);
 	}
 	execve(path, cmd_args, main->ev);
-	dup2(main->output_fd, 1);
-	printf("execve error!\n");
+	// dup2(main->output_fd, 1);
+	perror("minishell :");
 	if (errno == ENOEXEC) //errno 처리
         exit(126);
     else if(errno == ENOENT) //errno 처리

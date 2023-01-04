@@ -22,6 +22,14 @@ typedef enum e_type
 	T_NULL
 } t_type;
 
+typedef struct s_envp_node
+{
+    char *key;
+    char *value;
+    struct s_envp_node *next;
+    struct s_envp_node *head;
+}	t_envp_node;
+
 typedef	struct s_parsing_node
 {
 	char			*str;
@@ -60,7 +68,8 @@ typedef struct s_cmd_node
 
 typedef struct s_main_node
 {
-	char	**ev;
+	t_envp_node	*envp;
+	char		**ev;
 	//char	**path; //
 	int		input_fd;
 	int   output_fd;
@@ -95,9 +104,9 @@ void make_exec(t_main_node *main, int flag);
 /*redirect*/
 int		read_line(char *limiter, int infile, int len);
 char	*make_heredoc(char *limiter);
-void	exec_heredoc(t_cmd_node *limiter);
 void	input_redirect(t_main_node *main);
 void	output_redirect(t_main_node *main);
+void    set_heredoc(t_main_node *main);
 
 /*non builtin*/
 void	 exec_non_builtin(t_main_node *main);
@@ -115,18 +124,22 @@ void 	ft_export(t_main_node *main);
 void 	ft_unset(t_main_node *main);
 void 	ft_env(t_main_node *main);
 void 	ft_exit(t_main_node *main);
+int		ft_exit_atoi(const char *str, int *is_char);
+char	**add_env(t_main_node *main, char *value);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);
+size_t	ft_double_strlen(char **str);
+
+/* error */
+void	ft_putstr_err(char *s1, char *s2);
+
+/* libft */
+char	*ft_strrchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2, int i, int j);
 size_t	ft_strlen(char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(char *s1, char *s2);
-size_t	ft_double_strlen(char **str);
 char	**ft_split(char const *s, char c);
-int		ft_atoi(const char *str);
-
-/* error */
-void	ft_putstr_err(char *s1, char *s2);
 
 # endif

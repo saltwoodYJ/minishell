@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:49:24 by hyeokim2          #+#    #+#             */
-/*   Updated: 2022/12/29 16:25:02 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:11:47 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ size_t	ft_double_strlen(char **str)
 }
 
 
-int	ft_atoi(const char *str)
+int	ft_exit_atoi(const char *str, int *is_char)
 {
 	int			i;
 	long long	num;
@@ -123,6 +123,10 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	if (str[i])
+	{
+		*is_char = 1;
 		return (-1);
+	}
+	*is_char = 0;
 	return (num * sign);
 }

@@ -24,13 +24,16 @@ int	read_line(char *limiter, int infile, int len)
 char	*make_heredoc(char *limiter)
 {
 	int		tmp_file;
+	char	*tmp_dot;
 	char	*tmp_name;
 	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
 		printf("fork_error");
-	tmp_name = ft_strjoin(limiter, "_heredoc.tmp", 0, 0);
+	tmp_dot = ft_strjoin(".", limiter, 0, 0);
+	tmp_name = ft_strjoin(tmp_dot, "_heredoc.tmp", 0, 0);
+	free(tmp_dot);
 	tmp_file = open(tmp_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pid == 0)
 	{

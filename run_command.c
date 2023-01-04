@@ -52,7 +52,7 @@ int	make_pipe(t_main_node *main, int prev_fd)
 	{
 		dup2(prev_fd, 0); //stdin으로 던져주기
 		close(prev_fd); //썼으니까 닫아주기 (파일은 더이상 안쓰니까)
-		dup2(fd[1], 1); //
+		dup2(fd[1], 1); 
 		close(fd[1]);
 		make_exec(main, 0);
 	}

@@ -6,49 +6,62 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/02 18:30:12 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/04 21:34:50 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd_node	*ft_lstnew(int idx, char **cmd)
-{
-	t_cmd_node	*curr;
+// t_cmd_node	*ft_lstnew(int idx, char **cmd)
+// {
+// 	t_cmd_node	*curr;
 
-	curr = (t_cmd_node *)malloc(sizeof(t_cmd_node));
-	if (!curr)
-		return (0);
-	curr->next = NULL;
-	curr->cmd = cmd;
-	curr->heardoc_node = NULL;
-	curr->infile_node = NULL;
-	curr->outfile_node = NULL;
-	return (curr);
-}
+// 	curr = (t_cmd_node *)malloc(sizeof(t_cmd_node));
+// 	if (!curr)
+// 		return (0);
+// 	curr->next = NULL;
+// 	curr->cmd = cmd;
+// 	curr->heardoc_node = NULL;
+// 	curr->infile_node = NULL;
+// 	curr->outfile_node = NULL;
+// 	return (curr);
+// }
 
 
 #include "minishell.h"
 
 int main(int ac, char **av, char **ev)
 {
-	char   *line;
-	t_main_node	*main;
-	t_cmd_node *now;
-	char **str;
-	int	i=	0;
+	char   			*line;
+	t_main_node		*main;
+	// t_infile_node	*a;
+	
+	// a = malloc(sizeof(t_infile_node));
+	// a->file = "a";
+	// a->hnext = NULL;
+	// a->is_heardoc = 0;
+	// a->limiter = NULL;
+	// a->next = NULL;
+	// t_cmd_node *now;
+	// char **str;
+	// int	i=	0;
 
-	// while (1)
-	// {
+	if (ac < 0 || av[0] == NULL)
+		return (0);
+	while (1)
+	{
 		/* 한 줄씩 읽어오기 */
-		// line = readline("Minishell$ ");
-		line = "ls -al | grep ft";
+		line = readline("Minishell$ ");
+		// line = "ls -al | grep ft";
+		// line = "grep a | cat";
 		if (line)
 		{
 			main = malloc(sizeof(t_main_node));
-			// add_history(line);
+			add_history(line);
 			make_token(line, main);
+			// main->node_head->next->infile_node = a;
 			main->ev = ev;
+			// main->envp = 
 			main->input_fd = dup(0);
 			main->output_fd = dup(1);
 /* test
@@ -61,12 +74,13 @@ int main(int ac, char **av, char **ev)
 				i++;
 			}
 */
+			set_heredoc(main);
 			run_command(main);
-			// free(line);
+			free(line);
 			free(main);
 			main = NULL;
 		}
-	// }
+	}
 	return (0);
 }
 
