@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:49:24 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/04 16:11:47 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/05 20:08:31 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,14 @@ void	ft_free(char **s1, char **s2)
 	}
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, int i, int j)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
+	int		i;
+	int		j;
 
+	i = 0;
+	j = 0;
 	if (!s1 || !s2)
 		return (0);
 	str = (char *)malloc(sizeof(char) * \
@@ -45,18 +49,34 @@ char	*ft_strjoin(char const *s1, char const *s2, int i, int j)
 	if (!str)
 		return (0);
 	while (s1[i] != 0)
-	{
-		str[j] = s1[i];
-		j++;
-		i++;
-	}
+		str[j++] = s1[i++];
 	i = 0;
 	while (s2[i] != 0)
-	{
-		str[j] = s2[i];
-		j++;
-		i++;
-	}
+		str[j++] = s2[i++];
+	str[j] = '\0';
+	return (str);
+}
+
+char	*ft_strjoin3(char *s1, char *s2, char *s3)
+{
+	char	*str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	str = (char *)malloc(sizeof(char) * \
+	(ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1));
+	if (!str)
+		return (0);
+	while (s1[i])
+		str[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		str[j++] = s2[i++];
+	i = 0;
+	while (s3[i])
+		str[j++] = s3[i++];
 	str[j] = '\0';
 	return (str);
 }

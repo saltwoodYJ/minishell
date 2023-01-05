@@ -3,36 +3,38 @@
 void ft_echo(t_main_node *main)
 {
 	char **cmd;
+	int		i;
+	int		nl;
 
-	cmd = main->node_head->cmd; /* echo의 다음 인자 */
+	cmd = main->curr->cmd; /* echo의 다음 인자 */
+	i = 2;
+	nl = 0;
 	if (ft_strcmp(cmd[1], "-n") == 0)
+		nl = 1;
+	if (nl == 1 && !cmd[2])
 	{
-		if (!cmd[2])
-			printf("\n");
-		else
-			printf("%s", cmd[2]);
+		printf("\n");
+		return ;
 	}
-	else
-		printf("%s\n", cmd[1]);
+	while (cmd[i])
+	{
+		printf(" %s", cmd[i]);
+		i++;
+	}
+	if (nl != 1)
+		printf("\n");
 }
 
-char *get_env_path(char **envp, char *str)
+char *get_env_path(t_envp_node *envp, char *key)
 {
-	char *var;
-	int var_len;
-	int i;
+	t_envp_node *curr;
 
-	i = 0;
-	var = ft_strjoin(str, "=", 0, 0);
-	var_len = ft_strlen(var);
-	while (envp[i] != 0)
+	curr = envp->head->next;
+	while (curr != NULL)
 	{
-		if (ft_strcmp(envp[i], var) == 0)
-		{
-			free(var);
-			return (envp[i] + var_len);
-		}
-		i++;
+		if (ft_strcmp(curr->key, key) == 0)
+			return (curr->value);
+		curr = curr->next;
 	}
 	return (NULL);
 }
@@ -41,13 +43,11 @@ void ft_cd(t_main_node *main)
 {
 	char	*path;
 	char	*old_path;
-	char	*pwd;
-	char	*old_pwd;
 	
-	old_path = path = getcwd(NULL, 0);
-	if (!main->node_head->cmd[1]) /* cd만 있을경우 */
+	old_path = getcwd(NULL, 0);
+	if (!main->curr->cmd[1]) /* cd만 있을경우 */
 	{
-		path = get_env_path(main->ev, "HOME");
+		path = get_env_path(main->envp, "HOME");
 		if (!path)
 		{
 			printf("minishell: cd: HOME not set");
@@ -57,15 +57,11 @@ void ft_cd(t_main_node *main)
 		}
 	}
 	else
-		path = main->node_head->cmd[1]; //현재 위치에서 구해야
+		path = main->curr->cmd[1]; //현재 위치에서 구해야
 	if (chdir(path) == 0) //성공
 	{
-		pwd = ft_strjoin("PWD=", path, 0, 0);
-		add_env(main, pwd);
-		old_pwd = ft_strjoin("OLDPWD=", old_path, 0, 0);
-		add_env(main, old_pwd);
-		free(pwd);
-		free(old_pwd);
+		add_env(main, "PWD", path);
+		add_env(main, "OLDPWD", old_path);
 		main->status = 0;
 	}
 	else
@@ -91,108 +87,153 @@ void ft_pwd()
 	free(path);
 }
 
-char	**add_env(t_main_node *main, char *value)
+t_envp_node *make_envp_node(char *key, char *value)
 {
-	char **new_envp;
-	int	len;
-	int value_len;
-	int	i;
+	t_envp_node *new;
 
-	i = 0;
-	len = ft_double_strlen(main->ev);
-	new_envp = (char **)malloc(sizeof(char *) * (len + 2));
-	value_len = ft_strlen(value);
-	while (main->ev[i])
+	new = (t_envp_node *)malloc(sizeof(t_envp_node));
+	if (!new)
+		return (NULL);
+	new->key = key;
+	new->value = value;
+	new->next = NULL;
+	return (new);
+}
+
+void	add_env(t_main_node *main, char *key, char *value)
+{
+	t_envp_node *curr;
+
+	//value가 없으면 NULL로 들어감
+	//value 있어야하나 값이 없으면 '\0'로]
+	curr = main->envp->head->next;
+	while (curr != NULL)
 	{
-		if (ft_strcmp(main->ev[i], value) == '=') /* 이미 있는 키값 */
+		//변수에 숫자없는지 확인
+		if (ft_strcmp(curr->key, key)) /* 이미 있는 키값 */
 		{
-			main->ev[i] = value;
-			i = 0;
-			while (i < len + 2)
-			{
-				free(new_envp[i]);
-				i++;
-			}
-			return (NULL);
+			curr->value = value;
+			return ;
 		}
-		new_envp[i] = main->ev[i];
-		i++;
+		curr = curr->next;
 	}
-	new_envp[i] = value;
-	new_envp[++i] = 0;
-	return (new_envp);
+	curr->next = make_envp_node(key, value);
 }
 
 void show_export(t_main_node *main)
 {
-	int i;
+	t_envp_node *curr;
 
-	i = 0;
-	while (main->ev[i])
+	curr = main->envp->head->next;
+	while (curr != NULL)
 	{
-		printf("declare -x %s\n", main->ev[i]);
-		i++;
+		if (!curr->value)
+			printf("declare -x %s\n", curr->key);
+		else
+			printf("declare -x %s=%s\n", curr->key, curr->value);
+		curr = curr->next;
 	}
 }
 
-void ft_export(t_main_node *main)
+int	search_equal(char *s)
 {
-	char 	*arg;
-	char	**temp;
-	int		i;
+	int	i;
 
 	i = 0;
-	if (main->node_head->cmd[1] == NULL)
+	while (s[i])
 	{
-		show_export(main);
-		return ;
+		if (s[i] == '=')
+			return (i);
 	}
-	arg = main->node_head->cmd[1]; /*export 다음 인자*/
-	temp = add_env(main, arg);
-	if (!temp)
-		return ;
+	return (-1);
+}
+
+void	ft_export(t_main_node *main)
+{
+	char		**cmd;
+	char	 	**args;
+	int			i;
+
+	cmd = main->curr->cmd;
+	i = 1;
+	if (!cmd[i]) //export 다음 인자
+		show_export(main);
+	while (cmd[i])
+	{	
+		if (search_equal(cmd[i]) == -1)
+			add_env(main, cmd[i], NULL);
+		else if (search_equal(cmd[i]) == 0)
+			printf("minishell: export: `%s': not a valid identifier", cmd[i]);
+		else
+		{			
+			args = ft_split(cmd[i], "="); /*export =는 어떻게 구분하지?*/
+			if (is_number(args[0]))
+				printf("minishell: export: `%s': not a valid identifier", cmd[i]);
+			else
+			{
+				// if (args[1] == NULL)
+				// 	args[1] = "\0";
+				add_env(main, args[0], args[1]);
+			}
+		}
+		i++;
+	}
+
+	//만약 value가 여러개 오면 뒤에껀 무시
+	//만약 =은 있고 value가 없다면 없는 채로 들어감
+	//=도 없고 value도 없다면 그냥 export에만 들어감
+	// 1. =은 있지만 value가 없는 경우 -> value와 key 모두 저장 key는 "\0"이 들어감
+	// 2-1. =도 없고 (이건 맨처음 검사) value도 없는 경우 -> 그냥 value없이 key만 저장
+	// 2-2. export 뒤에 = 없이 여러개 들어오면 여러개가 그냥 선언됨.
+	
 	// ft_free(main->ev, 0);
-	main->ev = temp;
+	// main->ev = temp;
 	// ft_env(main);
+}
+
+void delete_envp_node(t_envp_node *pre)
+{
+	t_envp_node *old;
+
+	old = pre->next;
+	if (old == NULL)
+		return ;
+	pre->next = old->next;
+	free(old->key);
+	free(old->value);
+	free(old);
 }
 
 void ft_unset(t_main_node *main)
 {
-	char *cmd;
-	char **new_envp;
-	int	len;
-	int	i;
-	int	j;
+	t_envp_node *pre;
+	char		**cmd;
+	int			i;
 
-	i = 0;
-	j = 0;
-	cmd = main->node_head->cmd[1]; /*export 다음 인자*/
-	len = ft_double_strlen(main->ev);
-	new_envp = (char **)malloc(sizeof(char *) * (len));
-	while (main->ev[i])
+	pre = main->envp->head;
+	cmd = main->curr->cmd;
+	i = 1;
+	while (cmd[i])
 	{
-		if (ft_strcmp(main->ev[j], cmd) != '=')
+		while (pre->next != NULL)
 		{
-			new_envp[i] = main->ev[j];
-			i++;
+			if (!ft_strcmp(pre->next->key, cmd[i]))
+				delete_envp_node(pre);
+			pre = pre->next;
 		}
-		j++;
+		i++;
 	}
-	new_envp[i] = 0;
-	main->ev = new_envp;
-	// ft_env(main);
 }
 
 void ft_env(t_main_node *main)
 {
-	int i;
+	t_envp_node *curr;
 
-	i = 0;
-	while (main->ev[i])
+	curr = main->envp->head->next;
+	while (curr != NULL && curr->value != NULL)
 	{
-		if (ft_strrchr(main->ev[i], '=') != 0)
-			printf("%s\n", main->ev[i]);
-		i++;
+		printf("%s=%s\n", curr->key, curr->value);
+		curr = curr->next;
 	}
 }
 
@@ -202,7 +243,7 @@ void ft_exit(t_main_node *main)
 	int		exit_code;
 	int		is_char;
 	
-	curr = main->node_head;
+	curr = main->curr;
 	/*종료 코드 저장!! */
 	if (curr->cmd[1])  //인자가 두개일 때 
 	{
@@ -243,7 +284,7 @@ void exec_builtin(t_main_node *main)
 {
     t_cmd_node *curr;
 
-    curr = main->node_head;
+    curr = main->curr;
     if (ft_strcmp(curr->cmd[0], "echo") == 0)
 		ft_echo(main);
 	else if (ft_strcmp(curr->cmd[0], "cd") == 0)

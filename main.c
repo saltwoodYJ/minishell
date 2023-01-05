@@ -2,8 +2,9 @@
 #include <unistd.h> 
 #include <stdlib.h> 
 #include <string.h> 
+char	**ft_split(char const *s, char c);
 
-int main(void) { 
+int ch_main(void) { 
     char *path = "../../desktop" ; 
     char dir[30] = "Current Directory: "; 
     int ch = chdir(path); 
@@ -22,4 +23,14 @@ int main(void) {
     }   
 
     return 0;
-}   
+}
+
+int main(void)
+{
+    char **s;
+    char *ss;
+
+    ss = "=123";
+    s = ft_split(ss, '=');
+    printf("%s, %s\n", s[0], s[1]);
+}

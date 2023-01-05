@@ -69,13 +69,14 @@ typedef struct s_cmd_node
 typedef struct s_main_node
 {
 	t_envp_node	*envp;
-	char		**ev;
+	// char		**ev;
 	//char	**path; //
 	int		input_fd;
 	int   output_fd;
 	int		cmd_num;
 	int 	status;
 	t_cmd_node	*node_head;
+	t_cmd_node	*curr;
 }	t_main_node;
 
 /* parsing */
@@ -125,7 +126,7 @@ void 	ft_unset(t_main_node *main);
 void 	ft_env(t_main_node *main);
 void 	ft_exit(t_main_node *main);
 int		ft_exit_atoi(const char *str, int *is_char);
-char	**add_env(t_main_node *main, char *value);
+void	add_env(t_main_node *main, char *key, char *value);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);
@@ -135,11 +136,14 @@ size_t	ft_double_strlen(char **str);
 void	ft_putstr_err(char *s1, char *s2);
 
 /* libft */
-char	*ft_strrchr(const char *s, int c);
-char	*ft_strjoin(char const *s1, char const *s2, int i, int j);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin3(char *s1, char *s2, char *s3);
 size_t	ft_strlen(char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
+int		ft_isdigit(int c);
+int 	is_number(char *s);
 
 # endif

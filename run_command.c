@@ -17,7 +17,7 @@ void make_exec(t_main_node *main, int flag)
 
 	input_redirect(main);
 	output_redirect(main);
-	if (check_builtin(main->node_head->cmd[0]))
+	if (check_builtin(main->curr->cmd[0]))
 		exec_builtin(main);
 	else
 		exec_non_builtin(main);
@@ -92,16 +92,16 @@ int run_command(t_main_node *main)
 
 	i = -1;
 	prev_fd = dup(0);
-	main->node_head = main->node_head->next;
+	main->curr = main->node_head->next;
 	while (++i < main->cmd_num - 1)
 	{
 		prev_fd = make_pipe(main, prev_fd);
-		main->node_head = main->node_head->next;
+		main->curr = main->curr->next;
 	}
 	i = -1;
 	while (++i < main->cmd_num - 1)
 		waitpid(0, &status, 0);
-	if (main->cmd_num == 1 && check_builtin(main->node_head->cmd[0]))
+	if (main->cmd_num == 1 && check_builtin(main->curr->cmd[0]))
 		make_exec(main, -1);
 	else
 	{

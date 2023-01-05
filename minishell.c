@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/04 21:34:50 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/05 20:57:54 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,26 @@
 // 	return (curr);
 // }
 
+t_envp_node *make_envp_node(char *key, char *value)
+{
+	t_envp_node *new;
 
-#include "minishell.h"
+	new = malloc(sizeof(t_envp_node));
+	new->key = key;
+	new->value = value;
+	
+}
+
+t_envp_node	*make_envp(char **envp)
+{
+	t_envp_node *envp_list;
+	int	len;
+
+	len = ft_double_strlen(envp);
+	envp_list = malloc(sizeof(t_envp_node));
+	
+	
+}
 
 int main(int ac, char **av, char **ev)
 {
@@ -60,8 +78,6 @@ int main(int ac, char **av, char **ev)
 			add_history(line);
 			make_token(line, main);
 			// main->node_head->next->infile_node = a;
-			main->ev = ev;
-			// main->envp = 
 			main->input_fd = dup(0);
 			main->output_fd = dup(1);
 /* test
@@ -74,7 +90,9 @@ int main(int ac, char **av, char **ev)
 				i++;
 			}
 */
-			set_heredoc(main);
+			// set_heredoc(main);
+			dup2(main->input_fd, 0); //builtin 1개일경우...
+			dup2(main->output_fd, 1);
 			run_command(main);
 			free(line);
 			free(main);
