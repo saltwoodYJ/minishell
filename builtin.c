@@ -43,9 +43,11 @@ void ft_cd(t_main_node *main)
 {
 	char	*path;
 	char	*old_path;
-	
+	char	**cmd;
+
+	cmd = main->curr->cmd;
 	old_path = getcwd(NULL, 0);
-	if (!main->curr->cmd[1]) /* cd만 있을경우 */
+	if (!cmd[1] || !ft_strcmp(cmd[1], "~")) /* cd만 있을경우 */
 	{
 		path = get_env_path(main->envp, "HOME");
 		if (!path)
@@ -56,6 +58,8 @@ void ft_cd(t_main_node *main)
 			return ;
 		}
 	}
+	else if (!ft_strcmp(cmd[1], "-"))
+		path = get_env_path(main->envp, "OLDPWD"); //OLDPWD가 없으면?
 	else
 		path = main->curr->cmd[1]; //현재 위치에서 구해야
 	if (chdir(path) == 0) //성공
@@ -66,24 +70,27 @@ void ft_cd(t_main_node *main)
 	}
 	else
 	{
-		printf("minishell: cd: %s : No such file or directory\n", path);
+		perror("minishell: ");
+		// printf("minishell: cd: %s : No such file or directory\n", path);
 		main->status = 1;
 	}
 	free(path);
 	free(old_path);
 }
 
-void ft_pwd()
+void ft_pwd(t_main_node *main)
 {
 	char	*path;
 	
 	path = getcwd(NULL, 0);
 	if (path == NULL)
 	{
-		printf("Error\n");
+		printf("minishell: pwd: pwd exec error\n");
+		main->status = 1;
 		return ;
 	}
 	printf("%s\n", path);
+	main->status = 0;
 	free(path);
 }
 
@@ -118,6 +125,7 @@ void	add_env(t_main_node *main, char *key, char *value)
 		curr = curr->next;
 	}
 	curr->next = make_envp_node(key, value);
+	main->status = 0;
 }
 
 void show_export(t_main_node *main)
@@ -133,6 +141,7 @@ void show_export(t_main_node *main)
 			printf("declare -x %s=%s\n", curr->key, curr->value);
 		curr = curr->next;
 	}
+	main->status = 0;
 }
 
 int	search_equal(char *s)
@@ -160,21 +169,24 @@ void	ft_export(t_main_node *main)
 		show_export(main);
 	while (cmd[i])
 	{	
-		if (search_equal(cmd[i]) == -1)
-			add_env(main, cmd[i], NULL);
-		else if (search_equal(cmd[i]) == 0)
+		//=으로 시작할때, key가 _과 문자열로 시작하지 않을 때 에러
+		if (search_equal(cmd[i]) == 0 || !is_valid_key(cmd[i])) 
+		{
 			printf("minishell: export: `%s': not a valid identifier", cmd[i]);
+			main->status = 1;
+		}
+		else if (search_equal(cmd[i]) == -1) //=이 없음
+		{
+			add_env(main, cmd[i], NULL);
+			main->status = 0;
+		}	
 		else
 		{			
-			args = ft_split(cmd[i], "="); /*export =는 어떻게 구분하지?*/
-			if (is_number(args[0]))
-				printf("minishell: export: `%s': not a valid identifier", cmd[i]);
-			else
-			{
-				// if (args[1] == NULL)
-				// 	args[1] = "\0";
-				add_env(main, args[0], args[1]);
-			}
+			args = ft_split(cmd[i], "="); //=기준으로 key, value 나누기
+			// if (args[1] == NULL)
+				// args[1] = "\"\""; 
+			add_env(main, args[0], args[1]);
+			main->status = 0;
 		}
 		i++;
 	}
@@ -185,10 +197,6 @@ void	ft_export(t_main_node *main)
 	// 1. =은 있지만 value가 없는 경우 -> value와 key 모두 저장 key는 "\0"이 들어감
 	// 2-1. =도 없고 (이건 맨처음 검사) value도 없는 경우 -> 그냥 value없이 key만 저장
 	// 2-2. export 뒤에 = 없이 여러개 들어오면 여러개가 그냥 선언됨.
-	
-	// ft_free(main->ev, 0);
-	// main->ev = temp;
-	// ft_env(main);
 }
 
 void delete_envp_node(t_envp_node *pre)
@@ -204,7 +212,7 @@ void delete_envp_node(t_envp_node *pre)
 	free(old);
 }
 
-void ft_unset(t_main_node *main)
+void ft_unset(t_main_node *main) //에러처리 필요
 {
 	t_envp_node *pre;
 	char		**cmd;
@@ -217,7 +225,9 @@ void ft_unset(t_main_node *main)
 	{
 		while (pre->next != NULL)
 		{
-			if (!ft_strcmp(pre->next->key, cmd[i]))
+			if (!is_valid_key)
+				printf("minishell: export: `%s': not a valid identifier", cmd[i]);
+			else if (!ft_strcmp(pre->next->key, cmd[i]))
 				delete_envp_node(pre);
 			pre = pre->next;
 		}
@@ -235,6 +245,7 @@ void ft_env(t_main_node *main)
 		printf("%s=%s\n", curr->key, curr->value);
 		curr = curr->next;
 	}
+	main->status = 0;
 }
 
 void ft_exit(t_main_node *main)
@@ -275,11 +286,6 @@ void ft_exit(t_main_node *main)
 	exit(0);
 }
 
-void ft_exit_code(t_main_node *main)
-{
-	printf("%d: command not found\n", main->status); //status 저장
-}
-
 void exec_builtin(t_main_node *main)
 {
     t_cmd_node *curr;
@@ -290,7 +296,7 @@ void exec_builtin(t_main_node *main)
 	else if (ft_strcmp(curr->cmd[0], "cd") == 0)
 		ft_cd(main);
 	else if (ft_strcmp(curr->cmd[0], "pwd") == 0)
-		ft_pwd();
+		ft_pwd(main);
 	else if (ft_strcmp(curr->cmd[0], "export") == 0)
 		ft_export(main);
 	else if (ft_strcmp(curr->cmd[0], "unset") == 0)

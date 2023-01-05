@@ -27,26 +27,6 @@
 // 	return (curr);
 // }
 
-t_envp_node *make_envp_node(char *key, char *value)
-{
-	t_envp_node *new;
-
-	new = malloc(sizeof(t_envp_node));
-	new->key = key;
-	new->value = value;
-	
-}
-
-t_envp_node	*make_envp(char **envp)
-{
-	t_envp_node *envp_list;
-	int	len;
-
-	len = ft_double_strlen(envp);
-	envp_list = malloc(sizeof(t_envp_node));
-	
-	
-}
 
 int main(int ac, char **av, char **ev)
 {

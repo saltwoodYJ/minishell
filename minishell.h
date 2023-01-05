@@ -120,13 +120,14 @@ int 	check_builtin(char *str);
 void 	exec_builtin(t_main_node *main);
 void 	ft_echo(t_main_node *main);
 void 	ft_cd(t_main_node *main);
-void 	ft_pwd();
+void 	ft_pwd(t_main_node *main);
 void 	ft_export(t_main_node *main);
 void 	ft_unset(t_main_node *main);
 void 	ft_env(t_main_node *main);
 void 	ft_exit(t_main_node *main);
 int		ft_exit_atoi(const char *str, int *is_char);
 void	add_env(t_main_node *main, char *key, char *value);
+int 	is_valid_key(char *s);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);
@@ -144,6 +145,5 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
 int		ft_isdigit(int c);
-int 	is_number(char *s);
 
 # endif
