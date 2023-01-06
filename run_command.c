@@ -16,10 +16,7 @@ void make_exec(t_main_node *main, int flag)
 	input_redirect(main);
 	output_redirect(main);
 	if (check_builtin(main->curr->cmd[0]))
-	{
 		exec_builtin(main);
-		
-	}
 	else
 		exec_non_builtin(main); //알아서 exit함
 	if (flag != -1)
@@ -89,7 +86,6 @@ int run_command(t_main_node *main)
 
 	i = -1;
 	prev_fd = dup(0);
-	main->curr = main->node_head->next;
 	while (++i < main->cmd_num - 1)
 	{
 		prev_fd = make_pipe(main, prev_fd);

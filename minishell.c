@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/06 21:29:24 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/06 22:40:00 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,16 @@ int main(int ac, char **av, char **ev)
 		if (line)
 		{
 			main = malloc(sizeof(t_main_node));
+			main->input_fd = dup(0);
+			main->output_fd = dup(1);
 			main->ev_lst = ev_lst;
 			add_history(line);
 			make_token(line, main);
+			main->curr = main->node_head->next;
+			set_heredoc(main);
 			run_command(main);
+			dup2(main->input_fd, 0);
+			dup2(main->output_fd, 1);
 			free(line);
 			free(main);
 			main = NULL;

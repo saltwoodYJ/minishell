@@ -6,13 +6,13 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2023/01/06 21:29:51 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/06 22:33:18 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -fsanitize=address -g3 -Wall -Wextra -Werror 
+CFLAGS = -fsanitize=address -g3 #-Wall -Wextra -Werror 
 
 NAME = minishell
 PARSE_DIR = ./parse/
