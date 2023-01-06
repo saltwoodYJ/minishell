@@ -85,18 +85,18 @@ void exec_non_builtin(t_main_node *main)
 	path = get_path(main->ev_lst, cmd_args[0]);
 	if (!path)
 	{
-		printf("minishell: command not found: %s\n", cmd_args[0]);
+		printf("minishell: %s: command not found\n", cmd_args[0]);
 		main->status = 127;
-		ft_free(cmd_args, 0); /* 문제!! */
+		// ft_free(cmd_args, 0); /* ㅎㅏㄹ피ㄹ요가 잇잇나나 */
 		exit(127);
 	}
 	envp_arr = make_envp_arr(main->ev_lst);
 	execve(path, cmd_args, envp_arr);
-	perror("minishell :");
-	if (errno == ENOEXEC) //errno 처리
-        exit(126);
-    else if(errno == ENOENT) //errno 처리
-        exit(127);
-    else
-        exit(EXIT_FAILURE);
+	perror("minishell");
+	// if (errno == ENOEXEC) //errno 처리
+    //     exit(126);
+    // else if(errno == ENOENT) //errno 처리
+    //     exit(127);
+    // else
+    //     exit(EXIT_FAILURE);
 }

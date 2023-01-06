@@ -16,10 +16,13 @@ void make_exec(t_main_node *main, int flag)
 	input_redirect(main);
 	output_redirect(main);
 	if (check_builtin(main->curr->cmd[0]))
+	{
 		exec_builtin(main);
+		
+	}
 	else
 		exec_non_builtin(main); //알아서 exit함
-	if (flag != -1) 
+	if (flag != -1)
 		exit(main->status); //>>builtin이고 명령어가 하나<<가 아니었을때.
 }
 

@@ -25,7 +25,7 @@ int ch_main(void) {
     return 0;
 }
 
-int main(void)
+int split_main(void)
 {
     char **s;
     char *ss;
@@ -33,4 +33,10 @@ int main(void)
     ss = "=123";
     s = ft_split(ss, '=');
     printf("%s, %s\n", s[0], s[1]);
+}
+
+int main(void)
+{
+    exit(127);
+    return (127);
 }

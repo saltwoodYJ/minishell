@@ -22,6 +22,12 @@ typedef enum e_type
 	T_NULL
 } t_type;
 
+typedef enum e_toggle
+{
+	OFF,
+	ON
+} t_toggle;
+
  typedef struct s_envp_node
  {
 	char *key;
@@ -126,7 +132,7 @@ void 	ft_env(t_main_node *main);
 void 	ft_exit(t_main_node *main);
 int		ft_exit_atoi(const char *str, int *is_char);
 void	add_env(t_main_node *main, char *key, char *value);
-int 	is_valid_key(char *s);
+int 	is_invalid_key(char *s, int flag);
 
 /* pipex */
 void	ft_free(char **s1, char **s2);

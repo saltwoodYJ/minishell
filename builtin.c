@@ -1,5 +1,39 @@
 #include "minishell.h"
 
+void perror_comment(char *s1, char *s2)
+{
+	char *temp;
+	char *temp2;
+
+	temp = ft_strjoin3("minishell: ", s1, ": ");
+	temp2 = ft_strjoin(temp, s2);
+	free(temp);
+	perror(temp2);
+	free(temp2);
+}
+
+int is_n_option(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strcmp(str, "-n") == 0)
+		return (1);
+	if (str[i] == '-')
+	{
+		i++;
+		while (str[i])
+		{
+			if (str[i] != 'n')
+				return (0);
+			i++;
+		}
+		return (1);
+	}
+	else
+		return (0);
+}
+
 void ft_echo(t_main_node *main)
 {
 	char **cmd;
@@ -7,21 +41,24 @@ void ft_echo(t_main_node *main)
 	int		nl;
 
 	cmd = main->curr->cmd; /* echo의 다음 인자 */
-	i = 2;
-	nl = 0;
-	if (ft_strcmp(cmd[1], "-n") == 0)
-		nl = 1;
-	if (nl == 1 && !cmd[2])
+	i = 1;
+	nl = ON;
+	if (is_n_option(cmd[1]))
 	{
-		printf("\n");
-		return ;
+		nl = OFF;
+		i++;
+	}
+	if (cmd[i])
+	{
+		printf("%s", cmd[i]);
+		i++;
 	}
 	while (cmd[i])
 	{
 		printf(" %s", cmd[i]);
 		i++;
 	}
-	if (nl != 1)
+	if (nl == ON)
 		printf("\n");
 }
 
@@ -32,12 +69,26 @@ char *get_env_path(t_envp_node *envp, char *key)
 	curr = envp->next->next;
 	while (curr != NULL)
 	{
-		if (ft_strcmp(curr->key, key) == 0)
+		if (!ft_strcmp(curr->key, key))
 			return (curr->value);
 		curr = curr->next;
 	}
 	return (NULL);
 }
+
+
+void	show_envp(t_main_node *main)
+{
+	t_envp_node *curr;
+
+	curr = main->ev_lst->next;
+	while (curr)
+	{
+		printf("%s=%s\n", curr->key, curr->value);
+		curr = curr->next;
+	}
+}
+
 
 void ft_cd(t_main_node *main)
 {
@@ -47,6 +98,7 @@ void ft_cd(t_main_node *main)
 
 	cmd = main->curr->cmd;
 	old_path = getcwd(NULL, 0);
+	// show_cmd(main);
 	if (!cmd[1] || !ft_strcmp(cmd[1], "~")) /* cd만 있을경우 */
 	{
 		path = get_env_path(main->ev_lst, "HOME");
@@ -59,23 +111,26 @@ void ft_cd(t_main_node *main)
 		}
 	}
 	else if (!ft_strcmp(cmd[1], "-"))
+	{
 		path = get_env_path(main->ev_lst, "OLDPWD"); //OLDPWD가 없으면?
+		printf("%s\n", path);
+	}
 	else
 		path = main->curr->cmd[1]; //현재 위치에서 구해야
 	if (chdir(path) == 0) //성공
 	{
+		path = getcwd(NULL, 0);
 		add_env(main, "PWD", path);
 		add_env(main, "OLDPWD", old_path);
 		main->status = 0;
 	}
 	else
 	{
-		perror("minishell: ");
-		// printf("minishell: cd: %s : No such file or directory\n", path);
+		perror_comment("cd", cmd[1]);
 		main->status = 1;
+		free(path);
+		free(old_path);
 	}
-	free(path);
-	free(old_path);
 }
 
 void ft_pwd(t_main_node *main)
@@ -110,21 +165,25 @@ t_envp_node *make_envp_node(char *key, char *value)
 void	add_env(t_main_node *main, char *key, char *value)
 {
 	t_envp_node *curr;
-
+	t_envp_node *pre;
 	//value가 없으면 NULL로 들어감
 	//value 있어야하나 값이 없으면 '\0'로]
 	curr = main->ev_lst->next;
-	while (curr != NULL)
+	pre = main->ev_lst;
+	while (curr)
 	{
 		//변수에 숫자없는지 확인
-		if (ft_strcmp(curr->key, key)) /* 이미 있는 키값 */
+		if (!ft_strcmp(curr->key, key)) /* 이미 있는 키값 */
 		{
-			curr->value = value;
+			if (!value)
+				return ;
+			curr->value = value; //value는 나중에 free해버리니까 복사해야함
 			return ;
 		}
 		curr = curr->next;
+		pre = pre->next;
 	}
-	curr->next = make_envp_node(key, value);
+	pre->next = make_envp_node(key, value);
 	main->status = 0;
 }
 
@@ -153,6 +212,7 @@ int	search_equal(char *s)
 	{
 		if (s[i] == '=')
 			return (i);
+		i++;
 	}
 	return (-1);
 }
@@ -170,9 +230,9 @@ void	ft_export(t_main_node *main)
 	while (cmd[i])
 	{	
 		//=으로 시작할때, key가 _과 문자열로 시작하지 않을 때 에러
-		if (search_equal(cmd[i]) == 0 || !is_valid_key(cmd[i])) 
+		if (search_equal(cmd[i]) == 0 || is_invalid_key(cmd[i], 0)) 
 		{
-			printf("minishell: export: `%s': not a valid identifier", cmd[i]);
+			printf("minishell: export: `%s': not a valid identifier\n", cmd[i]);
 			main->status = 1;
 		}
 		else if (search_equal(cmd[i]) == -1) //=이 없음
@@ -181,7 +241,7 @@ void	ft_export(t_main_node *main)
 			main->status = 0;
 		}	
 		else
-		{			
+		{
 			args = ft_split(cmd[i], '='); //=기준으로 key, value 나누기
 			if (args[1] == NULL)
 				args[1] = ft_strdup("\0"); 
@@ -207,9 +267,9 @@ void delete_envp_node(t_envp_node *pre)
 	if (old == NULL)
 		return ;
 	pre->next = old->next;
-	free(old->key);
-	free(old->value);
-	free(old);
+	// free(old->key);
+	// free(old->value);
+	// free(old);
 }
 
 void ft_unset(t_main_node *main) //에러처리 필요
@@ -223,13 +283,18 @@ void ft_unset(t_main_node *main) //에러처리 필요
 	i = 1;
 	while (cmd[i])
 	{
-		while (pre->next != NULL)
+		if (is_invalid_key(cmd[i], 1))
+			printf("minishell: unset: `%s': not a valid identifier\n", cmd[i]);
+		else
 		{
-			if (!is_valid_key(cmd[i]))
-				printf("minishell: export: `%s': not a valid identifier", cmd[i]);
-			else if (!ft_strcmp(pre->next->key, cmd[i]))
-				delete_envp_node(pre);
-			pre = pre->next;
+			pre = main->ev_lst->next;
+			while (pre->next != NULL)
+			{
+				if (!ft_strcmp(pre->next->key, cmd[i]))
+					delete_envp_node(pre);
+				else
+					pre = pre->next;
+			}
 		}
 		i++;
 	}
@@ -276,21 +341,27 @@ void ft_exit(t_main_node *main)
 		exit_code = ft_exit_atoi(curr->cmd[1], &is_not_num);
 		if (is_not_num == 1) //문자열인 경우
 		{
-			printf("exit\nminishell: exit: %s: numeric argument required", curr->cmd[1]);
+			printf("exit\nminishell: exit: %s: numeric argument required\n", curr->cmd[1]);
 			exit_code = 255;
 		}
 		else if (curr->cmd[2]) //인자 2개 이상인 경우
 		{
-			printf("exit\nminishell: exit: too many arguments");
+			printf("exit\nminishell: exit: too many arguments\n");
 			main->status = 1; //exit안함
 			return ;
 		}
 		else if (exit_code > 255 || exit_code < 0) //인자가 0~255 범위를 넘어갈경우
+		{
 			exit_code = make_exit_code(exit_code);
+			printf("exit\n");
+		}
+		else
+			printf("exit\n");
 		main->status = exit_code;
 		exit(exit_code);
 	}
 	//인자가 없을때: exit;
+	printf("exit\n");
 	main->status = 0;
 	exit(0);
 }

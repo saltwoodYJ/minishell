@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/06 16:30:42 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/06 21:29:24 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int main(int ac, char **av, char **ev)
 			main = NULL;
 		}
 	}
-	return (0);
+	return (main->status);
 }
 
 // int no_main(int ac, char **av, char **envp)
