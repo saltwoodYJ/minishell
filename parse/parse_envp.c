@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 t_envp_node	*parse_envp(char **ev)
 {

@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 {
@@ -16,7 +16,7 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 		if (p_now->type == PIPE)
 		{
 			i++;
-			c_now->next = new_cmd_node(&p_now, i);
+			c_now->next = new_cmd_node(&p_now, i, main);
 			c_now = c_now->next;
 		}
 		p_now = p_now->next;
@@ -24,7 +24,7 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	main->cmd_num = i;	
 }
 
-t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i)
+t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
 {
 	t_cmd_node  *node;
 	node = malloc(sizeof(t_cmd_node));
@@ -33,10 +33,10 @@ t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i)
 	init_cmd_node(node);
 	node->idx = i;
 	node->cmd = set_cmd(*parse);
-	node->heardoc_node = new_red_node(sizeof(t_infile_node));
+	main->heardoc_node = new_red_node(sizeof(t_infile_node));
 	node->infile_node = new_red_node(sizeof(t_infile_node));
 	node->outfile_node = new_red_node(sizeof(t_outfile_node));
-	set_red(*parse, node);
+	set_red(*parse, node, main);
 
 	return (node);
 }
@@ -101,7 +101,6 @@ void	init_cmd_node(t_cmd_node *node)
 {
 	node->idx = 0;
 	node->cmd = NULL;
-	node->heardoc_node = NULL;
 	node->infile_node = NULL;
 	node->outfile_node = NULL;
 	node->next = NULL;

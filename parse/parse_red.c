@@ -1,6 +1,6 @@
-#include "../minishell.h"
+#include "minishell.h"
 
-void	set_red(t_parsing_node *parse, t_cmd_node *node)
+void	set_red(t_parsing_node *parse, t_cmd_node *node, t_main_node *main)
 {
 	t_parsing_node *p_now;
 
@@ -12,13 +12,13 @@ void	set_red(t_parsing_node *parse, t_cmd_node *node)
 		{
 			if (p_now->next == NULL || p_now->next->type != WORD)
 				return ;
-			set_red_lst(p_now, node);
+			set_red_lst(p_now, node, main);
 		}
 		p_now = p_now->next;
 	}
 }
 
-void	set_red_lst(t_parsing_node *parsing, t_cmd_node *node)
+void	set_red_lst(t_parsing_node *parsing, t_cmd_node *node, t_main_node *main)
 {
 	t_type	type;
 	void	*red_node;
@@ -29,7 +29,7 @@ void	set_red_lst(t_parsing_node *parsing, t_cmd_node *node)
 		red_node = (t_infile_node*)new_red_node(sizeof(t_infile_node));
 		set_infile_node(parsing, (t_infile_node *)red_node);
 		if (type == RED_H)
-			append_heardoc_node(node->heardoc_node, red_node);
+			append_heardoc_node(main->heardoc_node, red_node);
 		append_infile_node(node->infile_node, red_node);
 		return ;
 	}

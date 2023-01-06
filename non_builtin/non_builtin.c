@@ -1,0 +1,103 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   non_builtin.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
+/*   Updated: 2023/01/07 05:13:05 by hyeokim2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+char	**make_envp_arr(t_envp_node *envp)
+{
+	char		**arr;
+	int			len;
+	int			i;
+	t_envp_node	*curr;
+
+	len = 0;
+	curr = envp->next;
+	while (curr != NULL)
+	{
+		len++;
+		curr = curr->next;
+	}
+	arr = (char **)malloc(sizeof(char *) * (len + 1));
+	curr = envp->next;
+	i = 0;
+	while (curr && i < len)
+	{
+		arr[i] = ft_strjoin3(curr->key, "=", curr->value);
+		curr = curr->next;
+		i++;
+	}
+	arr[i] = 0;
+	return (arr);
+}
+
+char	**search_origin_path(t_envp_node *envp)
+{
+	int			i;
+	t_envp_node	*curr;
+
+	i = 0;
+	curr = envp->next;
+	while (curr != 0)
+	{
+		if (ft_strcmp(curr->key, "PATH") == 0)
+			return (ft_split(curr->value, ':'));
+		curr = curr->next;
+	}
+	return (0);
+}
+
+char	*get_path(t_envp_node *envp, char *first_cmd)
+{
+	int		i;
+	int		path_count;
+	char	*temp_path;
+	char	**splited_path;
+	char	*cmd_path;
+
+	if (access(first_cmd, X_OK) == 0)
+		return (first_cmd);
+	splited_path = search_origin_path(envp);
+	path_count = ft_double_strlen(splited_path);
+	temp_path = ft_strjoin("/", first_cmd);
+	i = 0;
+	while (i < path_count)
+	{
+		cmd_path = ft_strjoin(splited_path[i], temp_path);
+		if (access(cmd_path, X_OK) == 0)
+			break ;
+		else
+			ft_free(0, &cmd_path);
+		i++;
+	}
+	ft_free(splited_path, 0);
+	ft_free(0, &temp_path);
+	return (cmd_path);
+}
+
+void	exec_non_builtin(t_main_node *main)
+{
+	char	**cmd_args;
+	char	*path;
+	char	**envp_arr;
+
+	cmd_args = main->curr->cmd;
+	path = get_path(main->ev_lst, cmd_args[0]);
+	if (!path)
+	{
+		printf("minishell: %s: command not found\n", cmd_args[0]);
+		main->status = 127;
+		exit(127);
+	}
+	envp_arr = make_envp_arr(main->ev_lst);
+	execve(path, cmd_args, envp_arr);
+	perror("minishell");
+}

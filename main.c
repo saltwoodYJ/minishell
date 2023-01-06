@@ -20,23 +20,17 @@ int ch_main(void) {
     // 현재 디렉토리 위치 확인  
     if ( system("pwd") == -1) { 
         perror("command failed!\n") ; 
-    }   
-
+    } 
     return 0;
 }
 
-int split_main(void)
-{
-    char **s;
-    char *ss;
-
-    ss = "=123";
-    s = ft_split(ss, '=');
-    printf("%s, %s\n", s[0], s[1]);
-}
+#include <unistd.h>
+#include <fcntl.h>
 
 int main(void)
 {
-    exit(127);
-    return (127);
+    int fd;
+
+    fd = open("./here_doc/m_heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
+    return (0);
 }
