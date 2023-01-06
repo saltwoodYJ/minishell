@@ -50,14 +50,13 @@ void    set_heredoc(t_main_node *main)
     t_infile_node *curr;
     char          *file_name;
 
-	printf("%p\n", main->node_head->heardoc_node);
-    // curr = main->curr->heardoc_node->hnext;
-    // while (curr != NULL)
-    // {
-    //     file_name = make_heredoc(curr->limiter);
-    //     curr->file = file_name;
-    //     curr = curr->hnext;
-    // }./m
+    curr = main->curr->heardoc_node->hnext;
+    while (curr != NULL)
+    {
+        file_name = make_heredoc(curr->limiter);
+        curr->file = file_name;
+        curr = curr->hnext;
+    }
 }
 
 void	input_redirect(t_main_node *main)
