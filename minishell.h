@@ -22,14 +22,13 @@ typedef enum e_type
 	T_NULL
 } t_type;
 
-typedef struct s_envp_node
-{
-    char *key;
-    char *value;
-    struct s_envp_node *next;
-    struct s_envp_node *head;
-}	t_envp_node;
-
+ typedef struct s_envp_node
+ {
+	char *key;
+	char *value;
+	struct s_envp_node *next;
+ } t_envp_node;
+ 
 typedef	struct s_parsing_node
 {
 	char			*str;
@@ -68,8 +67,8 @@ typedef struct s_cmd_node
 
 typedef struct s_main_node
 {
-	t_envp_node	*envp;
-	// char		**ev;
+	t_envp_node	*ev_lst;
+	char		**ev;
 	//char	**path; //
 	int		input_fd;
 	int   output_fd;
@@ -103,7 +102,7 @@ int	make_pipe(t_main_node *main, int prev_fd);
 void make_exec(t_main_node *main, int flag);
 
 /*redirect*/
-int		read_line(char *limiter, int infile, int len);
+int		read_line(char *limiter, int infile);
 char	*make_heredoc(char *limiter);
 void	input_redirect(t_main_node *main);
 void	output_redirect(t_main_node *main);
@@ -112,8 +111,8 @@ void    set_heredoc(t_main_node *main);
 /*non builtin*/
 void	 exec_non_builtin(t_main_node *main);
 char	**search_cmd(t_main_node *main);
-char	**search_origin_path(char **envp);
-char	*get_path(char **envp, char *first_cmd);
+char	**search_origin_path(t_envp_node *envp);
+char	*get_path(t_envp_node *envp, char *first_cmd);
 
 /* builtin */
 int 	check_builtin(char *str);
@@ -145,5 +144,13 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
 int		ft_isdigit(int c);
+char	*ft_strdup(const char *s1);
+
+/* envp */
+char	*ft_strchr(const char *s, int c);
+t_envp_node	*parse_envp(char **ev);
+t_envp_node	*new_envp_node(char *envp);
+char	*ft_substr(char *s, int start, int len);
+t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
 
 # endif

@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-int	read_line(char *limiter, int infile, int len)
+int	read_line(char *limiter, int infile)
 {
 	char	*line;
 	char	*line_nl;
@@ -34,7 +34,7 @@ char	*make_heredoc(char *limiter)
 	tmp_file = open(tmp_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pid == 0)
 	{
-		read_line(limiter, tmp_file, ft_strlen(limiter) + 1);
+		read_line(limiter, tmp_file);
 		exit(0);
 	}
 	if (pid > 0)

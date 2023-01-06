@@ -13,23 +13,20 @@ int check_builtin(char *str)
 
 void make_exec(t_main_node *main, int flag)
 {
-	t_cmd_node *curr;
-
 	input_redirect(main);
 	output_redirect(main);
 	if (check_builtin(main->curr->cmd[0]))
 		exec_builtin(main);
 	else
-		exec_non_builtin(main);
-	if (flag != -1)
-		exit(0);
+		exec_non_builtin(main); //알아서 exit함
+	if (flag != -1) 
+		exit(main->status); //>>builtin이고 명령어가 하나<<가 아니었을때.
 }
 
 int	make_pipe(t_main_node *main, int prev_fd)
 {
 	pid_t	pid;
 	int		fd[2];
-	int		status = 0;
 
 	if (pipe(fd) == -1)
 	{
@@ -56,9 +53,6 @@ int	make_pipe(t_main_node *main, int prev_fd)
 		close(fd[1]);
 		make_exec(main, 0);
 	}
-    waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		main->status = WEXITSTATUS(status); //공부좀해
 	return (prev_fd);
 }
 
@@ -99,10 +93,14 @@ int run_command(t_main_node *main)
 		main->curr = main->curr->next;
 	}
 	i = -1;
-	while (++i < main->cmd_num - 1)
-		waitpid(0, &status, 0);
+	while (++i < main->cmd_num - 1) //fork를 떴어야 여기로 넘어옴
+	{
+		waitpid(-1, &status, 0); //마지막으로 종료된 pid. sleep 1 | sleep 3 (4초를 기다리게 됨. 3초만 기다리게 함)
+		if (WIFEXITED(status))
+			main->status = WEXITSTATUS(status); //공부좀해
+	}
 	if (main->cmd_num == 1 && check_builtin(main->curr->cmd[0]))
-		make_exec(main, -1);
+		make_exec(main, -1); //빌트인이면서 하나의 명령어일경우 (exit을 실행하지 않는다)
 	else
 	{
 		last_command(main, prev_fd);

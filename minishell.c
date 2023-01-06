@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/05 20:57:54 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:30:42 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,24 @@
 
 int main(int ac, char **av, char **ev)
 {
-	char   			*line;
-	t_main_node		*main;
-	// t_infile_node	*a;
-	
-	// a = malloc(sizeof(t_infile_node));
-	// a->file = "a";
-	// a->hnext = NULL;
-	// a->is_heardoc = 0;
-	// a->limiter = NULL;
-	// a->next = NULL;
-	// t_cmd_node *now;
-	// char **str;
-	// int	i=	0;
+	char   *line;
+	t_main_node	*main;
+	t_envp_node *ev_lst;
 
 	if (ac < 0 || av[0] == NULL)
 		return (0);
+	ev_lst = parse_envp(ev);
 	while (1)
 	{
 		/* 한 줄씩 읽어오기 */
-		line = readline("Minishell$ ");
+		line = readline("minishell$ ");
 		// line = "ls -al | grep ft";
-		// line = "grep a | cat";
 		if (line)
 		{
 			main = malloc(sizeof(t_main_node));
+			main->ev_lst = ev_lst;
 			add_history(line);
 			make_token(line, main);
-			// main->node_head->next->infile_node = a;
-			main->input_fd = dup(0);
-			main->output_fd = dup(1);
-/* test
-			i = 0;
-			now = main->node_head->next;
-			str = now->cmd;
-			while (str[i])
-			{
-				printf("\n%s", str[i]);
-				i++;
-			}
-*/
-			// set_heredoc(main);
-			dup2(main->input_fd, 0); //builtin 1개일경우...
-			dup2(main->output_fd, 1);
 			run_command(main);
 			free(line);
 			free(main);

@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:49:24 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/05 20:08:31 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:46:56 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ size_t	ft_strlen(char *str)
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i] != '\0')
+	while (str[i])
 		i++;
 	return (i);
 }
@@ -120,7 +120,7 @@ size_t	ft_double_strlen(char **str)
 }
 
 
-int	ft_exit_atoi(const char *str, int *is_char)
+int	ft_exit_atoi(const char *str, int *is_not_num)
 {
 	int			i;
 	long long	num;
@@ -144,9 +144,9 @@ int	ft_exit_atoi(const char *str, int *is_char)
 	}
 	if (str[i])
 	{
-		*is_char = 1;
+		*is_not_num = 1;
 		return (-1);
 	}
-	*is_char = 0;
+	*is_not_num = 0;
 	return (num * sign);
 }

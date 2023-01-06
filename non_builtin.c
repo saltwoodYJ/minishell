@@ -7,7 +7,7 @@ char	**search_origin_path(t_envp_node *envp)
 	t_envp_node *curr;
 
 	i = 0;
-	curr = envp->head->next;
+	curr = envp->next;
 	while (curr != 0)
 	{
 		if (ft_strcmp(curr->key, "PATH") == 0)
@@ -48,25 +48,23 @@ char	*get_path(t_envp_node *envp, char *first_cmd)
 char	**make_envp_arr(t_envp_node *envp)
 {
 	char		**arr;
-	char		*temp;
 	int			len;
 	int			i;
 	t_envp_node *curr;
 
 	len = 0;
-	curr = envp->head->next;
+	curr = envp->next;
 	while (curr != NULL)
 	{
 		len++;
 		curr = curr->next;
 	}
 	arr = (char **)malloc(sizeof(char *) * (len + 1));
-	curr = envp->head->next;
+	curr = envp->next;
 	i = 0;
 	while (i < len)
 	{
 		arr[i] = ft_strjoin3(curr->key, "=", curr->value);
-		free(temp);
 		i++;
 	}
 	arr[i] = 0;
@@ -84,7 +82,7 @@ void exec_non_builtin(t_main_node *main)
 	// if (!cmd)
 	// 	return ; //오류 처리
 	cmd_args = main->curr->cmd;
-	path = get_path(main->envp, cmd_args[0]);
+	path = get_path(main->ev_lst, cmd_args[0]);
 	if (!path)
 	{
 		printf("minishell: command not found: %s\n", cmd_args[0]);
@@ -92,7 +90,7 @@ void exec_non_builtin(t_main_node *main)
 		ft_free(cmd_args, 0); /* 문제!! */
 		exit(127);
 	}
-	envp_arr = make_envp_arr(main->envp);
+	envp_arr = make_envp_arr(main->ev_lst);
 	execve(path, cmd_args, envp_arr);
 	perror("minishell :");
 	if (errno == ENOEXEC) //errno 처리

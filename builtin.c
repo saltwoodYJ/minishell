@@ -29,7 +29,7 @@ char *get_env_path(t_envp_node *envp, char *key)
 {
 	t_envp_node *curr;
 
-	curr = envp->head->next;
+	curr = envp->next->next;
 	while (curr != NULL)
 	{
 		if (ft_strcmp(curr->key, key) == 0)
@@ -49,7 +49,7 @@ void ft_cd(t_main_node *main)
 	old_path = getcwd(NULL, 0);
 	if (!cmd[1] || !ft_strcmp(cmd[1], "~")) /* cd만 있을경우 */
 	{
-		path = get_env_path(main->envp, "HOME");
+		path = get_env_path(main->ev_lst, "HOME");
 		if (!path)
 		{
 			printf("minishell: cd: HOME not set");
@@ -59,7 +59,7 @@ void ft_cd(t_main_node *main)
 		}
 	}
 	else if (!ft_strcmp(cmd[1], "-"))
-		path = get_env_path(main->envp, "OLDPWD"); //OLDPWD가 없으면?
+		path = get_env_path(main->ev_lst, "OLDPWD"); //OLDPWD가 없으면?
 	else
 		path = main->curr->cmd[1]; //현재 위치에서 구해야
 	if (chdir(path) == 0) //성공
@@ -113,7 +113,7 @@ void	add_env(t_main_node *main, char *key, char *value)
 
 	//value가 없으면 NULL로 들어감
 	//value 있어야하나 값이 없으면 '\0'로]
-	curr = main->envp->head->next;
+	curr = main->ev_lst->next;
 	while (curr != NULL)
 	{
 		//변수에 숫자없는지 확인
@@ -132,13 +132,13 @@ void show_export(t_main_node *main)
 {
 	t_envp_node *curr;
 
-	curr = main->envp->head->next;
+	curr = main->ev_lst->next;
 	while (curr != NULL)
 	{
 		if (!curr->value)
 			printf("declare -x %s\n", curr->key);
 		else
-			printf("declare -x %s=%s\n", curr->key, curr->value);
+			printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
 		curr = curr->next;
 	}
 	main->status = 0;
@@ -182,9 +182,9 @@ void	ft_export(t_main_node *main)
 		}	
 		else
 		{			
-			args = ft_split(cmd[i], "="); //=기준으로 key, value 나누기
-			// if (args[1] == NULL)
-				// args[1] = "\"\""; 
+			args = ft_split(cmd[i], '='); //=기준으로 key, value 나누기
+			if (args[1] == NULL)
+				args[1] = ft_strdup("\0"); 
 			add_env(main, args[0], args[1]);
 			main->status = 0;
 		}
@@ -218,14 +218,14 @@ void ft_unset(t_main_node *main) //에러처리 필요
 	char		**cmd;
 	int			i;
 
-	pre = main->envp->head;
+	pre = main->ev_lst->next;
 	cmd = main->curr->cmd;
 	i = 1;
 	while (cmd[i])
 	{
 		while (pre->next != NULL)
 		{
-			if (!is_valid_key)
+			if (!is_valid_key(cmd[i]))
 				printf("minishell: export: `%s': not a valid identifier", cmd[i]);
 			else if (!ft_strcmp(pre->next->key, cmd[i]))
 				delete_envp_node(pre);
@@ -239,7 +239,7 @@ void ft_env(t_main_node *main)
 {
 	t_envp_node *curr;
 
-	curr = main->envp->head->next;
+	curr = main->ev_lst->next;
 	while (curr != NULL && curr->value != NULL)
 	{
 		printf("%s=%s\n", curr->key, curr->value);
@@ -248,40 +248,49 @@ void ft_env(t_main_node *main)
 	main->status = 0;
 }
 
+int	make_exit_code(int overflow_code)
+{
+	if (overflow_code > 0)
+	{
+		while (overflow_code > 0)
+			overflow_code = overflow_code - 256;
+	}
+	else
+	{
+		while (overflow_code < 0)
+			overflow_code = overflow_code + 256;
+	}
+	return (overflow_code);
+}
+
 void ft_exit(t_main_node *main)
 {
 	t_cmd_node *curr;
 	int		exit_code;
-	int		is_char;
+	int		is_not_num;
 	
 	curr = main->curr;
 	/*종료 코드 저장!! */
-	if (curr->cmd[1])  //인자가 두개일 때 
+	if (curr->cmd[1])  //인자가 있을때: exit 127
 	{
-		exit_code = ft_exit_atoi(curr->cmd[1], &is_char);
-		if (is_char == 1)
+		exit_code = ft_exit_atoi(curr->cmd[1], &is_not_num);
+		if (is_not_num == 1) //문자열인 경우
 		{
 			printf("exit\nminishell: exit: %s: numeric argument required", curr->cmd[1]);
-			main->status = 255;
-			exit(255);
+			exit_code = 255;
 		}
-		else if (curr->cmd[2])
+		else if (curr->cmd[2]) //인자 2개 이상인 경우
 		{
 			printf("exit\nminishell: exit: too many arguments");
-			main->status = 1;
+			main->status = 1; //exit안함
+			return ;
 		}
-		else if (exit_code > 255)
-		{
-			printf("exit: %s: undefined exit code\n", curr->cmd[1]);
-			//exit code는 어떻게..?
-			exit(0);
-		}
-		else
-		{
-			main->status = exit_code;
-			exit(exit_code);
-		}
+		else if (exit_code > 255 || exit_code < 0) //인자가 0~255 범위를 넘어갈경우
+			exit_code = make_exit_code(exit_code);
+		main->status = exit_code;
+		exit(exit_code);
 	}
+	//인자가 없을때: exit;
 	main->status = 0;
 	exit(0);
 }

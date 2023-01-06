@@ -6,18 +6,19 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2023/01/05 21:06:49 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/06 17:11:24 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = #-Wall -Wextra -Werror #-fsanitize=address -g3 
+CFLAGS = #-Wall -Wextra -Werror #-fsanitize=address -g3
 
 NAME = minishell
 
 SRCS = minishell.c run_command.c parsing.c pipex_util.c ft_split.c make_redirect.c \
-non_builtin.c builtin.c error.c tokenize.c ft_strncmp.c parsing_utils.c pipe.c libft_func.c\
+non_builtin.c builtin.c error.c tokenize.c ft_strncmp.c parsing_utils.c pipe.c libft_func.c \
+ft_strchr.c parse_envp.c ft_strdup.c \
 
 OBJS = $(SRCS:%.c=%.o)
 
