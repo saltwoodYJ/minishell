@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/07 05:56:45 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/07 06:08:57 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,12 @@ int	main(int ac, char **av, char **ev)
 			make_main(main, line);
 			main->ev_lst = ev_lst;
 			add_history(line);
-			// run_command(main);
+			run_command(main);
 			restore_std(main);
-			free_main(main);
+			// free_main(main);
 			free(main);
 			main = NULL;
 			free(line);
-			system("leaks minishell");
 		}
 	}
 	return (main->status);
