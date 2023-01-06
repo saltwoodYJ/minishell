@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 {
@@ -16,7 +16,7 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 		if (p_now->type == PIPE)
 		{
 			i++;
-			c_now->next = make_cmd_node(&p_now, &c_now, i);
+			c_now->next = new_cmd_node(&p_now, i);
 			c_now = c_now->next;
 		}
 		p_now = p_now->next;
@@ -24,7 +24,7 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	main->cmd_num = i;	
 }
 
-t_cmd_node	*make_cmd_node(t_parsing_node **p_now, t_cmd_node **c_now, int i)
+t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i)
 {
 	t_cmd_node  *node;
 	node = malloc(sizeof(t_cmd_node));
@@ -32,10 +32,16 @@ t_cmd_node	*make_cmd_node(t_parsing_node **p_now, t_cmd_node **c_now, int i)
 		exit (1);
 	init_cmd_node(node);
 	node->idx = i;
-	node->cmd = make_cmd(*p_now);
+	node->cmd = set_cmd(*parse);
+	node->heardoc_node = new_red_node(sizeof(t_infile_node));
+	node->infile_node = new_red_node(sizeof(t_infile_node));
+	node->outfile_node = new_red_node(sizeof(t_outfile_node));
+	set_red(*parse, node);
+
 	return (node);
 }
-char	**make_cmd(t_parsing_node *parsing)
+
+char	**set_cmd(t_parsing_node *parsing)
 {
 	t_parsing_node  *now;
 	char			**cmd;
@@ -50,7 +56,14 @@ char	**make_cmd(t_parsing_node *parsing)
 		exit (1);
 	while (now && now->type != PIPE)
 	{
-		if (now->type == WORD)
+		if (now->type == RED_A || now->type == RED_H 
+			|| now->type == RED_I || now->type == RED_O)
+		{
+			if (now->next == NULL || now->next->type != WORD)
+				break ;
+			now = now->next;
+		}
+		else if (now->type == WORD)
 		{
 			cmd[index] = now->str;
 			index++;
@@ -70,9 +83,16 @@ int get_cmd_num(t_parsing_node *parsing)
 	now = parsing->next;
 	while (now && now->type != PIPE)
 	{
-		if (now->type == WORD)
+		if (now->type == RED_A || now->type == RED_H 
+			|| now->type == RED_I || now->type == RED_O)
+		{
+			if (now->next == NULL || now->next->type != WORD)
+				break ;
+			now = now->next;
+		}
+		else if (now->type == WORD)
 			i++;
-		now=now->next;
+		now = now->next;
 	}
 	return (i);
 }

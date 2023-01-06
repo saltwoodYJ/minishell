@@ -1,10 +1,9 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 t_envp_node	*parse_envp(char **ev)
 {
 	t_envp_node *envp_node;
 	t_envp_node	*now;
-	char		*envp;
 	int			index;
 
 	envp_node = malloc(sizeof(t_envp_node));

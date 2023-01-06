@@ -12,13 +12,21 @@
 
 CC = cc
 
-CFLAGS = -fsanitize=address -g3 #-Wall -Wextra -Werror 
+CFLAGS = -fsanitize=address -g3 -Wall -Wextra -Werror 
 
 NAME = minishell
+PARSE_DIR = ./parse/
 
-SRCS = minishell.c run_command.c parsing.c pipex_util.c ft_split.c make_redirect.c \
-non_builtin.c builtin.c error.c tokenize.c ft_strncmp.c parsing_utils.c pipe.c libft_func.c \
-ft_strchr.c parse_envp.c ft_strdup.c \
+SRCS = minishell.c run_command.c pipex_util.c ft_split.c make_redirect.c \
+non_builtin.c builtin.c error.c ft_strncmp.c libft_func.c \
+ft_strchr.c ft_strdup.c \
+$(PARSE_DIR)parse_cmd.c \
+$(PARSE_DIR)parse_envp.c \
+$(PARSE_DIR)parse_red.c \
+$(PARSE_DIR)parsing_utils.c \
+$(PARSE_DIR)tokenize.c \
+ #parsing.c  tokenize.c  parse_envp.c  parsing_utils.c  pipe.c \
+
 
 OBJS = $(SRCS:%.c=%.o)
 

@@ -1,4 +1,5 @@
-#include "minishell.h"
+#include "../minishell.h"
+
 void	make_sep(char *s, int *index,int *len)
 {
 	*len = 1;

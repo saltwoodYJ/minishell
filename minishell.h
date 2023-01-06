@@ -84,23 +84,42 @@ typedef struct s_main_node
 	t_cmd_node	*curr;
 }	t_main_node;
 
-/* parsing */
-int make_token(char *line, t_main_node *main);
-t_cmd_node	*new_node(char *str);
-void	ft_parse(char *s, t_parsing_node **parse);
-int	add_parsing_node(t_parsing_node **now, char *str);
-int is_sep(char *str, int index);
-int	is_quote(char *s, int index);
+/* parse_cmd */
+void	make_cmd_list(t_parsing_node *parse, t_main_node *main);
+t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i);
+char	**set_cmd(t_parsing_node *parsing);
+int get_cmd_num(t_parsing_node *parsing);
+void	init_cmd_node(t_cmd_node *node);
+
+/* parse_envp */
+t_envp_node	*parse_envp(char **ev);
+t_envp_node	*new_envp_node(char *envp);
+char	*ft_substr(char *s, int start, int len);
+t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
+
+/* parse_red */
+void	set_red(t_parsing_node *parse, t_cmd_node *node);
+void	set_red_lst(t_parsing_node *parsing, t_cmd_node *node);
+void	append_infile_node(t_infile_node *lst, void *red_node);
+void	append_heardoc_node(t_infile_node *lst, void *red_node);
+void	append_outfile_node(t_outfile_node *lst, void *red_node);
+void	set_infile_node(t_parsing_node *parsing, void *node);
+void	set_outfile_node(t_parsing_node *parsing, void *node);
+void	*new_red_node(int size);
+
+/* parsing_utils */
 void	make_sep(char *s, int *index,int *len);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	is_sep(char *str, int index);
+int	is_quote(char *s, int index);
 int	get_type(char *str);
 
-void	make_cmd_list(t_parsing_node *parse, t_main_node *main);
-t_cmd_node	*make_cmd_node(t_parsing_node **p_now, t_cmd_node **c_now, int i);
-char    **make_cmd(t_parsing_node *parsing);
-int get_cmd_num(t_parsing_node *parsing);
 
-void    init_cmd_node(t_cmd_node *node);
+/* tokenize */
+int	make_token(char *line, t_main_node *main);
+char	*ft_worddup(char *str, int index, int len);
+void	ft_parse(char *s, t_parsing_node **parse);
+int	add_parsing_node(t_parsing_node **now, char *str);
+
 
 /* run command */
 int run_command(t_main_node *main);
