@@ -12,6 +12,42 @@
 
 #include "minishell.h"
 
+void free_one_node(t_cmd_node *node)
+{
+    int i;
+
+    i = 0;
+	if (node == 0)
+		return ;
+	if (node->cmd)
+	{
+    	while (node->cmd[i])
+		{
+    		free(node->cmd[i]);
+			i++;
+		}
+		free(node->cmd);
+	}
+    ft_input_clear(&(node->infile_node));
+    ft_output_clear(&(node->outfile_node));
+	free(node);
+}
+
+void	ft_node_clear(t_cmd_node **nodes)
+{
+	t_cmd_node	*curr;
+
+	if (nodes == 0)
+		return ;
+	while (*nodes)
+	{
+		curr = (*nodes)->next;
+		free_one_node(*nodes);
+		*nodes = curr;
+	}
+	*nodes = 0;
+}
+
 void	free_main(t_main_node *main)
 {
     ft_node_clear(&(main->node_head));

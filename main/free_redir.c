@@ -1,57 +1,51 @@
 #include "minishell.h"
 
-void	del_input_one(t_infile_node *lst)
+void	free_one_input(t_infile_node *input)
 {
-    int i;
-
-    i = -1;
-	if (lst == 0)
+	if (input == 0)
 		return ;
-    if (lst->file)
-        free(lst->file);
-    if (lst->limiter)
-        free(lst->limiter);
-	free(lst);
+    if (input->file)
+        free(input->file);
+    if (input->limiter)
+        free(input->limiter);
+	free(input);
 }
 
-void	ft_input_clear(t_infile_node **lst)
+void	ft_input_clear(t_infile_node **inputs)
 {
 	t_infile_node	*curr;
 
-	if (*lst == 0)
+	if (*inputs == 0)
 		return ;
-	while (*lst != 0)
+	while (*inputs != 0)
 	{
-		curr = (*lst)->next;
-		del_input_one(*lst);
-		*lst = curr;
+		curr = (*inputs)->next;
+		del_input_one(*inputs);
+		*inputs = curr;
 	}
-	*lst = 0;
+	*inputs = 0;
 }
 
-void	del_output_one(t_outfile_node *lst)
+void	free_one_output(t_outfile_node *output)
 {
-    int i;
-
-    i = -1;
-	if (lst == 0)
+	if (output== 0)
 		return ;
-    if (lst->file)
-        free(lst->file);
-	free(lst);
+    if (output->file)
+        free(output->file);
+	free(output);
 }
 
-void	ft_output_clear(t_outfile_node **lst)
+void	ft_output_clear(t_outfile_node **outputs)
 {
 	t_outfile_node	*curr;
 
-	if (*lst == 0)
+	if (*outputs == 0)
 		return ;
-	while (*lst != 0)
+	while (*outputs)
 	{
-		curr = (*lst)->next;
-		del_output_one(*lst);
-		*lst = curr;
+		curr = (*outputs)->next;
+		free_one_output(*outputs);
+		*outputs = curr;
 	}
-	*lst = 0;
+	*outputs = 0;
 }
