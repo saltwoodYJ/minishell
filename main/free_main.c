@@ -16,8 +16,6 @@ void	free_main(t_main_node *main)
 {
     ft_node_clear(&(main->node_head));
 	free(main->node_head);
-	ft_envp_clear(&(main->ev_lst));
-	free(main->ev_lst);
 	ft_input_clear(&(main->heardoc_node));
 	free(main->heardoc_node);
 }

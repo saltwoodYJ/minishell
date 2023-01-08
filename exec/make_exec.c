@@ -24,7 +24,7 @@ void	make_exec(t_main_node *main, int flag)
 		exit(main->status); //>>builtin이고 명령어가 하나<<가 아니었을때.
 }
 
-int	after_fork(t_main_node *main, pid_t pid, int fd[2], int prev_fd)
+int run_process(t_main_node *main, pid_t pid, int fd[2], int prev_fd)
 {
 	if (pid > 0)
 	{
@@ -59,7 +59,7 @@ int	make_pipe(t_main_node *main, int prev_fd)
 		printf("fork_error");
 		exit(1); //수정 요망
 	}
-	after_fork(main, pid, fd, prev_fd);
+	prev_fd = run_process(main, pid, fd, prev_fd);
 	return (prev_fd);
 }
 

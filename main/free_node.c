@@ -22,11 +22,12 @@ void	ft_lstdelone(t_cmd_node *lst)
 	free(lst);
 }
 
-void	ft_node_clear(t_cmd_node **lst)
+void	ft_node_clear(t_cmd_node *cmd)
 {
 	t_cmd_node	*curr;
 
-	if (*lst == 0)
+	curr = cm
+	if (cmd == 0)
 		return ;
 	while (*lst != 0)
 	{

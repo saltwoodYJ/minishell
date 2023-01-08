@@ -100,4 +100,5 @@ void	exec_non_builtin(t_main_node *main)
 	envp_arr = make_envp_arr(main->ev_lst);
 	execve(path, cmd_args, envp_arr);
 	perror("minishell");
+	exit(1);
 }
