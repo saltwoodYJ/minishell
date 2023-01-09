@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 04:16:23 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:04:57 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	add_env(t_main_node *main, char *key, char *value)
 		pre = pre->next;
 	}
 	pre->next = make_envp_node(key, value);
-	main->status = 0;
 }
 
 void	show_export(t_main_node *main)
@@ -63,7 +62,6 @@ void	show_export(t_main_node *main)
 			printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
 		curr = curr->next;
 	}
-	main->status = 0;
 }
 
 void	ft_export(t_main_node *main)
@@ -75,7 +73,10 @@ void	ft_export(t_main_node *main)
 	cmd = main->curr->cmd;
 	i = 1;
 	if (!cmd[i])
+	{
 		show_export(main);
+		main->status = 0;
+	}
 	while (cmd[i])
 	{	
 		//'=' 으로 시작할때, key가 _과 문자열로 시작하지 않을 때 에러

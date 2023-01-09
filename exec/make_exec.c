@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:06 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 02:31:21 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:42:14 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 void	make_exec(t_main_node *main, int flag)
 {
-	input_redirect(main);
-	output_redirect(main);
+	if (input_redirect(main) || output_redirect(main))
+	{
+		clear_heredoc(main);
+		main->status = 1;
+		if (flag == -1)
+			return ;
+		else
+			exit(1);
+	}
+	else
+		clear_heredoc(main);
 	if (check_builtin(main->curr->cmd[0]))
 		exec_builtin(main);
 	else
@@ -57,7 +66,7 @@ int	make_pipe(t_main_node *main, int prev_fd)
 	if (pid < 0)
 	{
 		printf("fork_error");
-		exit(1); //수정 요망
+		exit(1);
 	}
 	prev_fd = run_process(main, pid, fd, prev_fd);
 	return (prev_fd);
@@ -71,7 +80,10 @@ int	exec_last(t_main_node *main, int prev_fd)
 	status = 0;
 	pid = fork();
 	if (pid < 0)
+	{
 		printf("fork_error");
+		return (-1);
+	}
 	if (pid > 0)
 		close(prev_fd);
 	if (pid == 0)
@@ -80,8 +92,5 @@ int	exec_last(t_main_node *main, int prev_fd)
 		close(prev_fd);
 		make_exec(main, 0);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		main->status = WEXITSTATUS(status);
 	return (0);
 }

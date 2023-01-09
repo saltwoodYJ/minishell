@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 05:13:05 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:06:32 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,16 @@ char	**search_origin_path(t_envp_node *envp)
 			return (ft_split(curr->value, ':'));
 		curr = curr->next;
 	}
-	return (0);
+	return (NULL);
 }
 
-char	*get_path(t_envp_node *envp, char *first_cmd)
+char	*get_path(char *first_cmd, char **splited_path)
 {
 	int		i;
 	int		path_count;
 	char	*temp_path;
-	char	**splited_path;
 	char	*cmd_path;
 
-	if (access(first_cmd, X_OK) == 0)
-		return (first_cmd);
-	splited_path = search_origin_path(envp);
 	path_count = ft_double_strlen(splited_path);
 	temp_path = ft_strjoin("/", first_cmd);
 	i = 0;
@@ -78,7 +74,6 @@ char	*get_path(t_envp_node *envp, char *first_cmd)
 			ft_free(0, &cmd_path);
 		i++;
 	}
-	ft_free(splited_path, 0);
 	ft_free(0, &temp_path);
 	return (cmd_path);
 }
@@ -88,14 +83,29 @@ void	exec_non_builtin(t_main_node *main)
 	char	**cmd_args;
 	char	*path;
 	char	**envp_arr;
+	char	**splited_path;
 
 	cmd_args = main->curr->cmd;
-	path = get_path(main->ev_lst, cmd_args[0]);
-	if (!path)
+	if (access(cmd_args[0], X_OK) == 0)
+		path = cmd_args[0];
+	else
 	{
-		printf("minishell: %s: command not found\n", cmd_args[0]);
-		main->status = 127;
-		exit(127);
+		splited_path = search_origin_path(main->ev_lst);
+		if (!splited_path)
+		{
+			printf("minishell: %s: No such file or directory\n", cmd_args[0]);
+			main->status = 127;
+			exit(127);
+		}
+		path = get_path(cmd_args[0], splited_path);
+		ft_free(splited_path, 0);
+	
+		if (!path)
+		{
+			printf("minishell: %s: command not found\n", cmd_args[0]);
+			main->status = 127;
+			exit(127);
+		}
 	}
 	envp_arr = make_envp_arr(main->ev_lst);
 	execve(path, cmd_args, envp_arr);

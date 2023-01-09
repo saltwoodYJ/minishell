@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:01 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 04:09:37 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:51:10 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ void	ft_exit(t_main_node *main)
 		}
 	}
 	printf("exit\n");
-	main->status = 0;
-	exit(0);
+	exit(main->status);
 }

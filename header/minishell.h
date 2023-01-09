@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 05:54:34 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:24:43 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,14 +139,15 @@ int			exec_last(t_main_node *main, int prev_fd);
 /*redirect*/
 int			read_line(char *limiter, int infile);
 char		*make_heredoc(char *limiter);
-void		input_redirect(t_main_node *main);
-void		output_redirect(t_main_node *main);
+int			input_redirect(t_main_node *main);
+int			output_redirect(t_main_node *main);
+void		clear_heredoc(t_main_node *main);
 void		set_heredoc(t_main_node *main);
 
 /*non builtin*/
 void		exec_non_builtin(t_main_node *main);
 char		**search_origin_path(t_envp_node *envp);
-char		*get_path(t_envp_node *envp, char *first_cmd);
+char		*get_path(char *first_cmd, char **splited_path);
 
 /* builtin */
 int			check_builtin(char *str);

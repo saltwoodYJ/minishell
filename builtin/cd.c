@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 05:00:37 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:00:31 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@ void	exec_chdir(t_main_node *main, char *path, char *old_path)
 	if (chdir(path) == 0)
 	{
 		pwd = getcwd(NULL, 0);
+		if (!pwd)
+		{
+			printf("minishell: pwd: pwd exec error\n");
+			main->status = 1;
+			return ;
+		}
 		add_env(main, "PWD", pwd);
 		add_env(main, "OLDPWD", old_path);
 		main->status = 0;
-		free(pwd);
 	}
 	else
 	{

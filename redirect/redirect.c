@@ -6,49 +6,78 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:07:20 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 02:32:44 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:35:44 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	input_redirect(t_main_node *main)
+void	clear_heredoc(t_main_node *main)
+{
+	t_infile_node *curr;
+
+	curr = main->curr->infile_node;
+	while (curr)
+	{
+		if (curr->is_heardoc == 1)
+			unlink(curr->file);
+		curr = curr->next;
+	}
+}
+
+int	input_redirect(t_main_node *main)
 {
 	t_infile_node	*curr;
 	int				input_fd;
 
 	curr = main->curr->infile_node;
-	while (curr != NULL)
+	while (curr)
 	{
-		input_fd = open(curr->file, O_RDONLY);
-		if (input_fd >= 0)
+		if (curr->file)
 		{
-			dup2(input_fd, 0);
-			close(input_fd);
-			if (curr->is_heardoc == 1)
-				unlink(curr->file);
+			input_fd = open(curr->file, O_RDONLY);
+			if (input_fd >= 0)
+			{
+				dup2(input_fd, 0);
+				close(input_fd);
+			}
+			else
+			{
+				printf("minishell: %s: No such file or directory\n", curr->file);	
+				return (1);
+			}
 		}
 		curr = curr->next;
 	}
+	return (0);
 }
 
-void	output_redirect(t_main_node *main)
+int output_redirect(t_main_node *main)
 {
 	t_outfile_node	*curr;
 	int				output_fd;
 
 	curr = main->curr->outfile_node;
-	while (curr != NULL)
+	while (curr)
 	{
-		if (curr->type == 0)
-			output_fd = open(curr->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		else
-			output_fd = open(curr->file, O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (output_fd >= 0)
+		if (curr->file)
 		{
-			dup2(output_fd, 1);
-			close(output_fd);
+			if (curr->type == 0)
+				output_fd = open(curr->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			else
+				output_fd = open(curr->file, O_RDWR | O_CREAT | O_APPEND, 0644);
+			if (output_fd >= 0)
+			{
+				dup2(output_fd, 1);
+				close(output_fd);
+			}
+			else
+			{
+				printf("minishell: %s: No such file or directory\n", curr->file);
+				return (1);
+			}
 		}
 		curr = curr->next;
 	}
+	return (0);
 }
