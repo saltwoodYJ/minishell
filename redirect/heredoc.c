@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:07:26 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 04:07:34 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/10 14:58:15 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,19 @@ int	read_line(char *limiter, int infile)
 	}
 }
 
-char	*make_heredoc(char *limiter)
+char	*make_heredoc(char *limiter, int idx)
 {
 	int		tmp_file;
 	char	*tmp_name;
+	char	*itoa_idx;
 	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
 		printf("fork_error");
-	tmp_name = ft_strjoin3(".", limiter, "_heredoc.tmp");
+	itoa_idx = ft_itoa(idx);
+	tmp_name = ft_strjoin3(".heredoc", itoa_idx, ".tmp");
+	free(itoa_idx);
 	tmp_file = open(tmp_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pid == 0)
 	{
@@ -60,12 +63,15 @@ void	set_heredoc(t_main_node *main)
 {
 	t_infile_node	*curr;
 	char			*file_name;
+	int				i;
 
 	curr = main->heardoc_node->hnext;
+	i = 0;
 	while (curr != NULL)
 	{
-		file_name = make_heredoc(curr->limiter);
+		file_name = make_heredoc(curr->limiter, i);
 		curr->file = file_name;
 		curr = curr->hnext;
+		i++;
 	}
 }

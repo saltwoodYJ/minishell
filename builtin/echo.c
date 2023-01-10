@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:30 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/09 17:13:44 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:58:44 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_n_option(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (ft_strcmp(str, "-n") == 0)
 		return (1);
 	if (str[i] == '-')

@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/09 18:06:32 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:39:00 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,14 @@ void	exec_non_builtin(t_main_node *main)
 		splited_path = search_origin_path(main->ev_lst);
 		if (!splited_path)
 		{
-			printf("minishell: %s: No such file or directory\n", cmd_args[0]);
-			main->status = 127;
+			error_msg(main, cmd_args[0], FILE_ERROR, 127);
 			exit(127);
 		}
 		path = get_path(cmd_args[0], splited_path);
 		ft_free(splited_path, 0);
-	
 		if (!path)
 		{
-			printf("minishell: %s: command not found\n", cmd_args[0]);
-			main->status = 127;
+			error_msg(main, cmd_args[0], CMD_ERROR, 127);
 			exit(127);
 		}
 	}

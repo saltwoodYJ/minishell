@@ -6,13 +6,13 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2023/01/09 15:38:35 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/10 21:49:08 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3 
+CFLAGS = #-Wall -Wextra -Werror -fsanitize=address -g3 
 
 NAME = minishell
 
@@ -42,6 +42,7 @@ $(NONBUILTIN_DIR)non_builtin.c \
 $(REDIR_DIR)heredoc.c $(REDIR_DIR)redirect.c \
 $(UTILS_DIR)ft_isalpha.c $(UTILS_DIR)ft_isdigit.c $(UTILS_DIR)ft_split.c $(UTILS_DIR)ft_strchr.c $(UTILS_DIR)ft_strcmp.c \
 $(UTILS_DIR)ft_strdup.c $(UTILS_DIR)ft_strjoin.c $(UTILS_DIR)ft_strlen.c $(UTILS_DIR)ft_strncmp.c $(UTILS_DIR)utils.c \
+$(UTILS_DIR)ft_itoa.c\
 $(MAIN_DIR)free_main.c $(MAIN_DIR)free_redir.c
 
 OBJS = $(SRCS:%.c=%.o)

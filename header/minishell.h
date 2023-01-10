@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/09 17:24:43 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/10 21:16:02 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,18 @@ typedef enum e_type
 	PIPE,
 	T_NULL
 }	t_type;
+
+typedef enum s_error
+{
+	FILE_ERROR,
+	CMD_ERROR,
+	EXPORT_KEY_ERROR,
+	UNSET_KEY_ERROR,
+	NOT_SET_ERROR,
+	NUM_ARG_ERROR,
+	MANY_ARG_ERROR,
+	EXEC_ERROR
+} t_error;
 
 typedef struct s_envp_node
 {
@@ -131,6 +143,7 @@ void		ft_parse(char *s, t_parsing_node **parse);
 int			add_parsing_node(t_parsing_node **now, char *str);
 
 /* exec */
+int			no_cmd(t_main_node *main, int flag);
 int			run_command(t_main_node *main);
 int			make_pipe(t_main_node *main, int prev_fd);
 void		make_exec(t_main_node *main, int flag);
@@ -138,7 +151,7 @@ int			exec_last(t_main_node *main, int prev_fd);
 
 /*redirect*/
 int			read_line(char *limiter, int infile);
-char		*make_heredoc(char *limiter);
+char		*make_heredoc(char *limiter, int idx);
 int			input_redirect(t_main_node *main);
 int			output_redirect(t_main_node *main);
 void		clear_heredoc(t_main_node *main);
@@ -165,12 +178,14 @@ int			ft_exit_atoi(const char *str, int *is_char, int i);
 void		add_env(t_main_node *main, char *key, char *value);
 int			is_invalid_key(char *s, int flag);
 char		*get_env_path(t_envp_node *envp, char *key);
+char		**make_key_value(char *cmd);
 
 /* utils */
 void		ft_free(char **s1, char **s2);
 size_t		ft_double_strlen(char **str);
 void		perror_comment(char *s1, char *s2);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
+int			error_msg(t_main_node *main, char *arg, t_error error, int status);
 
 /* libft */
 char		*ft_strchr(const char *s, int c);
@@ -183,6 +198,7 @@ int			ft_isdigit(int c);
 int			ft_isalpha(int c);
 char		*ft_strdup(const char *s1);
 char		*ft_substr(char *s, int start, int len);
+char		*ft_itoa(int n);
 
 /* envp */
 char		*ft_strchr(const char *s, int c);
@@ -192,10 +208,10 @@ t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
 int			search_equal(char *s);
 
 /* free */
-void	ft_output_clear(t_outfile_node **lst);
-void	ft_input_clear(t_infile_node **lst);
-void	ft_node_clear(t_cmd_node **lst);
-void	ft_envp_clear(t_envp_node **lst);
-void	free_main(t_main_node *main);
+void		ft_output_clear(t_outfile_node **lst);
+void		ft_input_clear(t_infile_node **lst);
+void		ft_node_clear(t_cmd_node **lst);
+void		ft_envp_clear(t_envp_node **lst);
+void		free_main(t_main_node *main);
 
 #endif

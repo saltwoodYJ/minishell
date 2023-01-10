@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:07:20 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/09 17:35:44 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/10 21:12:54 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	clear_heredoc(t_main_node *main)
 {
-	t_infile_node *curr;
+	t_infile_node	*curr;
 
 	curr = main->curr->infile_node;
 	while (curr)
@@ -42,17 +42,14 @@ int	input_redirect(t_main_node *main)
 				close(input_fd);
 			}
 			else
-			{
-				printf("minishell: %s: No such file or directory\n", curr->file);	
-				return (1);
-			}
+				return (error_msg(main, curr->file, FILE_ERROR, 1));
 		}
 		curr = curr->next;
 	}
 	return (0);
 }
 
-int output_redirect(t_main_node *main)
+int	output_redirect(t_main_node *main)
 {
 	t_outfile_node	*curr;
 	int				output_fd;
@@ -72,10 +69,7 @@ int output_redirect(t_main_node *main)
 				close(output_fd);
 			}
 			else
-			{
-				printf("minishell: %s: No such file or directory\n", curr->file);
-				return (1);
-			}
+				return (error_msg(main, curr->file, FILE_ERROR, 1));
 		}
 		curr = curr->next;
 	}
