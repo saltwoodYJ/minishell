@@ -4,6 +4,7 @@ int	make_token(char *line, t_main_node *main)
 {
 	t_parsing_node	*parse;
 
+	main->heredoc_node = new_red_node(sizeof(t_infile_node));
 	ft_parse(line, &parse);
 	ft_interpret(parse, main->ev_lst);
 	make_cmd_list(parse, main);
