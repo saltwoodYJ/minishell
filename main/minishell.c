@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-void	make_main(t_main_node *main, char *line, int status)
+void	make_main(t_main_node *main, char *line, int status, t_envp_node *ev_lst)
 {
+	main->ev_lst = ev_lst;
 	make_token(line, main);
 	main->status = status;
 	main->stdin_fd = dup(0);
@@ -45,8 +46,7 @@ int	main(int ac, char **av, char **ev)
 		if (line)
 		{
 			main = malloc(sizeof(t_main_node));
-			make_main(main, line, status);
-			main->ev_lst = ev_lst;
+			make_main(main, line, status, ev_lst);
 			add_history(line);
 			run_command(main);
 			restore_std(main);
