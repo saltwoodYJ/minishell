@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 05:54:34 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:12:23 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ typedef enum e_type
 	T_NULL
 }	t_type;
 
+typedef enum s_error
+{
+	FILE_ERROR,
+	CMD_ERROR,
+	EXPORT_KEY_ERROR,
+	UNSET_KEY_ERROR,
+	NOT_SET_ERROR,
+	NUM_ARG_ERROR,
+	MANY_ARG_ERROR,
+	EXEC_ERROR
+}	t_error;
+
 typedef struct s_envp_node
 {
 	char				*key;
@@ -52,7 +64,7 @@ typedef struct s_parsing_node
 is_heredoc: 0(false), 1(true)*/
 typedef struct s_infile_node
 {
-	int						is_heardoc;
+	int						is_heredoc;
 	char					*file;
 	char					*limiter;
 	struct s_infile_node	*hnext;
@@ -89,7 +101,7 @@ typedef struct s_main_node
 	int				cmd_num;
 	int				status;
 	// A C D 파이프 통틀어서 모든 히어독 노드들 저장
-	t_infile_node	*heardoc_node;
+	t_infile_node	*heredoc_node;
 	t_cmd_node		*node_head;
 	t_cmd_node		*curr;
 }	t_main_node;
@@ -105,14 +117,14 @@ void		init_cmd_node(t_cmd_node *node);
 t_envp_node	*parse_envp(char **ev);
 t_envp_node	*new_envp_node(char *envp);
 char		*ft_substr(char *s, int start, int len);
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
+t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len);
 
 /* parse_red */
 void		set_red(t_parsing_node *parse, t_cmd_node *node, t_main_node *main);
 void		set_red_lst(t_parsing_node *parsing, t_cmd_node *node, \
 t_main_node *main);
 void		append_infile_node(t_infile_node *lst, void *red_node);
-void		append_heardoc_node(t_infile_node *lst, void *red_node);
+void		append_heredoc_node(t_infile_node *lst, void *red_node);
 void		append_outfile_node(t_outfile_node *lst, void *red_node);
 void		set_infile_node(t_parsing_node *parsing, void *node);
 void		set_outfile_node(t_parsing_node *parsing, void *node);
@@ -130,7 +142,22 @@ char		*ft_worddup(char *str, int index, int len);
 void		ft_parse(char *s, t_parsing_node **parse);
 int			add_parsing_node(t_parsing_node **now, char *str);
 
+/* interpret */
+void		ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst);
+char		*interpret(char *str, t_envp_node *ev_lst);
+char		*ft_strcat(char *str, char *value);
+int			get_len_ev(char *str, t_envp_node *ev_lst);
+int			check_dollar(char *str);
+
+/* red_utils */
+void		append_infile_node(t_infile_node *lst, void *red_node);
+void		append_heredoc_node(t_infile_node *lst, void *red_node);
+void		append_outfile_node(t_outfile_node *lst, void *red_node);
+void		*ft_calloc(size_t count, size_t size);
+void		ft_bzero(void *s, size_t n);
+
 /* exec */
+int			no_cmd(t_main_node *main, int flag);
 int			run_command(t_main_node *main);
 int			make_pipe(t_main_node *main, int prev_fd);
 void		make_exec(t_main_node *main, int flag);
@@ -138,15 +165,16 @@ int			exec_last(t_main_node *main, int prev_fd);
 
 /*redirect*/
 int			read_line(char *limiter, int infile);
-char		*make_heredoc(char *limiter);
-void		input_redirect(t_main_node *main);
-void		output_redirect(t_main_node *main);
+char		*make_heredoc(char *limiter, int idx);
+int			input_redirect(t_main_node *main);
+int			output_redirect(t_main_node *main);
+void		clear_heredoc(t_main_node *main);
 void		set_heredoc(t_main_node *main);
 
 /*non builtin*/
 void		exec_non_builtin(t_main_node *main);
 char		**search_origin_path(t_envp_node *envp);
-char		*get_path(t_envp_node *envp, char *first_cmd);
+char		*get_path(char *first_cmd, char **splited_path);
 
 /* builtin */
 int			check_builtin(char *str);
@@ -164,12 +192,16 @@ int			ft_exit_atoi(const char *str, int *is_char, int i);
 void		add_env(t_main_node *main, char *key, char *value);
 int			is_invalid_key(char *s, int flag);
 char		*get_env_path(t_envp_node *envp, char *key);
+char		**make_key_value(char *cmd);
+int			search_equal(char *s);
+t_envp_node	*new_envp_node(char *envp);
 
 /* utils */
 void		ft_free(char **s1, char **s2);
 size_t		ft_double_strlen(char **str);
 void		perror_comment(char *s1, char *s2);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
+int			error_msg(t_main_node *main, char *arg, t_error error, int status);
 
 /* libft */
 char		*ft_strchr(const char *s, int c);
@@ -182,19 +214,18 @@ int			ft_isdigit(int c);
 int			ft_isalpha(int c);
 char		*ft_strdup(const char *s1);
 char		*ft_substr(char *s, int start, int len);
+char		*ft_itoa(int n);
+void		*ft_calloc(size_t count, size_t size);
 
 /* envp */
 char		*ft_strchr(const char *s, int c);
 t_envp_node	*parse_envp(char **ev);
-t_envp_node	*new_envp_node(char *envp);
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
-int			search_equal(char *s);
 
 /* free */
-void	ft_output_clear(t_outfile_node **lst);
-void	ft_input_clear(t_infile_node **lst);
-void	ft_node_clear(t_cmd_node **lst);
-void	ft_envp_clear(t_envp_node **lst);
-void	free_main(t_main_node *main);
+void		ft_output_clear(t_outfile_node **lst);
+void		ft_input_clear(t_infile_node **lst);
+void		ft_node_clear(t_cmd_node **lst);
+void		ft_envp_clear(t_envp_node **lst);
+void		free_main(t_main_node *main);
 
 #endif

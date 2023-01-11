@@ -1,8 +1,20 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_envp.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/07 00:09:31 by yejinam           #+#    #+#             */
+/*   Updated: 2023/01/07 00:10:52 by yejinam          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../header/minishell.h"
 
 t_envp_node	*parse_envp(char **ev)
 {
-	t_envp_node *envp_node;
+	t_envp_node	*envp_node;
 	t_envp_node	*now;
 	int			index;
 
@@ -15,19 +27,18 @@ t_envp_node	*parse_envp(char **ev)
 		now = now->next;
 		index++;
 	}
-
 	return (envp_node);
 }
 
 t_envp_node	*new_envp_node(char *envp)
 {
 	t_envp_node	*node;
-	int	len;
-	int	equal;	
+	int			len;
+	int			equal;	
 
 	len = ft_strlen(envp);
 	node = malloc(sizeof(t_envp_node));
-	equal = (int)(ft_strchr(envp, '=') - envp); // abcd
+	equal = (int)(ft_strchr(envp, '=') - envp);
 	if (!node)
 		exit (1);
 	node->key = ft_substr(envp, 0, equal);
@@ -39,9 +50,9 @@ t_envp_node	*new_envp_node(char *envp)
 char	*ft_substr(char *s, int start, int len)
 {
 	char	*substr;
-	int 	index;
-	int 	size;
-	int 	srclen;
+	int		index;
+	int		size;
+	int		srclen;
 
 	srclen = ft_strlen(s);
 	if (srclen <= start)
@@ -60,18 +71,17 @@ char	*ft_substr(char *s, int start, int len)
 	return (substr);
 }
 
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key)
+t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len)
 {
-	t_envp_node *now;
+	t_envp_node	*now;
 
+	if (len == 0)
+		return (NULL);
 	now = ev_lst->next;
 	while (now)
 	{
-		if (ft_strncmp(now->key, key, ft_strlen(key) + 1) == 0)
-		{
-			printf("%s %s\n", now->key, now->value);
+		if (ft_strncmp(now->key, key, len) == 0)
 			return (now);
-		}
 		now = now->next;
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:26 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 04:05:31 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:19:50 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	remove_env(t_main_node *main, char *key)
 
 	if (is_invalid_key(key, 1))
 	{
-		printf("minishell: unset: `%s': not a valid identifier\n", key);
+		error_msg(main, key, UNSET_KEY_ERROR, 1);
 		return ;
 	}
 	pre = main->ev_lst->next;
@@ -53,4 +53,5 @@ void	ft_unset(t_main_node *main)
 		remove_env(main, cmd[i]);
 		i++;
 	}
+	main->status = 1;
 }

@@ -20,7 +20,7 @@ void	ft_input_clear(t_infile_node **inputs)
 	while (*inputs != 0)
 	{
 		curr = (*inputs)->next;
-		del_input_one(*inputs);
+		free_one_input(*inputs);
 		*inputs = curr;
 	}
 	*inputs = 0;

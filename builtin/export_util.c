@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:00:56 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 03:23:53 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:41:15 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_invalid_key(char *s, int flag)
 	i = 0;
 	if (!s)
 		return (1);
-	if (!ft_isalpha(s[0]) && s[0] != '_') //알파벳으로 시작하지도, _로 시작하지도 않는다면
+	if (!ft_isalpha(s[0]) && s[0] != '_')
 		return (1);
 	if (flag == 0)
 	{
@@ -67,4 +67,47 @@ char	*get_env_path(t_envp_node *envp, char *key)
 		curr = curr->next;
 	}
 	return (NULL);
+}
+
+char	*make_arg(char *cmd, int start, int end)
+{
+	char	*arr;
+	int		i;
+
+	i = 0;
+	arr = (char *)malloc(end - start + 1);
+	if (!arr)
+		return (0);
+	while (start < end)
+	{
+		arr[i] = cmd[start];
+		start++;
+		i++;
+	}
+	arr[i] = '\0';
+	return (arr);
+}
+
+char	**make_key_value(char *cmd)
+{
+	char	**args;
+	int		idx;
+
+	if (!cmd)
+		return (0);
+	idx = search_equal(cmd);
+	args = (char **)malloc(sizeof(char *) * 3);
+	if (!args)
+		return (0);
+	args[0] = make_arg(cmd, 0, idx);
+	if (!args[0])
+		free(args);
+	args[1] = make_arg(cmd, idx + 1, ft_strlen(cmd));
+	if (!args[1])
+	{
+		free(args[0]);
+		free(args);
+	}
+	args[2] = 0;
+	return (args);
 }

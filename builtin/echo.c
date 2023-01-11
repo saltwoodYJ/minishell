@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:30 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/07 02:38:26 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:47:31 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_n_option(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (ft_strcmp(str, "-n") == 0)
 		return (1);
 	if (str[i] == '-')
@@ -43,7 +45,7 @@ void	ft_echo(t_main_node *main)
 	cmd = main->curr->cmd;
 	i = 1;
 	nl = 1;
-	if (is_n_option(cmd[1]))
+	while (is_n_option(cmd[i]))
 	{
 		nl = 0;
 		i++;
@@ -60,4 +62,5 @@ void	ft_echo(t_main_node *main)
 	}
 	if (nl == 1)
 		printf("\n");
+	main->status = 0;
 }
