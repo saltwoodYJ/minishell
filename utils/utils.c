@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:36:36 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 16:54:30 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 21:55:25 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	error_msg(t_main_node *main, char *arg, t_error error, int status)
 	else if (error == NOT_SET_ERROR)
 		printf("minishell: cd: %s not set\n", arg);
 	else if (error == NUM_ARG_ERROR)
-		printf("exit\nminishell: exit: %s: numeric argument required\n", arg);
+		printf("minishell: exit: %s: numeric argument required\n", arg);
 	else if (error == MANY_ARG_ERROR)
-		printf("exit\nminishell: exit: too many arguments\n");
+		printf("minishell: exit: too many arguments\n");
 	else if (error == EXEC_ERROR)
 		printf("minishell: %s: %s exec error\n", arg, arg);
 	main->status = status;
