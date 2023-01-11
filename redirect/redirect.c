@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:07:20 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 21:12:54 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:47:02 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	clear_heredoc(t_main_node *main)
 	curr = main->curr->infile_node;
 	while (curr)
 	{
-		if (curr->is_heardoc == 1)
+		if (curr->is_heredoc == 1)
 			unlink(curr->file);
 		curr = curr->next;
 	}

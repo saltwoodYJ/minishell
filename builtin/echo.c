@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:30 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 19:58:44 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:47:31 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ void	ft_echo(t_main_node *main)
 	cmd = main->curr->cmd;
 	i = 1;
 	nl = 1;
-	if (is_n_option(cmd[1]))
+	while (is_n_option(cmd[i]))
 	{
 		nl = 0;
 		i++;
 	}
-	while (is_n_option(cmd[i]))
-		i++;
 	if (cmd[i])
 	{
 		printf("%s", cmd[i]);
@@ -64,4 +62,5 @@ void	ft_echo(t_main_node *main)
 	}
 	if (nl == 1)
 		printf("\n");
+	main->status = 0;
 }

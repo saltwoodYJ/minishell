@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:07:26 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 14:58:15 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:32:01 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ void	set_heredoc(t_main_node *main)
 	char			*file_name;
 	int				i;
 
-	curr = main->heardoc_node->hnext;
+	if (!main->heredoc_node)
+		return ;
+	curr = main->heredoc_node->hnext;
 	i = 0;
-	while (curr != NULL)
+	while (curr)
 	{
 		file_name = make_heredoc(curr->limiter, i);
 		curr->file = file_name;

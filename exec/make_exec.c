@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:06 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 21:57:55 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:09:27 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	make_exec(t_main_node *main, int flag)
 		exec_builtin(main);
 	else
 		exec_non_builtin(main);
-	if (flag != -1)
+	if (flag != 1)
 		exit(main->status);
 }
 
@@ -69,13 +69,13 @@ int	make_pipe(t_main_node *main, int prev_fd)
 	if (pid < 0)
 	{
 		error_msg(main, "fork", EXEC_ERROR, 1);
-		exit(1);
+		return (-1);
 	}
 	prev_fd = run_process(main, pid, fd, prev_fd);
 	return (prev_fd);
 }
 
-int	exec_last(t_main_node *main, int prev_fd)
+pid_t	exec_last(t_main_node *main, int prev_fd)
 {
 	pid_t	pid;
 	int		status;
@@ -95,5 +95,5 @@ int	exec_last(t_main_node *main, int prev_fd)
 		close(prev_fd);
 		make_exec(main, 0);
 	}
-	return (0);
+	return (pid);
 }

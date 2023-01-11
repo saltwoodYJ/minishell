@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 21:20:08 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:39:54 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	exec_chdir(t_main_node *main, char *path, char *old_path)
 		pwd = getcwd(NULL, 0);
 		if (!pwd)
 		{
-			error_msg(main, "pwd", EXEC_ERROR, 1);
+			perror("minisheel: pwd");
 			return ;
 		}
 		add_env(main, "PWD", pwd);
@@ -30,7 +30,7 @@ void	exec_chdir(t_main_node *main, char *path, char *old_path)
 	}
 	else
 	{
-		perror_comment("cd", main->curr->cmd[1]);
+		perror("minisheel: cd");
 		main->status = 1;
 	}
 }

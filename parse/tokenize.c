@@ -5,6 +5,7 @@ int	make_token(char *line, t_main_node *main)
 	t_parsing_node	*parse;
 
 	ft_parse(line, &parse);
+	ft_interpret(parse, main->ev_lst);
 	make_cmd_list(parse, main);
 	return (1);
 }
@@ -37,11 +38,11 @@ void	ft_parse(char *s, t_parsing_node **parse)
 	int				len;
 	int				index;
 
-	*parse = malloc(sizeof(t_parsing_node));
-	now = *parse;
-	(*parse)->type = PIPE;
+	*parse = new_red_node(sizeof(t_parsing_node));
 	if (!*parse)
 		exit (1);
+	now = *parse;
+	(*parse)->type = PIPE;
 	index = 0;
 	while (s[index])
 	{

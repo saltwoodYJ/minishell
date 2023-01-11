@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 05:18:52 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/09 16:19:10 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:47:47 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void	free_main(t_main_node *main)
 {
     ft_node_clear(&(main->node_head));
 	free(main->node_head);
-	ft_input_clear(&(main->heardoc_node));
-	free(main->heardoc_node);
+	ft_input_clear(&(main->heredoc_node));
+	free(main->heredoc_node);
 }

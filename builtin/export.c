@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 21:17:09 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:44:23 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	show_export(t_main_node *main)
 			printf("declare -x %s=\"%s\"\n", curr->key, curr->value);
 		curr = curr->next;
 	}
+	main->status = 0;
 }
 
 void	ft_export(t_main_node *main)
@@ -71,15 +72,12 @@ void	ft_export(t_main_node *main)
 	cmd = main->curr->cmd;
 	i = 1;
 	if (!cmd[i])
-	{
 		show_export(main);
-		main->status = 0;
-	}
 	while (cmd[i])
 	{	
 		if (search_equal(cmd[i]) == 0 || is_invalid_key(cmd[i], 0)) 
 			error_msg(main, cmd[i], EXPORT_KEY_ERROR, 1);
-		else if (search_equal(cmd[i]) == -1) //=이 없음
+		else if (search_equal(cmd[i]) == -1)
 		{
 			add_env(main, cmd[i], NULL);
 			main->status = 0;

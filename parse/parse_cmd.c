@@ -1,14 +1,25 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/06 23:57:11 by yejinam           #+#    #+#             */
+/*   Updated: 2023/01/07 01:38:39 by yejinam          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../header/minishell.h"
 
 void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 {
-	t_parsing_node  *p_now;
-	t_cmd_node	  	*c_now;
-	int			 i;
+	t_parsing_node	*p_now;
+	t_cmd_node		*c_now;
+	int				i;
 
 	p_now = parse;
 	i = 0;
-
 	main->node_head = malloc(sizeof(t_cmd_node));
 	c_now = main->node_head;
 	while (p_now)
@@ -21,69 +32,65 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 		}
 		p_now = p_now->next;
 	}
-	main->cmd_num = i;	
+	main->cmd_num = i;
 }
 
 t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
 {
-	t_cmd_node  *node;
+	t_cmd_node	*node;
+
 	node = malloc(sizeof(t_cmd_node));
 	if (!node)
 		exit (1);
 	init_cmd_node(node);
 	node->idx = i;
 	node->cmd = set_cmd(*parse);
-	main->heardoc_node = new_red_node(sizeof(t_infile_node));
 	node->infile_node = new_red_node(sizeof(t_infile_node));
 	node->outfile_node = new_red_node(sizeof(t_outfile_node));
-	set_red(*parse, node, main);
-
+	set_red_lst(*parse, node, main);
 	return (node);
 }
 
 char	**set_cmd(t_parsing_node *parsing)
 {
-	t_parsing_node  *now;
+	t_parsing_node	*now;
 	char			**cmd;
-	int			 index;
-	int			 cmd_num;
-		
+	int				index;
+
 	now = parsing->next;
 	index = 0;
-	cmd_num = get_cmd_num(parsing);
-	cmd = malloc(sizeof(char *) * (cmd_num + 1));
+	cmd = malloc(sizeof(char *) * (get_cmd_num(parsing) + 1));
 	if (!cmd)
 		exit (1);
 	while (now && now->type != PIPE)
 	{
-		if (now->type == RED_A || now->type == RED_H 
-			|| now->type == RED_I || now->type == RED_O)
+		if (now->type != WORD)
 		{
 			if (now->next == NULL || now->next->type != WORD)
 				break ;
 			now = now->next;
 		}
-		else if (now->type == WORD)
+		else
 		{
 			cmd[index] = now->str;
 			index++;
 		}
-		now=now->next;
+		now = now->next;
 	}
 	cmd[index] = NULL;
 	return (cmd);
 }
 
-int get_cmd_num(t_parsing_node *parsing)
+int	get_cmd_num(t_parsing_node *parsing)
 {
-	t_parsing_node  *now;
-	int			 i;
+	t_parsing_node	*now;
+	int				i;
 
 	i = 0;
 	now = parsing->next;
 	while (now && now->type != PIPE)
 	{
-		if (now->type == RED_A || now->type == RED_H 
+		if (now->type == RED_A || now->type == RED_H
 			|| now->type == RED_I || now->type == RED_O)
 		{
 			if (now->next == NULL || now->next->type != WORD)

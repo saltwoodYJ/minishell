@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 21:16:02 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:12:23 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef enum s_error
 	NUM_ARG_ERROR,
 	MANY_ARG_ERROR,
 	EXEC_ERROR
-} t_error;
+}	t_error;
 
 typedef struct s_envp_node
 {
@@ -64,7 +64,7 @@ typedef struct s_parsing_node
 is_heredoc: 0(false), 1(true)*/
 typedef struct s_infile_node
 {
-	int						is_heardoc;
+	int						is_heredoc;
 	char					*file;
 	char					*limiter;
 	struct s_infile_node	*hnext;
@@ -101,7 +101,7 @@ typedef struct s_main_node
 	int				cmd_num;
 	int				status;
 	// A C D 파이프 통틀어서 모든 히어독 노드들 저장
-	t_infile_node	*heardoc_node;
+	t_infile_node	*heredoc_node;
 	t_cmd_node		*node_head;
 	t_cmd_node		*curr;
 }	t_main_node;
@@ -117,14 +117,14 @@ void		init_cmd_node(t_cmd_node *node);
 t_envp_node	*parse_envp(char **ev);
 t_envp_node	*new_envp_node(char *envp);
 char		*ft_substr(char *s, int start, int len);
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
+t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len);
 
 /* parse_red */
 void		set_red(t_parsing_node *parse, t_cmd_node *node, t_main_node *main);
 void		set_red_lst(t_parsing_node *parsing, t_cmd_node *node, \
 t_main_node *main);
 void		append_infile_node(t_infile_node *lst, void *red_node);
-void		append_heardoc_node(t_infile_node *lst, void *red_node);
+void		append_heredoc_node(t_infile_node *lst, void *red_node);
 void		append_outfile_node(t_outfile_node *lst, void *red_node);
 void		set_infile_node(t_parsing_node *parsing, void *node);
 void		set_outfile_node(t_parsing_node *parsing, void *node);
@@ -141,6 +141,20 @@ int			make_token(char *line, t_main_node *main);
 char		*ft_worddup(char *str, int index, int len);
 void		ft_parse(char *s, t_parsing_node **parse);
 int			add_parsing_node(t_parsing_node **now, char *str);
+
+/* interpret */
+void		ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst);
+char		*interpret(char *str, t_envp_node *ev_lst);
+char		*ft_strcat(char *str, char *value);
+int			get_len_ev(char *str, t_envp_node *ev_lst);
+int			check_dollar(char *str);
+
+/* red_utils */
+void		append_infile_node(t_infile_node *lst, void *red_node);
+void		append_heredoc_node(t_infile_node *lst, void *red_node);
+void		append_outfile_node(t_outfile_node *lst, void *red_node);
+void		*ft_calloc(size_t count, size_t size);
+void		ft_bzero(void *s, size_t n);
 
 /* exec */
 int			no_cmd(t_main_node *main, int flag);
@@ -179,6 +193,8 @@ void		add_env(t_main_node *main, char *key, char *value);
 int			is_invalid_key(char *s, int flag);
 char		*get_env_path(t_envp_node *envp, char *key);
 char		**make_key_value(char *cmd);
+int			search_equal(char *s);
+t_envp_node	*new_envp_node(char *envp);
 
 /* utils */
 void		ft_free(char **s1, char **s2);
@@ -199,13 +215,11 @@ int			ft_isalpha(int c);
 char		*ft_strdup(const char *s1);
 char		*ft_substr(char *s, int start, int len);
 char		*ft_itoa(int n);
+void		*ft_calloc(size_t count, size_t size);
 
 /* envp */
 char		*ft_strchr(const char *s, int c);
 t_envp_node	*parse_envp(char **ev);
-t_envp_node	*new_envp_node(char *envp);
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key);
-int			search_equal(char *s);
 
 /* free */
 void		ft_output_clear(t_outfile_node **lst);

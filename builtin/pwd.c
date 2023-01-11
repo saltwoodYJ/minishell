@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:24 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 16:19:48 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:39:22 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_pwd(t_main_node *main)
 	path = getcwd(NULL, 0);
 	if (path == NULL)
 	{
-		error_msg(main, "pwd", EXEC_ERROR, 1);
+		perror("minishell: pwd");
 		return ;
 	}
 	printf("%s\n", path);
