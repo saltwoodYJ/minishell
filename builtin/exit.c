@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:01 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/10 21:13:44 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/11 21:57:25 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,7 @@ int	exit_with_arg(t_main_node *main, int exit_arg, int is_not_num)
 		return (-1);
 	}
 	else if (exit_arg > 255 || exit_arg < 0)
-	{
 		exit_code = make_non_overflow(exit_arg);
-		printf("exit\n");
-	}
 	return (exit_code);
 }
 
@@ -85,6 +82,8 @@ void	ft_exit(t_main_node *main)
 	int	exit_code;
 	int	is_not_num;
 
+	if (main->curr->idx + 1 == main->cmd_num)
+		printf("exit\n");
 	if (main->curr->cmd[1])
 	{
 		exit_arg = ft_exit_atoi(main->curr->cmd[1], &is_not_num, 0);
@@ -97,6 +96,5 @@ void	ft_exit(t_main_node *main)
 		main->status = exit_code;
 		exit(exit_code);
 	}
-	printf("exit\n");
 	exit(main->status);
 }
