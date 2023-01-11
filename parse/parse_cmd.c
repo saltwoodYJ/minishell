@@ -26,6 +26,11 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	{
 		if (p_now->type == PIPE)
 		{
+			if (!p_now->next || p_now->next->type == PIPE)
+			{
+				printf("minishell: syntax error near unexpected token `newline\'\n");
+				break;
+			}
 			i++;
 			c_now->next = new_cmd_node(&p_now, i, main);
 			c_now = c_now->next;
@@ -94,7 +99,13 @@ int	get_cmd_num(t_parsing_node *parsing)
 			|| now->type == RED_I || now->type == RED_O)
 		{
 			if (now->next == NULL || now->next->type != WORD)
+			{
+				if (now->next)
+					printf("minishell: syntax error near unexpected token `%s\'\n", now->next->str);
+				else
+					printf("minishell: syntax error near unexpected token `newline\'\n");
 				break ;
+			}
 			now = now->next;
 		}
 		else if (now->type == WORD)
