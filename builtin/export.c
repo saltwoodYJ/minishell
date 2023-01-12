@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 21:17:46 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:19:08 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,26 +67,25 @@ void	show_export(t_main_node *main)
 
 void	ft_export(t_main_node *main)
 {
-	char		**cmd;
 	char		**args;
 	int			i;
 
-	cmd = main->curr->cmd;
 	i = 1;
-	if (!cmd[i])
+	if (!main->curr->cmd[i])
 		show_export(main);
-	while (cmd[i])
+	while (main->curr->cmd[i])
 	{	
-		if (search_equal(cmd[i]) == 0 || is_invalid_key(cmd[i], 0)) 
-			error_msg(main, cmd[i], EXPORT_KEY_ERROR, 1);
-		else if (search_equal(cmd[i]) == -1)
+		if (search_equal(main->curr->cmd[i]) == 0 \
+		|| is_invalid_key(main->curr->cmd[i], 0))
+			error_msg(main, main->curr->cmd[i], EXPORT_KEY_ERROR, 1);
+		else if (search_equal(main->curr->cmd[i]) == -1)
 		{
-			add_env(main, cmd[i], NULL);
+			add_env(main, main->curr->cmd[i], NULL);
 			main->status = 0;
 		}	
 		else
 		{
-			args = make_key_value(cmd[i]);
+			args = make_key_value(main->curr->cmd[i]);
 			add_env(main, args[0], args[1]);
 			ft_free_str(args, 0);
 			main->status = 0;

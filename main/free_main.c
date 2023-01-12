@@ -101,6 +101,7 @@ void	cmd_node_clear(t_cmd_node	*nodes)
 		nodes = nodes->next;
 		infile_node_clear(tmp->infile_node);
 		outfile_node_clear(tmp->outfile_node);
+		ft_free(tmp->cmd);
 		ft_free(tmp);
 	}
 }

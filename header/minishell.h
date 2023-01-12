@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 20:14:42 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:57:39 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ char		*ft_strdup(const char *s1);
 char		*ft_substr(char *s, int start, int len);
 char		*ft_itoa(int n);
 void		*ft_calloc(size_t count, size_t size);
+void		ft_putstr_fd(char *s, int fd);
 
 /* envp */
 char		*ft_strchr(const char *s, int c);

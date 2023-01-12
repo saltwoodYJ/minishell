@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:01 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 21:57:25 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:49:31 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_exit(t_main_node *main)
 	int	exit_code;
 	int	is_not_num;
 
-	if (main->curr->idx + 1 == main->cmd_num)
+	if (main->cmd_num == 1)
 		printf("exit\n");
 	if (main->curr->cmd[1])
 	{
