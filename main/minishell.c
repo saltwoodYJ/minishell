@@ -51,17 +51,17 @@ int	main(int ac, char **av, char **ev)
 			main = new_red_node(sizeof(t_main_node));
 			make_main(main, line, status, ev_lst);
 			add_history(line);
-			if (main->cmd_num)
-			{
-				run_command(main);
-				restore_std(main);
-				status = main->status;
-			}
+//			if (main->cmd_num)
+//			{
+//				run_command(main);
+//				restore_std(main);
+//				status = main->status;
+//			}
 			free_main(main);
 			free(main);
 			main = NULL;
 			free(line);
-		//	system("leaks minishell");
+			system("leaks minishell");
 		}
 	}
 	return (main->status);
