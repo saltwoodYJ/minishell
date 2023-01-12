@@ -122,7 +122,8 @@ void	parse_node_clear(t_parsing_node	*nodes)
 
 void	free_main(t_main_node *main)
 {
-	(void)main;
     cmd_node_clear(main->curr);
 	parse_node_clear(main->parse);
+	ft_free(main->heredoc_node);
+	ft_free(main->node_head);
 }

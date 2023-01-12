@@ -30,7 +30,7 @@ char	*interpret(char *str, t_envp_node *ev_lst, int status)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1])) && is_quote(str, i) != 2)
+		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1]) || str[i + 1] == '?') && is_quote(str, i) != 2)
 		{
 			i++;
 			key = 0;
@@ -85,7 +85,7 @@ int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1])) && is_quote(str, i) != 2)
+		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1]) || str[i + 1] == '?') && is_quote(str, i) != 2)
 		{
 			i++;
 			key = 0; // "$hello 'yeji'"

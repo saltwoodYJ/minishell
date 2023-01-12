@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 16:44:23 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:17:46 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ void	add_env(t_main_node *main, char *key, char *value)
 		{
 			if (!value)
 				return ;
-			curr->value = value;
+			if (value)
+				free(curr->value);
+			curr->value = ft_strdup(value);
 			return ;
 		}
 		curr = curr->next;
@@ -86,6 +88,7 @@ void	ft_export(t_main_node *main)
 		{
 			args = make_key_value(cmd[i]);
 			add_env(main, args[0], args[1]);
+			ft_free_str(args, 0);
 			main->status = 0;
 		}
 		i++;

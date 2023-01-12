@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:12 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 19:49:46 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:18:56 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ int	only_one_builtin(t_main_node *main)
 
 int	run_command(t_main_node *main)
 {
-	int		prev_fd;
-	int		i;
-	int		status;
-	pid_t	pid;
+	int			prev_fd;
+	int			i;
+	int			status;
+	pid_t		pid;
 	t_cmd_node	*tmp;
 
 	i = -1;
@@ -64,15 +64,13 @@ int	run_command(t_main_node *main)
 			return (1);
 		tmp = main->curr;
 		main->curr = main->curr->next;
-//		cmd_node_clear(tmp);
-		printf("clear!");
 	}
 	pid = exec_last(main, prev_fd);
 	i = -1;
 	while (++i < main->cmd_num)
 	{
 		if (waitpid(-1, &status, 0) == pid && (WIFEXITED(status)))
-			main->status = WEXITSTATUS(status); //시그널 처리
+			main->status = WEXITSTATUS(status);
 	}
 	return (0);
 }
