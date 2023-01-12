@@ -47,7 +47,7 @@ int	error_msg(t_main_node *main, char *arg, t_error error, int status)
 	return (status);
 }
 
-void	ft_free(char **s1, char **s2)
+void	ft_free_str(char **s1, char **s2)
 {
 	int	i;
 

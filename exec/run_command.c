@@ -16,7 +16,7 @@ int	no_cmd(t_main_node *main, int flag)
 {
 	if (flag == 0)
 	{
-		if (!(main->node_head->next->cmd) || !(main->node_head->next->cmd[0]))
+		if (!(main->node_head->next) || !(main->node_head->next->cmd) || !(main->node_head->next->cmd[0]))
 		{
 			input_redirect(main);
 			output_redirect(main);

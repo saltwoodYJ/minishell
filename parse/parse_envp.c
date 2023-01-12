@@ -18,7 +18,7 @@ t_envp_node	*parse_envp(char **ev)
 	t_envp_node	*now;
 	int			index;
 
-	envp_node = malloc(sizeof(t_envp_node));
+	envp_node = new_red_node(sizeof(t_envp_node));
 	now = envp_node;
 	index = 0;
 	while (ev[index])
@@ -43,6 +43,8 @@ t_envp_node	*new_envp_node(char *envp)
 		exit (1);
 	node->key = ft_substr(envp, 0, equal);
 	node->value = ft_substr(envp, equal + 1, len - equal - 1);
+	if(ft_strncmp(node->key, "OLDPWD", 6) == 0)
+		node->value = NULL;
 	node->next = NULL;
 	return (node);
 }
@@ -71,7 +73,7 @@ char	*ft_substr(char *s, int start, int len)
 	return (substr);
 }
 
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len)
+char	*get_value_by_key(t_envp_node *ev_lst, char *key, int len)
 {
 	t_envp_node	*now;
 
@@ -80,8 +82,8 @@ t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len)
 	now = ev_lst->next;
 	while (now)
 	{
-		if (ft_strncmp(now->key, key, len) == 0)
-			return (now);
+		if (ft_strncmp(now->key, key, len) == 0 && !now->key[len])
+			return (now->value);
 		now = now->next;
 	}
 	return (NULL);

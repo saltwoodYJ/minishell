@@ -117,7 +117,7 @@ void		init_cmd_node(t_cmd_node *node);
 t_envp_node	*parse_envp(char **ev);
 t_envp_node	*new_envp_node(char *envp);
 char		*ft_substr(char *s, int start, int len);
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len);
+char		*get_value_by_key(t_envp_node *ev_lst, char *key, int len);
 
 /* parse_red */
 void		set_red(t_parsing_node *parse, t_cmd_node *node, t_main_node *main);
@@ -143,10 +143,10 @@ void		ft_parse(char *s, t_parsing_node **parse);
 int			add_parsing_node(t_parsing_node **now, char *str);
 
 /* interpret */
-void		ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst);
-char		*interpret(char *str, t_envp_node *ev_lst);
+void		ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status);
+char		*interpret(char *str, t_envp_node *ev_lst, int status);
 char		*ft_strcat(char *str, char *value);
-int			get_len_ev(char *str, t_envp_node *ev_lst);
+int			get_len_ev(char *str, t_envp_node *ev_lst, int status);
 int			check_dollar(char *str);
 
 /* red_utils */
@@ -197,11 +197,12 @@ int			search_equal(char *s);
 t_envp_node	*new_envp_node(char *envp);
 
 /* utils */
-void		ft_free(char **s1, char **s2);
+void		ft_free_str(char **s1, char **s2);
 size_t		ft_double_strlen(char **str);
 void		perror_comment(char *s1, char *s2);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
 int			error_msg(t_main_node *main, char *arg, t_error error, int status);
+int			ft_atoi(const char *str);
 
 /* libft */
 char		*ft_strchr(const char *s, int c);

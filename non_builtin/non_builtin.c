@@ -71,10 +71,10 @@ char	*get_path(char *first_cmd, char **splited_path)
 		if (access(cmd_path, X_OK) == 0)
 			break ;
 		else
-			ft_free(0, &cmd_path);
+			ft_free_str(0, &cmd_path);
 		i++;
 	}
-	ft_free(0, &temp_path);
+	ft_free_str(0, &temp_path);
 	return (cmd_path);
 }
 
@@ -94,7 +94,7 @@ void	exec_non_builtin(t_main_node *main)
 		if (!splited_path)
 			exit(error_msg(main, cmd_args[0], FILE_ERROR, 127));
 		path = get_path(cmd_args[0], splited_path);
-		ft_free(splited_path, 0);
+		ft_free_str(splited_path, 0);
 		if (!path)
 			exit(error_msg(main, cmd_args[0], CMD_ERROR, 127));
 	}

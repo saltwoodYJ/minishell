@@ -20,13 +20,12 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 
 	p_now = parse;
 	i = 0;
-	main->node_head = malloc(sizeof(t_cmd_node));
 	c_now = main->node_head;
 	while (p_now)
 	{
 		if (p_now->type == PIPE)
 		{
-			if (!p_now->next || p_now->next->type == PIPE)
+			if (p_now != parse && (!p_now->next || p_now->next->type == PIPE))
 			{
 				printf("minishell: syntax error near unexpected token `newline\'\n");
 				break;
