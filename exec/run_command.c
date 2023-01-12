@@ -66,7 +66,6 @@ int	run_command(t_main_node *main)
 			return (1);
 		tmp = main->curr;
 		main->curr = main->curr->next;
-//		cmd_node_clear(tmp);
 		printf("clear!");
 	}
 	pid = exec_last(main, prev_fd);

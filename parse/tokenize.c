@@ -4,16 +4,12 @@ int	make_token(char *line, t_main_node *main)
 {
 	t_parsing_node	*parse;
 
-	main->heredoc_node = new_red_node(sizeof(t_infile_node));
 	ft_parse(line, &parse);
 	ft_interpret(parse, main->ev_lst, main->status);
 	make_cmd_list(parse, main);
 	main->parse = parse;
 	return (1);
 }
-// ls -a -l > a.out
-// ls, -a, -l, >, a.out
-// 0    0  0   O  0
 
 char	*ft_worddup(char *str, int index, int len)
 {

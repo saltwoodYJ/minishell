@@ -44,7 +44,10 @@ t_envp_node	*new_envp_node(char *envp)
 	node->key = ft_substr(envp, 0, equal);
 	node->value = ft_substr(envp, equal + 1, len - equal - 1);
 	if(ft_strncmp(node->key, "OLDPWD", 6) == 0)
+	{
+		free(node->value);
 		node->value = NULL;
+	}
 	node->next = NULL;
 	return (node);
 }

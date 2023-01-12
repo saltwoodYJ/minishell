@@ -14,6 +14,7 @@
 
 void	make_main(t_main_node *main, char *line, int status, t_envp_node *ev_lst)
 {
+ 	main->heredoc_node = new_red_node(sizeof(t_infile_node));
 	main->node_head = new_red_node(sizeof(t_cmd_node));
 	main->ev_lst = ev_lst;
 	main->status = status;
@@ -60,7 +61,7 @@ int	main(int ac, char **av, char **ev)
 			free(main);
 			main = NULL;
 			free(line);
-			system("leaks minishell");
+		//	system("leaks minishell");
 		}
 	}
 	return (main->status);
