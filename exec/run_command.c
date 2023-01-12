@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:12 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 15:11:38 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:49:46 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	no_cmd(t_main_node *main, int flag)
 		{
 			input_redirect(main);
 			output_redirect(main);
-			clear_heredoc(main);
 			return (1);
 		}
 	}
@@ -30,7 +29,6 @@ int	no_cmd(t_main_node *main, int flag)
 		{
 			input_redirect(main);
 			output_redirect(main);
-			clear_heredoc(main);
 			return (1);
 		}
 	}
@@ -56,7 +54,7 @@ int	run_command(t_main_node *main)
 
 	i = -1;
 	prev_fd = dup(0);
-	if (no_cmd(main, 0) || only_one_builtin(main))
+	if (only_one_builtin(main))
 		return (0);
 	while (++i < main->cmd_num - 1)
 	{
@@ -70,7 +68,7 @@ int	run_command(t_main_node *main)
 	while (++i < main->cmd_num)
 	{
 		if (waitpid(-1, &status, 0) == pid && (WIFEXITED(status)))
-			main->status = WEXITSTATUS(status);
+			main->status = WEXITSTATUS(status); //시그널 처리
 	}
 	return (0);
 }

@@ -6,12 +6,12 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/11 21:42:13 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 20:00:48 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+ 
 void	make_main(t_main_node *main, char *line, int status, t_envp_node *ev_lst)
 {
 	main->ev_lst = ev_lst;
@@ -50,6 +50,7 @@ int	main(int ac, char **av, char **ev)
 			add_history(line);
 			run_command(main);
 			restore_std(main);
+			clear_heredoc(main);
 			status = main->status;
 			// free_main(main);
 			free(main);

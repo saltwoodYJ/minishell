@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 16:54:39 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:40:23 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	exec_non_builtin(t_main_node *main)
 	char	**envp_arr;
 	char	**splited_path;
 
+	if (no_cmd(main, 1))
+		exit(main->status);
 	cmd_args = main->curr->cmd;
 	if (access(cmd_args[0], X_OK) == 0)
 		path = cmd_args[0];

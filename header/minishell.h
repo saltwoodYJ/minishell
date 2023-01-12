@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 17:12:23 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:04:35 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void		*ft_calloc(size_t count, size_t size);
 void		ft_bzero(void *s, size_t n);
 
 /* exec */
+void		restore_std(t_main_node *main);
 int			no_cmd(t_main_node *main, int flag);
 int			run_command(t_main_node *main);
 int			make_pipe(t_main_node *main, int prev_fd);

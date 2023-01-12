@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:06 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 17:09:27 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:59:34 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,13 @@
 
 void	make_exec(t_main_node *main, int flag)
 {
-	if (no_cmd(main, 1))
-		return ;
 	if (input_redirect(main) || output_redirect(main))
 	{
-		clear_heredoc(main);
 		if (flag == 1)
 			return ;
 		else
 			exit(1);
 	}
-	else
-		clear_heredoc(main);
 	if (check_builtin(main->curr->cmd[0]))
 		exec_builtin(main);
 	else
