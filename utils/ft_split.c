@@ -55,7 +55,7 @@ char	*ft_make_arr(char *s, char c, int i)
 	return (arr);
 }
 
-char	**ft_free_all(char **s, int idx)
+char	**ft_free_str_all(char **s, int idx)
 {
 	int	i;
 
@@ -88,7 +88,7 @@ char	**ft_split(char const *s, char c)
 		{
 			arr[idx] = ft_make_arr((char *)s, c, i);
 			if (arr[idx] == 0)
-				return (ft_free_all(arr, idx));
+				return (ft_free_str_all(arr, idx));
 			idx++;
 		}
 		while (s[i] != c && s[i] != 0)

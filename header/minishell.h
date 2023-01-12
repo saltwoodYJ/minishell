@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 17:04:35 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 20:14:42 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_main_node
 	int				cmd_num;
 	int				status;
 	// A C D 파이프 통틀어서 모든 히어독 노드들 저장
+	t_parsing_node	*parse;
 	t_infile_node	*heredoc_node;
 	t_cmd_node		*node_head;
 	t_cmd_node		*curr;
@@ -117,7 +118,7 @@ void		init_cmd_node(t_cmd_node *node);
 t_envp_node	*parse_envp(char **ev);
 t_envp_node	*new_envp_node(char *envp);
 char		*ft_substr(char *s, int start, int len);
-t_envp_node	*get_value_by_key(t_envp_node *ev_lst, char *key, int len);
+char		*get_value_by_key(t_envp_node *ev_lst, char *key, int len);
 
 /* parse_red */
 void		set_red(t_parsing_node *parse, t_cmd_node *node, t_main_node *main);
@@ -143,10 +144,10 @@ void		ft_parse(char *s, t_parsing_node **parse);
 int			add_parsing_node(t_parsing_node **now, char *str);
 
 /* interpret */
-void		ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst);
-char		*interpret(char *str, t_envp_node *ev_lst);
+void		ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status);
+char		*interpret(char *str, t_envp_node *ev_lst, int status);
 char		*ft_strcat(char *str, char *value);
-int			get_len_ev(char *str, t_envp_node *ev_lst);
+int			get_len_ev(char *str, t_envp_node *ev_lst, int status);
 int			check_dollar(char *str);
 
 /* red_utils */
@@ -198,11 +199,12 @@ int			search_equal(char *s);
 t_envp_node	*new_envp_node(char *envp);
 
 /* utils */
-void		ft_free(char **s1, char **s2);
+void		ft_free_str(char **s1, char **s2);
 size_t		ft_double_strlen(char **str);
 void		perror_comment(char *s1, char *s2);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
 int			error_msg(t_main_node *main, char *arg, t_error error, int status);
+int			ft_atoi(const char *str);
 
 /* libft */
 char		*ft_strchr(const char *s, int c);
@@ -228,5 +230,13 @@ void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
 void		free_main(t_main_node *main);
+
+void		cmd_node_clear(t_cmd_node	*nodes);
+void		infile_node_clear(t_infile_node	*nodes);
+void		outfile_node_clear(t_outfile_node	*nodes);
+void		free_double_char(char **cmd);
+void 		free_one_node(t_cmd_node *node);
+void		*ft_free(void *ptr);
+void		parse_node_clear(t_parsing_node	*nodes);
 
 #endif

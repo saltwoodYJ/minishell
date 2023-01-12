@@ -50,9 +50,9 @@ int	is_quote(char *s, int index)
 	indouble = -1;
 	while (s[i] && i <= index)
 	{
-		if (s[i] == '"')
+		if (s[i] == '"' && insingle != 1)
 			indouble *= -1;
-		if (s[i] == '\'')
+		if (s[i] == '\'' && indouble != 1)
 			insingle *= -1;
 		i++;
 	}

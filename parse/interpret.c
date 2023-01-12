@@ -1,9 +1,8 @@
 #include "../header/minishell.h"
 
-void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst)
+void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status)
 {
 	t_parsing_node	*now;
-	t_parsing_node	*tmp_node;
 	char			*tmp;
 
 	now = parse;
@@ -12,47 +11,47 @@ void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst)
 		if (now->type != RED_H && now->next)
 		{
 			tmp = now->next->str;
-			now->next->str = interpret(tmp, ev_lst);
-			free(tmp);
-			if (!now->next->str[0])
-			{
-				tmp_node = now->next;
-				now->next = tmp_node->next;
-				free(tmp_node->str);
-				free(tmp_node);
-			}
+			now->next->str = interpret(tmp, ev_lst, status);
+			ft_free(tmp);
 		}
 		now = now->next;
 	}
 }
 
-char	*interpret(char *str, t_envp_node *ev_lst)
+char	*interpret(char *str, t_envp_node *ev_lst, int status)
 {
-	t_envp_node	*node;
+	char	*value; 
 	int key;
 	int	i;
 	char *tmp;
 
-	char *new_str = new_red_node(sizeof(char) * (get_len_ev(str, ev_lst) + 1));
+	char *new_str = new_red_node(sizeof(char) * (get_len_ev(str, ev_lst, status) + 1));
 	tmp = new_str;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && is_quote(str, i) != 2)
+		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1])) && is_quote(str, i) != 2)
 		{
+			i++;
 			key = 0;
-			while (str[i + key] && str[i + key] != ' ' && str[i + key]!='"' && str[i + key] != '\'')
+			while (str[i + key] && (ft_isalpha(str[i + key]) || ft_isdigit(str[i + key])))
 				key++;
-			node = get_value_by_key(ev_lst, &str[i + 1], key);
-			if (node)
-				new_str = ft_strcat(new_str, node->value);
+			value = get_value_by_key(ev_lst, &str[i], key);
+			if (key == 0 && str[i] == '?')
+			{
+				key++;
+				value = ft_itoa(status);
+			}
+			new_str = ft_strcat(new_str, value);
 			i += key;
 		}
 		else
 		{
-			if (str[i] != '\"')
+			if (!(str[i] == '"' && is_quote(str, i) != 2) && !(str[i] =='\'' && is_quote(str, i) != 1))
+			{
 				*new_str = str[i];
 				new_str++;
+			}
 			i++;
 		}
 	}
@@ -74,30 +73,38 @@ char	*ft_strcat(char *str, char *value)
 	return (str);
 }
 
-int	get_len_ev(char *str, t_envp_node *ev_lst)
+int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 {
-	t_envp_node	*value;
+	char	*value;
 	int len;
 	int	i;
 	int	key;
 
-	len = ft_strlen(str);
+	value = NULL;
+	len = 0;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && is_quote(str, i) != 2)
+		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1])) && is_quote(str, i) != 2)
 		{
-			key = 0;
-			while (str[i + key] && str[i + key] != ' ')
+			i++;
+			key = 0; // "$hello 'yeji'"
+			while (str[i + key] && (ft_isalpha(str[i + key]) || ft_isdigit(str[i + key])))
 				key++;
-			if (key)
-				value = get_value_by_key(ev_lst, &str[i + 1], key);
-			if (value)
-				len += ft_strlen(value->value);
+			value = get_value_by_key(ev_lst, &str[i], key);
+			if (key == 0 && str[i] == '?')
+			{
+				value = ft_itoa(status);
+				key ++;
+			}
+			len += ft_strlen(value);
 			i += key;
 		}
 		else
+		{
 			i++;
+			len++;
+		}
 	}
 	return (len);
 }

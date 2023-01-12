@@ -6,17 +6,18 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/12 20:00:48 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/12 20:34:27 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
- 
+
 void	make_main(t_main_node *main, char *line, int status, t_envp_node *ev_lst)
 {
+	main->node_head = new_red_node(sizeof(t_cmd_node));
 	main->ev_lst = ev_lst;
-	make_token(line, main);
 	main->status = status;
+	make_token(line, main);
 	main->stdin_fd = dup(0);
 	main->stdout_fd = dup(1);
 	main->curr = main->node_head->next;
@@ -31,10 +32,11 @@ void	restore_std(t_main_node *main)
 
 int	main(int ac, char **av, char **ev)
 {
-	char		*line;
-	t_main_node	*main;
-	t_envp_node	*ev_lst;
-	int			status;
+	char			*line;
+	t_main_node		*main;
+	t_envp_node		*ev_lst;
+	int				status;
+
 
 	if (ac < 0 || av[0] == NULL)
 		return (0);
@@ -45,17 +47,21 @@ int	main(int ac, char **av, char **ev)
 		line = readline("minishell$ ");
 		if (line)
 		{
-			main = malloc(sizeof(t_main_node));
+			main = new_red_node(sizeof(t_main_node));
 			make_main(main, line, status, ev_lst);
 			add_history(line);
-			run_command(main);
-			restore_std(main);
-			clear_heredoc(main);
-			status = main->status;
-			// free_main(main);
+			if (main->cmd_num)
+			{
+				run_command(main);
+				restore_std(main);
+				status = main->status;
+				clear_heredoc(main);
+			}
+			free_main(main);
 			free(main);
 			main = NULL;
 			free(line);
+			system("leaks minishell");
 		}
 	}
 	return (main->status);
