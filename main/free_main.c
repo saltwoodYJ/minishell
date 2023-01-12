@@ -83,8 +83,8 @@ void	infile_node_clear(t_infile_node	*nodes)
 	{
 		tmp = nodes;
 		nodes = nodes->next;
-//		ft_free(tmp->file);
-//		ft_free(tmp->limiter);
+		if (tmp->is_heredoc)
+			ft_free(tmp->file);
 		ft_free(tmp);
 	}
 }
