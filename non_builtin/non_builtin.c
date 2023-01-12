@@ -99,6 +99,7 @@ void	exec_non_builtin(t_main_node *main)
 			exit(error_msg(main, cmd_args[0], CMD_ERROR, 127));
 	}
 	envp_arr = make_envp_arr(main->ev_lst);
+//	free_double_char(envp_arr);
 	execve(path, cmd_args, envp_arr);
 	perror("minishell");
 	exit(1);

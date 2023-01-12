@@ -46,9 +46,12 @@ void	free_double_char(char **cmd)
 	char	*str;
 
 	i = 0;
+	if (!cmd)
+		return ;
 	str = cmd[i];
 	while (cmd[i])
 	{
+		printf("free %p %s\n", cmd[i], cmd[i]);
 		ft_free(cmd[i]);
 		i++;
 	}
@@ -65,7 +68,7 @@ void	outfile_node_clear(t_outfile_node	*nodes)
 	{
 		tmp = nodes;
 		nodes = nodes->next;
-		ft_free(tmp->file);
+//		ft_free(tmp->file);
 		ft_free(tmp);
 	}
 }
@@ -80,8 +83,8 @@ void	infile_node_clear(t_infile_node	*nodes)
 	{
 		tmp = nodes;
 		nodes = nodes->next;
-		ft_free(tmp->file);
-		ft_free(tmp->limiter);
+//		ft_free(tmp->file);
+//		ft_free(tmp->limiter);
 		ft_free(tmp);
 	}
 }
@@ -98,7 +101,21 @@ void	cmd_node_clear(t_cmd_node	*nodes)
 		nodes = nodes->next;
 		infile_node_clear(tmp->infile_node);
 		outfile_node_clear(tmp->outfile_node);
-		free_double_char(tmp->cmd);
+		ft_free(tmp);
+	}
+}
+
+void	parse_node_clear(t_parsing_node	*nodes)
+{
+	t_parsing_node	*tmp;
+
+	if (nodes == 0)
+		return ;
+	while (nodes)
+	{
+		tmp = nodes;
+		nodes = nodes->next;
+		ft_free(tmp->str);
 		ft_free(tmp);
 	}
 }
@@ -106,8 +123,6 @@ void	cmd_node_clear(t_cmd_node	*nodes)
 void	free_main(t_main_node *main)
 {
 	(void)main;
-//    cmd_node_clear(main->node_head);
-	//free(main->node_head);
-	ft_input_clear(&(main->heredoc_node));
-	//free(main->heredoc_node);
+    cmd_node_clear(main->curr);
+	parse_node_clear(main->parse);
 }

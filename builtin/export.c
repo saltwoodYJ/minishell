@@ -19,8 +19,8 @@ t_envp_node	*make_envp_node(char *key, char *value)
 	new = (t_envp_node *)malloc(sizeof(t_envp_node));
 	if (!new)
 		return (NULL);
-	new->key = key;
-	new->value = value;
+	new->key = ft_strdup(key);
+	new->value = ft_strdup(value);
 	new->next = NULL;
 	return (new);
 }

@@ -8,6 +8,7 @@ int	make_token(char *line, t_main_node *main)
 	ft_parse(line, &parse);
 	ft_interpret(parse, main->ev_lst, main->status);
 	make_cmd_list(parse, main);
+	main->parse = parse;
 	return (1);
 }
 // ls -a -l > a.out

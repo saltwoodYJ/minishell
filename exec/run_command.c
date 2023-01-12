@@ -53,6 +53,7 @@ int	run_command(t_main_node *main)
 	int		i;
 	int		status;
 	pid_t	pid;
+	t_cmd_node	*tmp;
 
 	i = -1;
 	prev_fd = dup(0);
@@ -63,7 +64,10 @@ int	run_command(t_main_node *main)
 		prev_fd = make_pipe(main, prev_fd);
 		if (prev_fd == -1)
 			return (1);
+		tmp = main->curr;
 		main->curr = main->curr->next;
+//		cmd_node_clear(tmp);
+		printf("clear!");
 	}
 	pid = exec_last(main, prev_fd);
 	i = -1;

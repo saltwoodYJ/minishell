@@ -101,6 +101,7 @@ typedef struct s_main_node
 	int				cmd_num;
 	int				status;
 	// A C D 파이프 통틀어서 모든 히어독 노드들 저장
+	t_parsing_node	*parse;
 	t_infile_node	*heredoc_node;
 	t_cmd_node		*node_head;
 	t_cmd_node		*curr;
@@ -228,5 +229,13 @@ void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
 void		free_main(t_main_node *main);
+
+void	cmd_node_clear(t_cmd_node	*nodes);
+void	infile_node_clear(t_infile_node	*nodes);
+void	outfile_node_clear(t_outfile_node	*nodes);
+void	free_double_char(char **cmd);
+void free_one_node(t_cmd_node *node);
+void	*ft_free(void *ptr);
+void	parse_node_clear(t_parsing_node	*nodes);
 
 #endif

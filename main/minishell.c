@@ -32,9 +32,9 @@ void	restore_std(t_main_node *main)
 
 int	main(int ac, char **av, char **ev)
 {
-	char		*line;
-	t_main_node	*main;
-	t_envp_node	*ev_lst;
+	char			*line;
+	t_main_node		*main;
+	t_envp_node		*ev_lst;
 	int			status;
 
 
@@ -47,7 +47,7 @@ int	main(int ac, char **av, char **ev)
 		line = readline("minishell$ ");
 		if (line)
 		{
-			main = malloc(sizeof(t_main_node));
+			main = new_red_node(sizeof(t_main_node));
 			make_main(main, line, status, ev_lst);
 			add_history(line);
 			if (main->cmd_num)
@@ -60,6 +60,7 @@ int	main(int ac, char **av, char **ev)
 			free(main);
 			main = NULL;
 			free(line);
+			system("leaks minishell");
 		}
 	}
 	return (main->status);
