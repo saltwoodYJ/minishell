@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 17:37:27 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 22:11:44 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	exec_chdir(t_main_node *main, char *path, char *old_path)
 	}
 	else
 	{
-		perror_comment("cd", path);
-		main->status = 1;
+		perror_comment(main, "cd", path, 1);
+		free(old_path);
 	}
 }
 

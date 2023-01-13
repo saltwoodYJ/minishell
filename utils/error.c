@@ -6,22 +6,34 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:18:17 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 17:18:18 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 22:17:24 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	perror_comment(char *s1, char *s2)
+int	perror_comment(t_main_node *main, char *s1, char *s2, int status)
 {
 	char	*temp;
 	char	*temp2;
 
-	temp = ft_strjoin3("minishell: ", s1, ": ");
-	temp2 = ft_strjoin(temp, s2);
-	free(temp);
-	perror(temp2);
-	free(temp2);
+	if (s1)
+	{
+		temp = ft_strjoin3("minishell: ", s1, ": ");
+		temp2 = ft_strjoin(temp, s2);
+		free(temp);
+		perror(temp2);
+		free(temp2);
+	}
+	else
+	{
+		temp = ft_strjoin("minishell: ", s2);
+		perror(temp);
+		free(temp);
+	}
+
+	main->status = status;
+	return (status);
 }
 
 void	ft_putstr_err(char *cmd, char *arg, char *comment, t_error error)
@@ -52,7 +64,6 @@ void	ft_putstr_err(char *cmd, char *arg, char *comment, t_error error)
 
 int	error_msg(t_main_node *main, char *arg, t_error error, int status)
 {
-	dup2(main->stdout_fd, 1);
 	if (error == FILE_ERROR)
 		ft_putstr_err(NULL, arg, "No such file or directory", FILE_ERROR);
 	if (error == CMD_ERROR)

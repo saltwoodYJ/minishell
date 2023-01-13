@@ -6,15 +6,16 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/13 17:50:59 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:25:38 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	make_main(t_main_node *main, char *line, int status, t_envp_node *ev_lst)
+void	make_main(t_main_node *main, char *line, int status, \
+t_envp_node *ev_lst)
 {
- 	main->heredoc_node = new_red_node(sizeof(t_infile_node));
+	main->heredoc_node = new_red_node(sizeof(t_infile_node));
 	main->node_head = new_red_node(sizeof(t_cmd_node));
 	main->ev_lst = ev_lst;
 	main->status = status;
@@ -31,16 +32,16 @@ void	restore_std(t_main_node *main)
 	dup2(main->stdout_fd, 1);
 }
 
-int	main(int ac, char **av, char **ev)
+extern char	**environ;
+
+int	main(void)
 {
 	char			*line;
 	t_main_node		*main;
 	t_envp_node		*ev_lst;
 	int				status;
 
-	if (ac < 0 || av[0] == NULL)
-		return (0);
-	ev_lst = parse_envp(ev);
+	ev_lst = parse_envp(environ);
 	status = 0;
 	while (1)
 	{
@@ -63,5 +64,5 @@ int	main(int ac, char **av, char **ev)
 			free(line);
 		}
 	}
-	return (main->status);
+	return (status);
 }

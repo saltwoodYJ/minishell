@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:07:20 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 21:22:51 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 22:14:54 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	input_redirect(t_main_node *main)
 				close(input_fd);
 			}
 			else
-				return (error_msg(main, curr->file, FILE_ERROR, 1));
+				return (perror_comment(main, NULL, curr->file, 1));
 		}
 		curr = curr->next;
 	}
@@ -70,7 +70,7 @@ int	output_redirect(t_main_node *main)
 				close(output_fd);
 			}
 			else
-				return (error_msg(main, curr->file, FILE_ERROR, 1));
+				return (perror_comment(main, NULL, curr->file, 1));
 		}
 		curr = curr->next;
 	}

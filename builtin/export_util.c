@@ -6,20 +6,20 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:00:56 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 16:41:15 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:53:32 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	search_equal(char *s)
+int	ft_search_char(char *s, char c)
 {
 	int	i;
 
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '=')
+		if (s[i] == c)
 			return (i);
 		i++;
 	}
@@ -95,7 +95,7 @@ char	**make_key_value(char *cmd)
 
 	if (!cmd)
 		return (0);
-	idx = search_equal(cmd);
+	idx = ft_search_char(cmd, '=');
 	args = (char **)malloc(sizeof(char *) * 3);
 	if (!args)
 		return (0);

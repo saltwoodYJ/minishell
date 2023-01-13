@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 17:15:10 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:53:02 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	ft_export(t_main_node *main)
 		show_export(main);
 	while (main->curr->cmd[i])
 	{	
-		if (search_equal(main->curr->cmd[i]) == 0 \
+		if (ft_search_char(main->curr->cmd[i], '=') == 0 \
 		|| is_invalid_key(main->curr->cmd[i], 0))
 			error_msg(main, main->curr->cmd[i], EXPORT_KEY_ERROR, 1);
-		else if (search_equal(main->curr->cmd[i]) == -1)
+		else if (ft_search_char(main->curr->cmd[i], '=') == -1)
 		{
 			add_env(main, main->curr->cmd[i], NULL);
 			main->status = 0;

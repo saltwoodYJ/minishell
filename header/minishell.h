@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 17:20:09 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 22:11:36 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void		add_env(t_main_node *main, char *key, char *value);
 int			is_invalid_key(char *s, int flag);
 char		*get_env_path(t_envp_node *envp, char *key);
 char		**make_key_value(char *cmd);
-int			search_equal(char *s);
+int			ft_search_char(char *s, char c);
 t_envp_node	*new_envp_node(char *envp);
 void		swap_envp_node(t_envp_node *curr, t_envp_node *next);
 void		restore_envp_order(t_main_node *main);
@@ -205,7 +205,7 @@ size_t		ft_double_strlen(char **str);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
 
 /* error */
-void		perror_comment(char *s1, char *s2);
+int			perror_comment(t_main_node *main, char *s1, char *s2, int status);
 void		ft_putstr_err(char *cmd, char *arg, char *comment, t_error error);
 int			error_msg(t_main_node *main, char *arg, t_error error, int status);
 
