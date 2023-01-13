@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:12 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 16:17:56 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 18:14:53 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	run_command(t_main_node *main)
 	int			i;
 	int			status;
 	pid_t		pid;
+	pid_t		res;
 	t_cmd_node	*tmp;
 
 	i = -1;
@@ -70,8 +71,12 @@ int	run_command(t_main_node *main)
 	i = -1;
 	while (++i < main->cmd_num)
 	{
-		if (waitpid(-1, &status, 0) == pid && (WIFEXITED(status)))
+		res = waitpid(-1, &status, 0);
+		if (res == pid)
+		{
+			if (WIFEXITED(status))
 			main->status = WEXITSTATUS(status);
+		}
 	}
 	return (0);
 }

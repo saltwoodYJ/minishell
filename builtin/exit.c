@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:01 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 21:49:31 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 18:16:28 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,8 @@ void	ft_exit(t_main_node *main)
 		main->status = exit_code;
 		exit(exit_code);
 	}
-	exit(main->status);
+	if (main->cmd_num == 1)
+		exit(main->status);
+	main->status = 0;
+	exit(0);
 }

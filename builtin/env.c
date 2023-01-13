@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:28 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 20:53:38 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:56:04 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ void	ft_env(t_main_node *main)
 	t_envp_node	*curr;
 
 	curr = main->ev_lst->next;
-	while (curr != NULL && curr->value != NULL)
+	while (curr != NULL)
 	{
-		printf("%s=%s\n", curr->key, curr->value);
+		if (curr->value)
+			printf("%s=%s\n", curr->key, curr->value);
 		curr = curr->next;
 	}
 	main->status = 0;
