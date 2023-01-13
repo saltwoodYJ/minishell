@@ -1,0 +1,21 @@
+total 176
+drwxr-xr-x  20 hyeokim2  2022_seoul    680 Jan 13 16:16 .
+drwxr-xr-x  17 hyeokim2  2022_seoul    578 Jan 13 15:13 ..
+-rw-r--r--   1 hyeokim2  2022_seoul   6148 Jan 12 21:55 .DS_Store
+drwxr-xr-x  15 hyeokim2  2022_seoul    510 Jan 13 16:13 .git
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Jan 13 16:16 .heredoc0.tmp
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Jan 13 16:16 .heredoc1.tmp
+drwxr-xr-x   5 hyeokim2  2022_seoul    170 Jan 12 20:13 .vscode
+-rw-r--r--   1 hyeokim2  2022_seoul   2402 Jan 13 15:59 Makefile
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Jan 13 16:16 a
+drwxr-xr-x  20 hyeokim2  2022_seoul    680 Jan 13 16:14 builtin
+-rw-r--r--   1 hyeokim2  2022_seoul      0 Jan 13 16:16 c
+-rw-r--r--   1 hyeokim2  2022_seoul   1153 Jan 13 16:16 e
+drwxr-xr-x   6 hyeokim2  2022_seoul    204 Jan 13 16:14 exec
+drwxr-xr-x   3 hyeokim2  2022_seoul    102 Jan 12 20:13 header
+drwxr-xr-x   8 hyeokim2  2022_seoul    272 Jan 13 16:14 main
+-rwxr-xr-x   1 hyeokim2  2022_seoul  72272 Jan 13 16:14 minishell
+drwxr-xr-x   4 hyeokim2  2022_seoul    136 Jan 13 16:14 non_builtin
+drwxr-xr-x  17 hyeokim2  2022_seoul    578 Jan 13 16:14 parse
+drwxr-xr-x   6 hyeokim2  2022_seoul    204 Jan 13 16:14 redirect
+drwxr-xr-x  28 hyeokim2  2022_seoul    952 Jan 13 16:14 utils

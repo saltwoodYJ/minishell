@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:12 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 15:58:03 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:17:56 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	no_cmd(t_main_node *main, int flag)
 {
 	if (flag == 0)
 	{
-		if (!(main->node_head->next) || !(main->node_head->next->cmd) || !(main->node_head->next->cmd[0]))
+		if (!(main->node_head->next) || !(main->node_head->next->cmd) || \
+		!(main->node_head->next->cmd[0]))
 		{
 			input_redirect(main);
 			output_redirect(main);
