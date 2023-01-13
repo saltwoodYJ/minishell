@@ -97,7 +97,6 @@ void	exec_non_builtin(t_main_node *main)
 			exit(error_msg(main, cmd_args[0], FILE_ERROR, 127));
 		path = get_path(cmd_args[0], splited_path);
 		ft_free_str(splited_path, 0);
-		printf("path: %s\n", path);
 		if (!path)
 			exit(error_msg(main, cmd_args[0], CMD_ERROR, 127));
 	}

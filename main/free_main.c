@@ -35,8 +35,6 @@ void free_one_node(t_cmd_node *node)
 		}
 		ft_free(node->cmd);
 	}
-    // ft_input_clear(&(node->infile_node));
-    // ft_output_clear(&(node->outfile_node));
 	ft_free(node);
 }
 
@@ -68,7 +66,6 @@ void	outfile_node_clear(t_outfile_node	*nodes)
 	{
 		tmp = nodes;
 		nodes = nodes->next;
-//		ft_free(tmp->file);
 		ft_free(tmp);
 	}
 }
@@ -123,8 +120,7 @@ void	parse_node_clear(t_parsing_node	*nodes)
 
 void	free_main(t_main_node *main)
 {
-    cmd_node_clear(main->curr);
+    cmd_node_clear(main->node_head);
 	parse_node_clear(main->parse);
 	ft_free(main->heredoc_node);
-	ft_free(main->node_head);
 }
