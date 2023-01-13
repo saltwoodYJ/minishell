@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 21:57:39 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:39:12 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_envp_node
 {
 	char				*key;
 	char				*value;
+	int					idx;
 	struct s_envp_node	*next;
 }	t_envp_node;
 
@@ -236,7 +237,7 @@ void		cmd_node_clear(t_cmd_node	*nodes);
 void		infile_node_clear(t_infile_node	*nodes);
 void		outfile_node_clear(t_outfile_node	*nodes);
 void		free_double_char(char **cmd);
-void 		free_one_node(t_cmd_node *node);
+void		free_one_node(t_cmd_node *node);
 void		*ft_free(void *ptr);
 void		parse_node_clear(t_parsing_node	*nodes);
 

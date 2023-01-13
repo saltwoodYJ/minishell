@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/12 22:20:17 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:12:09 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(int ac, char **av, char **ev)
 	t_main_node		*main;
 	t_envp_node		*ev_lst;
 	int				status;
-
 
 	if (ac < 0 || av[0] == NULL)
 		return (0);

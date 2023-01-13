@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:06 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 19:59:34 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:01:34 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	make_exec(t_main_node *main, int flag)
 		else
 			exit(1);
 	}
-	if (check_builtin(main->curr->cmd[0]))
-		exec_builtin(main);
-	else
+	// if (check_builtin(main->curr->cmd[0]))
+		// exec_builtin(main);
+	// else
 		exec_non_builtin(main);
 	if (flag != 1)
 		exit(main->status);

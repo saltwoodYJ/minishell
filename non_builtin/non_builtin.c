@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 22:15:58 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:11:56 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ char	*get_path(char *first_cmd, char **splited_path)
 		i++;
 	}
 	free(temp_path);
+	if (i == path_count)
+		return (NULL);
 	return (cmd_path);
 }
 
@@ -97,12 +99,11 @@ void	exec_non_builtin(t_main_node *main)
 			exit(error_msg(main, cmd_args[0], FILE_ERROR, 127));
 		path = get_path(cmd_args[0], splited_path);
 		ft_free_str(splited_path, 0);
-		printf("path: %s\n", path);
 		if (!path)
 			exit(error_msg(main, cmd_args[0], CMD_ERROR, 127));
 	}
 	envp_arr = make_envp_arr(main->ev_lst);
-	execve(path, cmd_args, envp_arr);
+	execve(path, cmd_args, main->ev);
 	perror("minishell");
 	exit(1);
 }

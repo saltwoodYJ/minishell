@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 22:19:08 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:53:10 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,34 @@ void	add_env(t_main_node *main, char *key, char *value)
 	}
 	pre->next = make_envp_node(key, value);
 }
+
+// void	envp_ascending_order(t_main_node *main)
+// {
+// 	t_envp_node	*curr;
+// 	int			i;
+
+// 	i = 0;
+// 	curr = main->ev_lst->next;
+// 	while (curr)
+// 	{
+// 		curr->idx = i;
+// 		curr = curr->next;
+// 		i++;
+// 	}
+// 	while (curr)
+// 	{
+// 		i = 1;
+// 		while (i < size - 1)
+// 		{
+//         	if (num > 0)
+//         	{
+// 				swap
+//         	}
+//         	i++;
+// 		}
+// 		size--;
+// 	}
+// }
 
 void	show_export(t_main_node *main)
 {

@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:35 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/12 20:37:36 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:34:05 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_builtin(char *str)
 	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd") || \
 		!ft_strcmp(str, "pwd") || !ft_strcmp(str, "export") || \
 		!ft_strcmp(str, "unset") || !ft_strcmp(str, "env") || \
-		!ft_strcmp(str, "exit") || !ft_strcmp(str, "$?"))
+		!ft_strcmp(str, "exit"))
 		return (1);
 	return (0);
 }
