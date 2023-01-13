@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 17:28:59 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/13 18:26:44 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	exec_non_builtin(t_main_node *main)
 			exit(error_msg(main, cmd_args[0], CMD_ERROR, 127));
 	}
 	envp_arr = make_envp_arr(main->ev_lst);
-	execve(path, cmd_args, main->ev);
+	execve(path, cmd_args, envp_arr);
 	perror("minishell");
 	exit(1);
 }
