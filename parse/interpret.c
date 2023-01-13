@@ -63,6 +63,8 @@ char	*ft_strcat(char *str, char *value)
 {
 	int	i;
 
+	if (!value)
+		return(str);
 	i = 0;
 	while(value[i])
 	{

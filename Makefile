@@ -6,13 +6,13 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2023/01/13 21:21:25 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/13 22:27:28 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address 
 
 NAME = minishell
 
