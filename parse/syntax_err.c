@@ -47,7 +47,7 @@ int	check_red_err(t_parsing_node *now)
 
 int	check_quote_err(char *line)
 {
-	int quote;
+	int	quote;
 	int	ret;
 
 	ret = 0;

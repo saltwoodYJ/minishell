@@ -234,7 +234,8 @@ void		ft_output_clear(t_outfile_node **lst);
 void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
-void		free_main(t_main_node *main);
+void		free_main(t_main_node *main, char *line);
+
 
 void		cmd_node_clear(t_cmd_node	*nodes);
 void		infile_node_clear(t_infile_node	*nodes);
@@ -245,9 +246,9 @@ void		*ft_free(void *ptr);
 void		parse_node_clear(t_parsing_node	*nodes);
 
 /* syntax_err */
-int print_syntax_err(const char *str);
-int check_pipe_err(t_parsing_node *parse, t_parsing_node *now);
-int check_red_err(t_parsing_node *now);
-int	check_quote_err(char *line);
+int			print_syntax_err(const char *str);
+int			check_pipe_err(t_parsing_node *parse, t_parsing_node *now);
+int			check_red_err(t_parsing_node *now);
+int			check_quote_err(char *line);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_redir.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/14 16:16:31 by yejinam           #+#    #+#             */
+/*   Updated: 2023/01/14 16:16:32 by yejinam          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_one_input(t_infile_node *input)
@@ -28,7 +40,7 @@ void	ft_input_clear(t_infile_node **inputs)
 
 void	free_one_output(t_outfile_node *output)
 {
-	if (output== 0)
+	if (output == 0)
 		return ;
 	if (output->file)
 		free(output->file);

@@ -29,7 +29,7 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 			{
 				main->status = 258;
 				main->cmd_num = -1;
-				break;
+				break ;
 			}
 			i++;
 			c_now->next = new_cmd_node(&p_now, i, main);
@@ -77,10 +77,7 @@ char	**set_cmd(t_parsing_node *parsing, t_main_node *main)
 			now = now->next;
 		}
 		else
-		{
-			cmd[index] = now->str;
-			index++;
-		}
+			cmd[index++] = now->str;
 		now = now->next;
 	}
 	cmd[index] = NULL;
@@ -103,7 +100,7 @@ int	get_cmd_num(t_parsing_node *parsing, t_main_node *main)
 			{
 				main->status = 258;
 				main->cmd_num = -1;
-				return (0) ;
+				return (0);
 			}
 			now = now->next;
 		}

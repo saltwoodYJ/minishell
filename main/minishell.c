@@ -12,24 +12,25 @@
 
 #include "minishell.h"
 
-void	make_main(t_main_node *main, char *line, int status, \
+void	make_main(t_main_node **main, char *line, int status, \
 t_envp_node *ev_lst)
 {
+	(*main) = new_red_node(sizeof(t_main_node));
 	if (check_quote_err(line))
 	{
-		main->status = 258;
-		main->cmd_num = -1;
+		(*main)->status = 258;
+		(*main)->cmd_num = -1;
 		return ;
 	}
-	main->heredoc_node = new_red_node(sizeof(t_infile_node));
-	main->node_head = new_red_node(sizeof(t_cmd_node));
-	main->ev_lst = ev_lst;
-	main->status = status;
-	make_token(line, main);
-	main->stdin_fd = dup(0);
-	main->stdout_fd = dup(1);
-	main->curr = main->node_head->next;
-	set_heredoc(main);
+	(*main)->heredoc_node = new_red_node(sizeof(t_infile_node));
+	(*main)->node_head = new_red_node(sizeof(t_cmd_node));
+	(*main)->ev_lst = ev_lst;
+	(*main)->status = status;
+	make_token(line, (*main));
+	(*main)->stdin_fd = dup(0);
+	(*main)->stdout_fd = dup(1);
+	(*main)->curr = (*main)->node_head->next;
+	set_heredoc(*main);
 }
 
 void	restore_std(t_main_node *main)
@@ -54,8 +55,7 @@ int	main(void)
 		line = readline("minishell$ ");
 		if (line[0])
 		{
-			main = new_red_node(sizeof(t_main_node));
-			make_main(main, line, status, ev_lst);
+			make_main(&main, line, status, ev_lst);
 			add_history(line);
 			if (main->cmd_num != -1)
 			{
@@ -64,10 +64,7 @@ int	main(void)
 				clear_heredoc(main);
 			}
 			status = main->status;
-			free_main(main);
-			free(main);
-			main = NULL;
-			free(line);
+			free_main(main, line);
 		}
 	}
 	return (status);

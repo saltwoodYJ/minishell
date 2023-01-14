@@ -12,50 +12,6 @@
 
 #include "minishell.h"
 
-void	*ft_free(void *ptr)
-{
-	if (ptr)
-		free(ptr);
-	return (NULL);
-}
-
-void free_one_node(t_cmd_node *node)
-{
-	int i;
-
-	i = 0;
-	if (node == 0)
-		return ;
-	if (node->cmd)
-	{
-		while (node->cmd[i])
-		{
-			ft_free(node->cmd[i]);
-			i++;
-		}
-		ft_free(node->cmd);
-	}
-	ft_free(node);
-}
-
-void	free_double_char(char **cmd)
-{
-	int		i;
-	char	*str;
-
-	i = 0;
-	if (!cmd)
-		return ;
-	str = cmd[i];
-	while (cmd[i])
-	{
-		printf("free %p %s\n", cmd[i], cmd[i]);
-		ft_free(cmd[i]);
-		i++;
-	}
-	ft_free(cmd);
-}
-
 void	outfile_node_clear(t_outfile_node	*nodes)
 {
 	t_outfile_node	*tmp;
@@ -86,7 +42,7 @@ void	infile_node_clear(t_infile_node	*nodes)
 	}
 }
 
-void	cmd_node_clear(t_cmd_node	*nodes)
+void	cmd_node_clear(t_cmd_node *nodes)
 {
 	t_cmd_node	*tmp;
 
@@ -118,9 +74,11 @@ void	parse_node_clear(t_parsing_node	*nodes)
 	}
 }
 
-void	free_main(t_main_node *main)
+void	free_main(t_main_node *main, char *line)
 {
 	cmd_node_clear(main->node_head);
 	parse_node_clear(main->parse);
 	ft_free(main->heredoc_node);
+	ft_free(main);
+	ft_free(line);
 }

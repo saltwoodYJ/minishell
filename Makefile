@@ -12,7 +12,7 @@
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror # -g3 -fsanitize=address 
 
 NAME = minishell
 
@@ -43,7 +43,7 @@ $(REDIR_DIR)heredoc.c $(REDIR_DIR)redirect.c \
 $(UTILS_DIR)ft_isalpha.c $(UTILS_DIR)ft_isdigit.c $(UTILS_DIR)ft_split.c $(UTILS_DIR)ft_strchr.c $(UTILS_DIR)ft_strcmp.c \
 $(UTILS_DIR)ft_strdup.c $(UTILS_DIR)ft_strjoin.c $(UTILS_DIR)ft_strlen.c $(UTILS_DIR)ft_strncmp.c $(UTILS_DIR)utils.c \
 $(UTILS_DIR)ft_itoa.c $(UTILS_DIR)ft_atoi.c $(UTILS_DIR)ft_putstr_fd.c  $(UTILS_DIR)error.c \
-$(MAIN_DIR)free_main.c $(MAIN_DIR)free_redir.c
+$(MAIN_DIR)free_main.c $(MAIN_DIR)free_redir.c $(MAIN_DIR)free_utils.c
 
 OBJS = $(SRCS:%.c=%.o)
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   interpret.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/14 16:14:58 by yejinam           #+#    #+#             */
+/*   Updated: 2023/01/14 16:15:00 by yejinam          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../header/minishell.h"
 
 void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status)
@@ -6,7 +18,7 @@ void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status)
 	char			*tmp;
 
 	now = parse;
-	while(now)
+	while (now)
 	{
 		if (now->type != RED_H && now->next)
 		{
@@ -20,12 +32,13 @@ void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status)
 
 char	*interpret(char *str, t_envp_node *ev_lst, int status)
 {
-	char	*value; 
-	int key;
-	int	i;
-	char *tmp;
+	char	*tmp;
+	char	*new_str;
+	char	*value;
+	int		key;
+	int		i;
 
-	char *new_str = new_red_node(sizeof(char) * (get_len_ev(str, ev_lst, status) + 1));
+	new_str = new_red_node(sizeof(char) * (get_len_ev(str, ev_lst, status) + 1));
 	tmp = new_str;
 	i = 0;
 	while (str[i])
@@ -64,13 +77,13 @@ char	*ft_strcat(char *str, char *value)
 	int	i;
 
 	if (!value)
-		return(str);
+		return ((str));
 	i = 0;
-	while(value[i])
+	while (value[i])
 	{
 		*str = value[i];
 		str++;
-		i++; 
+		i++;
 	}
 	return (str);
 }
@@ -78,9 +91,9 @@ char	*ft_strcat(char *str, char *value)
 int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 {
 	char	*value;
-	int len;
-	int	i;
-	int	key;
+	int		len;
+	int		i;
+	int		key;
 
 	value = NULL;
 	len = 0;
@@ -90,7 +103,7 @@ int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 		if (str[i] == '$' && str[i + 1] && (ft_isalpha(str[i + 1]) || ft_isdigit(str[i + 1]) || str[i + 1] == '?') && is_quote(str, i) != 2)
 		{
 			i++;
-			key = 0; // "$hello 'yeji'"
+			key = 0;
 			while (str[i + key] && (ft_isalpha(str[i + key]) || ft_isdigit(str[i + key])))
 				key++;
 			value = get_value_by_key(ev_lst, &str[i], key);
@@ -116,7 +129,7 @@ int	check_dollar(char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1])
 			return (1);

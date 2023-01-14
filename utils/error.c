@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/01/13 17:18:17 by hyeokim2		  #+#	#+#			 */
-/*   Updated: 2023/01/13 22:17:24 by hyeokim2		 ###   ########.fr	   */
+/*   Updated: 2023/01/14 16:16:51 by yejinam          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	perror_comment(t_main_node *main, char *s1, char *s2, int status)
 		perror(temp);
 		free(temp);
 	}
-
 	main->status = status;
 	return (status);
 }
