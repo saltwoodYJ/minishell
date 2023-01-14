@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*															 */
 /*											 :::	 ::::::::   */
-/*   minishell.h								:+:	 :+:    :+:   */
-/*										  +:+ +:+	    +:+	*/
+/*   minishell.h								:+:	 :+:	:+:   */
+/*										  +:+ +:+		+:+	*/
 /*   By: hyeokim2 <hyeokim2@student.42.fr>		+#+  +:+	  +#+	   */
 /*									   +#+#+#+#+#+   +#+		 */
-/*   Created: 2023/01/07 02:51:49 by hyeokim2		#+#    #+#		   */
-/*   Updated: 2023/01/14 19:42:43 by hyeokim2	    ###   ########.fr	  */
+/*   Created: 2023/01/07 02:51:49 by hyeokim2		#+#	#+#		   */
+/*   Updated: 2023/01/14 19:42:43 by hyeokim2		###   ########.fr	  */
 /*															 */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -256,8 +257,9 @@ int			check_red_err(t_parsing_node *now);
 int			check_quote_err(char *line);
 
 /* signal */
-void    set_signal(int sigint, int sigquit);
+void	set_signal(int sigint, int sigquit);
 void	action(int signum);
+void	rm_ctrl(void);
 
 
 #endif

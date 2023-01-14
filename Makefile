@@ -1,18 +1,18 @@
 # **************************************************************************** #
 #															   #
-#											  :::	 ::::::::    #
-#    Makefile								   :+:	 :+:    :+:    #
-#										   +:+ +:+	    +:+	 #
-#    By: hyeokim2 <hyeokim2@student.42.fr>		+#+  +:+	  +#+	    #
-#									    +#+#+#+#+#+   +#+		  #
-#    Created: 2022/12/10 18:30:36 by yejinam		 #+#    #+#		    #
-#    Updated: 2023/01/14 19:38:55 by hyeokim2	    ###   ########.fr	   #
+#											  :::	 ::::::::	#
+#	Makefile								   :+:	 :+:	:+:	#
+#										   +:+ +:+		+:+	 #
+#	By: hyeokim2 <hyeokim2@student.42.fr>		+#+  +:+	  +#+		#
+#										+#+#+#+#+#+   +#+		  #
+#	Created: 2022/12/10 18:30:36 by yejinam		 #+#	#+#			#
+#	Updated: 2023/01/14 19:38:55 by hyeokim2		###   ########.fr	   #
 #															   #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = #-Wall -Wextra -Werror #-g3 -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror#l -g3 -fsanitize=address 
 
 INCLUDE = -I./includes -I/Users/yejinam/.brew/opt/readline/include
 
