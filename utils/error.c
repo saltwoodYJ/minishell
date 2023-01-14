@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:18:17 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 22:17:24 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 18:13:05 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ int	perror_comment(t_main_node *main, char *s1, char *s2, int status)
 		perror(temp);
 		free(temp);
 	}
-
 	main->status = status;
 	return (status);
 }
 
 void	ft_putstr_err(char *cmd, char *arg, char *comment, t_error error)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("minishell", 2);
 	if (cmd)
 	{
-		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(cmd, 2);
 	}
 	if (arg)
 	{
+		ft_putstr_fd(": ", 2);
 		if (error == EXPORT_KEY_ERROR || error == UNSET_KEY_ERROR)
 		{
 			ft_putstr_fd("`", 2);
@@ -81,6 +81,10 @@ int	error_msg(t_main_node *main, char *arg, t_error error, int status)
 		ft_putstr_err("exit", NULL, "too many arguments", MANY_ARG_ERROR);
 	else if (error == EXEC_ERROR)
 		ft_putstr_err(arg, arg, "exec error", EXEC_ERROR);
+	else if (error == PERMISSION_ERROR)
+		ft_putstr_err(NULL, arg, "Permission denied", PERMISSION_ERROR);
+	else if (error == IS_DIR)
+		ft_putstr_err(NULL, arg, "is a directory", IS_DIR);
 	main->status = status;
 	return (status);
 }

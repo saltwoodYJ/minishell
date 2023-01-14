@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 21:04:23 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 18:31:19 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,35 @@ char	*get_path(char *first_cmd, char **splited_path)
 	return (cmd_path);
 }
 
+char	*make_exec_path(t_main_node *main)
+{
+	char	**splited_path;
+	char	*path;
+
+	splited_path = search_origin_path(main->ev_lst);
+	if (!splited_path)
+		exit(error_msg(main, main->curr->cmd[0], FILE_ERROR, 127));
+	path = get_path(main->curr->cmd[0], splited_path);
+	ft_free_str(splited_path, 0);
+	return (path);
+}
+
 void	exec_non_builtin(t_main_node *main)
 {
 	char	*path;
 	char	**envp_arr;
-	char	**splited_path;
 
 	if (no_cmd(main, 1))
 		exit(0);
-	if (access(main->curr->cmd[0], X_OK) == 0)
-		path = main->curr->cmd[0];
-	else if (!ft_search_char(main->curr->cmd[0], '/'))
+	if (ft_search_char(main->curr->cmd[0], '/') != -1)
 		path = main->curr->cmd[0];
 	else
-	{
-		splited_path = search_origin_path(main->ev_lst);
-		if (!splited_path)
-			exit(error_msg(main, main->curr->cmd[0], FILE_ERROR, 127));
-		path = get_path(main->curr->cmd[0], splited_path);
-		ft_free_str(splited_path, 0);
-		if (!path || !ft_strcmp(main->curr->cmd[0], "\0"))
-			exit(error_msg(main, main->curr->cmd[0], CMD_ERROR, 127));
-	}
+		path = make_exec_path(main);
+	if (!path || !ft_strcmp(main->curr->cmd[0], "\0"))
+		exit(error_msg(main, main->curr->cmd[0], CMD_ERROR, 127));
+	if (access(path, F_OK) == 0 && access(path, X_OK) == -1)
+		exit(error_msg(main, path, PERMISSION_ERROR, 126));
 	envp_arr = make_envp_arr(main->ev_lst);
 	execve(path, main->curr->cmd, envp_arr);
-	perror("minishell");
-	exit(1);
+	exit(perror_comment(main, NULL, path, 127));
 }

@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:21 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 20:53:02 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 13:24:41 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,26 @@ void	show_export(t_main_node *main)
 	main->status = 0;
 }
 
-void	ft_export(t_main_node *main)
+void	export_add_key(t_main_node *main, int i)
 {
 	char		**args;
-	int			i;
+
+	if (ft_search_char(main->curr->cmd[i], '=') == -1)
+		add_env(main, main->curr->cmd[i], NULL);
+	else
+	{
+		args = make_key_value(main->curr->cmd[i]);
+		if (!args)
+			return ;
+		add_env(main, args[0], args[1]);
+		ft_free_str(args, 0);
+	}
+	main->status = 0;
+}
+
+void	ft_export(t_main_node *main)
+{
+	int	i;
 
 	i = 1;
 	if (!main->curr->cmd[i])
@@ -80,18 +96,8 @@ void	ft_export(t_main_node *main)
 		if (ft_search_char(main->curr->cmd[i], '=') == 0 \
 		|| is_invalid_key(main->curr->cmd[i], 0))
 			error_msg(main, main->curr->cmd[i], EXPORT_KEY_ERROR, 1);
-		else if (ft_search_char(main->curr->cmd[i], '=') == -1)
-		{
-			add_env(main, main->curr->cmd[i], NULL);
-			main->status = 0;
-		}	
 		else
-		{
-			args = make_key_value(main->curr->cmd[i]);
-			add_env(main, args[0], args[1]);
-			ft_free_str(args, 0);
-			main->status = 0;
-		}
+			export_add_key(main, i);
 		i++;
 	}
 }

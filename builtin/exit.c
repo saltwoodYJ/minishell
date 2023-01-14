@@ -6,13 +6,26 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 23:38:01 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 19:59:58 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:35:36 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_exit_atoi(const char *str, int *is_not_num, int i)
+int	ft_isdigit_str(char *str, int i)
+{
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_exit_atoi(char *str, int *is_not_num, int i)
 {
 	long long	num;
 	int			sign;
@@ -27,17 +40,16 @@ int	ft_exit_atoi(const char *str, int *is_not_num, int i)
 			sign *= -1;
 		i++;
 	}
+	if (!str[i] || !ft_isdigit_str(str, i))
+	{
+		*is_not_num = 1;
+		return (-1);
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{	
 		num = num * 10 + (str[i] - '0');
 		i++;
 	}
-	if (str[i])
-	{
-		*is_not_num = 1;
-		return (-1);
-	}
-	*is_not_num = 0;
 	return (num * sign);
 }
 
@@ -82,6 +94,7 @@ void	ft_exit(t_main_node *main)
 	int	exit_code;
 	int	is_not_num;
 
+	is_not_num = 0;
 	if (main->cmd_num == 1)
 		printf("exit\n");
 	if (main->curr->cmd[1])

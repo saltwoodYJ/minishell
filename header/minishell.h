@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 22:11:36 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 18:27:54 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include <errno.h>
 
 typedef enum e_type
 {
@@ -42,7 +41,9 @@ typedef enum s_error
 	NOT_SET_ERROR,
 	NUM_ARG_ERROR,
 	MANY_ARG_ERROR,
-	EXEC_ERROR
+	EXEC_ERROR,
+	PERMISSION_ERROR,
+	IS_DIR,
 }	t_error;
 
 typedef struct s_envp_node
@@ -187,7 +188,7 @@ void		ft_env(t_main_node *main);
 void		ft_exit(t_main_node *main);
 
 /*builtin utils*/
-int			ft_exit_atoi(const char *str, int *is_char, int i);
+int			ft_exit_atoi(char *str, int *is_not_num, int i);
 void		add_env(t_main_node *main, char *key, char *value);
 int			is_invalid_key(char *s, int flag);
 char		*get_env_path(t_envp_node *envp, char *key);
