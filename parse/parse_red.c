@@ -38,14 +38,14 @@ void	set_red(t_parsing_node *parsing, t_cmd_node *node, t_main_node *main)
 	type = parsing->type;
 	if (type == RED_I || type == RED_H)
 	{
-		red_node = (t_infile_node *)new_red_node(sizeof(t_infile_node));
+		red_node = (t_infile_node *)ft_malloc(sizeof(t_infile_node));
 		set_infile_node(parsing, (t_infile_node *)red_node);
 		if (type == RED_H)
 			append_heredoc_node(main->heredoc_node, red_node);
 		append_infile_node(node->infile_node, red_node);
 		return ;
 	}
-	red_node = (t_outfile_node *)new_red_node(sizeof(t_outfile_node));
+	red_node = (t_outfile_node *)ft_malloc(sizeof(t_outfile_node));
 	set_outfile_node(parsing, red_node);
 	append_outfile_node(node->outfile_node, red_node);
 }
@@ -81,7 +81,7 @@ void	set_outfile_node(t_parsing_node *parsing, void *node)
 	file_node->next = NULL;
 }
 
-void	*new_red_node(int size)
+void	*ft_malloc(int size)
 {
 	void	*red_node;
 

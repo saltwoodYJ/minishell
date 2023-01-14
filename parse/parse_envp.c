@@ -18,7 +18,7 @@ t_envp_node	*parse_envp(char **ev)
 	t_envp_node	*now;
 	int			index;
 
-	envp_node = new_red_node(sizeof(t_envp_node));
+	envp_node = ft_malloc(sizeof(t_envp_node));
 	now = envp_node;
 	index = 0;
 	while (ev[index])

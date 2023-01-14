@@ -15,15 +15,15 @@
 void	make_main(t_main_node **main, char *line, int status, \
 t_envp_node *ev_lst)
 {
-	(*main) = new_red_node(sizeof(t_main_node));
+	(*main) = ft_malloc(sizeof(t_main_node));
 	if (check_quote_err(line))
 	{
 		(*main)->status = 258;
 		(*main)->cmd_num = -1;
 		return ;
 	}
-	(*main)->heredoc_node = new_red_node(sizeof(t_infile_node));
-	(*main)->node_head = new_red_node(sizeof(t_cmd_node));
+	(*main)->heredoc_node = ft_malloc(sizeof(t_infile_node));
+	(*main)->node_head = ft_malloc(sizeof(t_cmd_node));
 	(*main)->ev_lst = ev_lst;
 	(*main)->status = status;
 	make_token(line, (*main));

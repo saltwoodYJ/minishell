@@ -12,7 +12,7 @@
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror # -g3 -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror  -g3 -fsanitize=address 
 
 NAME = minishell
 
@@ -34,7 +34,7 @@ HEADER_DIR = ./header/
 
 SRCS = $(MAIN_DIR)minishell.c \
 $(PARSE_DIR)parse_cmd.c $(PARSE_DIR)parse_envp.c $(PARSE_DIR)parse_red.c $(PARSE_DIR)parsing_utils.c \
-$(PARSE_DIR)tokenize.c $(PARSE_DIR)interpret.c $(PARSE_DIR)red_utils.c $(PARSE_DIR)syntax_err.c \
+$(PARSE_DIR)tokenize.c $(PARSE_DIR)interpret.c $(PARSE_DIR)red_utils.c $(PARSE_DIR)syntax_err.c $(PARSE_DIR)interpret_utils.c\
 $(EXEC_DIR)make_exec.c $(EXEC_DIR)run_command.c \
 $(BUILTIN_DIR)builtin.c $(BUILTIN_DIR)cd.c $(BUILTIN_DIR)echo.c $(BUILTIN_DIR)env.c $(BUILTIN_DIR)exit.c \
 $(BUILTIN_DIR)export_util.c $(BUILTIN_DIR)export_util2.c $(BUILTIN_DIR)export.c $(BUILTIN_DIR)pwd.c $(BUILTIN_DIR)unset.c \

@@ -125,7 +125,7 @@ void		append_heredoc_node(t_infile_node *lst, void *red_node);
 void		append_outfile_node(t_outfile_node *lst, void *red_node);
 void		set_infile_node(t_parsing_node *parsing, void *node);
 void		set_outfile_node(t_parsing_node *parsing, void *node);
-void		*new_red_node(int size);
+void		*ft_malloc(int size);
 
 /* parsing_utils */
 void		make_sep(char *s, int *index, int *len);
@@ -145,7 +145,12 @@ int status);
 char		*interpret(char *str, t_envp_node *ev_lst, int status);
 char		*ft_strcat(char *str, char *value);
 int			get_len_ev(char *str, t_envp_node *ev_lst, int status);
+
+/* interpret_utils */
 int			check_dollar(char *str);
+int			key_to_value(char *str, t_envp_node *ev_lst,
+				char **value, int status);
+void		rm_quote(t_parsing_node *node);
 
 /* red_utils */
 void		append_infile_node(t_infile_node *lst, void *red_node);
@@ -235,7 +240,6 @@ void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
 void		free_main(t_main_node *main, char *line);
-
 
 void		cmd_node_clear(t_cmd_node	*nodes);
 void		infile_node_clear(t_infile_node	*nodes);

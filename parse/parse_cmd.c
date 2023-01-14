@@ -51,8 +51,8 @@ t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
 	init_cmd_node(node);
 	node->idx = i;
 	node->cmd = set_cmd(*parse, main);
-	node->infile_node = new_red_node(sizeof(t_infile_node));
-	node->outfile_node = new_red_node(sizeof(t_outfile_node));
+	node->infile_node = ft_malloc(sizeof(t_infile_node));
+	node->outfile_node = ft_malloc(sizeof(t_outfile_node));
 	set_red_lst(*parse, node, main);
 	return (node);
 }
@@ -76,7 +76,7 @@ char	**set_cmd(t_parsing_node *parsing, t_main_node *main)
 				break ;
 			now = now->next;
 		}
-		else
+		else if (now->str)
 			cmd[index++] = now->str;
 		now = now->next;
 	}

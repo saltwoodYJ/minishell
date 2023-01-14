@@ -48,7 +48,7 @@ void	ft_parse(char *s, t_parsing_node **parse)
 	int				len;
 	int				index;
 
-	*parse = new_red_node(sizeof(t_parsing_node));
+	*parse = ft_malloc(sizeof(t_parsing_node));
 	if (!*parse)
 		exit (1);
 	now = *parse;
