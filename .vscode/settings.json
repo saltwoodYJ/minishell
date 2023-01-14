@@ -29,6 +29,8 @@
 		"type_traits": "c",
 		"__locale": "c",
 		"errno.h": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"termios.h": "c",
+		"history.h": "c"
 	}
 }

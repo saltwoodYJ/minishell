@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/14 22:12:40 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:26:02 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -257,5 +258,6 @@ int			check_quote_err(char *line);
 /* signal */
 void		set_signal(int sigint, int sigquit);
 void		action(int signum);
+void		rm_ctrl(void);
 
 #endif

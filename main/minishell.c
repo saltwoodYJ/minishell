@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/14 22:11:47 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:27:09 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,12 @@ int	main(void)
 	status = 0;
 	while (1)
 	{
+		rm_ctrl();
 		set_signal(2, 2);
 		line = readline("minishell$ ");
-		if (line && line[0])
+		if (!line)
+			exit(0);
+		if (line[0])
 		{
 			make_main(&main, line, status, ev_lst);
 			add_history(line);

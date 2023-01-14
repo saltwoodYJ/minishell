@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   heredoc.c										  :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/01/07 00:07:26 by hyeokim2		  #+#	#+#			 */
-/*   Updated: 2023/01/11 17:54:34 by hyeokim2		 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/14 21:19:00 by yejinam           #+#    #+#             */
+/*   Updated: 2023/01/14 21:19:04 by yejinam          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -20,6 +20,8 @@ int	read_line(char *limiter, int infile)
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+			return(0);
 		if (ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
@@ -39,6 +41,7 @@ char	*make_heredoc(char *limiter, int idx)
 	char	*itoa_idx;
 	pid_t	pid;
 
+	set_signal(1, 2);
 	pid = fork();
 	if (pid < 0)
 		printf("fork_error");
@@ -53,9 +56,11 @@ char	*make_heredoc(char *limiter, int idx)
 	}
 	if (pid > 0)
 	{
-		wait(NULL);
+		set_signal(0, 0);
+		wait(NULL);	
 		close(tmp_file);
 	}
+		set_signal(2, 2); // 없
 	return (tmp_name);
 }
 

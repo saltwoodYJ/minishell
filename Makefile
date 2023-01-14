@@ -6,13 +6,13 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/14 20:50:27 by hyeokim2          #+#    #+#              #
-#    Updated: 2023/01/14 22:15:53 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/14 22:20:22 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -g3 -fsanitize=address  #-Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 INCLUDE = -I./includes -I/Users/hyeokim2/.brew/opt/readline/include
 
