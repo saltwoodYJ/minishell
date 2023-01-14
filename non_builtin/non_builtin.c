@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 04:06:32 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/14 19:38:08 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:19:29 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void	exec_non_builtin(t_main_node *main)
 	if (access(path, F_OK) == 0 && access(path, X_OK) == -1)
 		exit(error_msg(main, path, PERMISSION_ERROR, 126));
 	envp_arr = make_envp_arr(main->ev_lst);
+	if (!envp_arr)
+		exit(1);
 	execve(path, main->curr->cmd, envp_arr);
 	exit(perror_comment(main, NULL, path, 127));
 }

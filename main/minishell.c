@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/14 20:08:10 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:36:17 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	main(void)
 			}
 			status = main->status;
 			free_main(main, line);
-			system("leaks minishell");
 		}
 	}
 	return (status);
