@@ -239,7 +239,7 @@ void		ft_output_clear(t_outfile_node **lst);
 void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
-void		free_main(t_main_node *main, char *line);
+void		free_main(t_main_node *main);
 
 void		cmd_node_clear(t_cmd_node	*nodes);
 void		infile_node_clear(t_infile_node	*nodes);

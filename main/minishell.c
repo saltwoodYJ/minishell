@@ -50,9 +50,9 @@ int	main(void)
 
 	ev_lst = parse_envp(environ);
 	status = 0;
-//	set_signal(2,2);
 	while (1)
 	{
+		set_signal(2,2);
 		line = readline("minishell$ ");
 		if (line && line[0])
 		{
@@ -65,9 +65,10 @@ int	main(void)
 				clear_heredoc(main);
 			}
 			status = main->status;
-			free_main(main, line);
+			free_main(main);
 			system("leaks minishell");
 		}
+		ft_free(line);
 	}
 	return (status);
 }
