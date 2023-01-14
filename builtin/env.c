@@ -16,6 +16,11 @@ void	ft_env(t_main_node *main)
 {
 	t_envp_node	*curr;
 
+	if (main->curr->cmd[1])
+	{
+		error_msg(main, main->curr->cmd[1], FILE_ERROR, 127);
+		return ;
+	}
 	curr = main->ev_lst->next;
 	while (curr != NULL)
 	{
