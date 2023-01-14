@@ -6,7 +6,7 @@
 /*   By: yejinam <marvin@42.fr>				 +#+  +:+	  +#+	   */
 /*									   +#+#+#+#+#+   +#+		 */
 /*   Created: 2023/01/14 19:47:51 by yejinam		 #+#	#+#		   */
-/*   Updated: 2023/01/14 19:48:01 by yejinam		###   ########.fr	  */
+/*   Updated: 2023/01/14 22:32:54 by yejinam          ###   ########.fr       */
 /*															 */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	rm_ctrl(void)
 	attr.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &attr);
 }
-
 
 void	set_signal(int sigint, int sigquit)
 {

@@ -6,7 +6,7 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/14 20:50:27 by hyeokim2          #+#    #+#              #
-#    Updated: 2023/01/14 22:20:22 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/14 22:29:02 by yejinam          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-INCLUDE = -I./includes -I/Users/hyeokim2/.brew/opt/readline/include
+INCLUDE = -I./includes -I/Users/yejinam/.brew/opt/readline/include
 
-LIBRARY	= -L/Users/hyeokim2/.brew/opt/readline/lib -lreadline
+LIBRARY	= -L/Users/yejinam/.brew/opt/readline/lib -lreadline
 
 NAME = minishell
 

@@ -6,7 +6,7 @@
 /*   By: yejinam <marvin@42.fr>				 +#+  +:+	  +#+	   */
 /*									   +#+#+#+#+#+   +#+		 */
 /*   Created: 2023/01/14 16:14:58 by yejinam		 #+#	#+#		   */
-/*   Updated: 2023/01/14 16:15:00 by yejinam		###   ########.fr	  */
+/*   Updated: 2023/01/14 22:40:29 by yejinam          ###   ########.fr       */
 /*															 */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	ft_interpret(t_parsing_node *parse, t_envp_node *ev_lst, int status)
 		{
 			if (now->next->str[0])
 				rm_quote(now->next);
-//			else
-//				now->next->str = ft_free(now->next->str);
+			else
+				now->next->str = ft_free(now->next->str);
 		}
 		now = now->next;
 	}
@@ -97,7 +97,6 @@ int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 	int		len;
 	int		i;
 
-	value = NULL;
 	len = 0;
 	i = 0;
 	while (str[i])
@@ -109,8 +108,8 @@ int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 			i++;
 			i += key_to_value(&str[i], ev_lst, &value, status);
 			len += ft_strlen(value);
-			if(str[i - 1] == '?')
-				free(value);
+			if (str[i - 1] == '?')
+				ft_free(value);
 		}
 		else
 		{

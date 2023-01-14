@@ -6,7 +6,7 @@
 /*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 21:19:00 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/14 21:19:04 by yejinam          ###   ########.fr       */
+/*   Updated: 2023/01/14 22:37:01 by yejinam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	read_line(char *limiter, int infile)
 	{
 		line = readline("> ");
 		if (!line)
-			return(0);
+			return (0);
 		if (ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
@@ -57,10 +57,9 @@ char	*make_heredoc(char *limiter, int idx)
 	if (pid > 0)
 	{
 		set_signal(0, 0);
-		wait(NULL);	
+		wait(NULL);
 		close(tmp_file);
 	}
-		set_signal(2, 2); // 없
 	return (tmp_name);
 }
 
