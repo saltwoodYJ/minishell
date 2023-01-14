@@ -1,0 +1,12 @@
+Makefile
+builtin
+exec
+header
+main
+minishell
+non_builtin
+parse
+redirect
+signal
+test.txt
+utils

@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/14 19:36:14 by hyeokim2         ###   ########.fr       */
-/*                                                                            */
+/*															 */
+/*											 :::	 ::::::::   */
+/*   minishell.c								:+:	 :+:    :+:   */
+/*										  +:+ +:+	    +:+	*/
+/*   By: hyeokim2 <hyeokim2@student.42.fr>		+#+  +:+	  +#+	   */
+/*									   +#+#+#+#+#+   +#+		 */
+/*   Created: 2022/12/15 14:46:03 by yejinam		 #+#    #+#		   */
+/*   Updated: 2023/01/14 19:36:14 by hyeokim2	    ###   ########.fr	  */
+/*															 */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -50,10 +50,11 @@ int	main(void)
 
 	ev_lst = parse_envp(environ);
 	status = 0;
+//	set_signal(2,2);
 	while (1)
 	{
 		line = readline("minishell$ ");
-		if (line[0])
+		if (line && line[0])
 		{
 			make_main(&main, line, status, ev_lst);
 			add_history(line);
