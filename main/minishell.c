@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:46:03 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/14 22:28:56 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:55:32 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(void)
 		set_signal(2, 2);
 		line = readline("minishell$ ");
 		if (!line)
-			exit(0);
+			exit(127);
 		if (line[0])
 		{
 			make_main(&main, line, status, ev_lst);

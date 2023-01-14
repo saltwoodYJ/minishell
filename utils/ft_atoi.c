@@ -32,7 +32,7 @@ int	ft_atoi(const char *str)
 			return ((sign + 1) / -2);
 		num *= 10;
 		if (num > 9223372036854775807 - (*str - '0'))
-			return ((sign + 1) / -2);
+			return ((sign - 1) / -2);
 		num += *str - '0';
 		str++;
 	}
