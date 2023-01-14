@@ -87,7 +87,9 @@ void	export_add_key(t_main_node *main, int i)
 void	ft_export(t_main_node *main)
 {
 	int	i;
+	int	res;
 
+	res = 0;
 	i = 1;
 	if (!main->curr->cmd[i])
 		show_export(main);
@@ -95,9 +97,11 @@ void	ft_export(t_main_node *main)
 	{	
 		if (ft_search_char(main->curr->cmd[i], '=') == 0 \
 		|| is_invalid_key(main->curr->cmd[i], 0))
-			error_msg(main, main->curr->cmd[i], EXPORT_KEY_ERROR, 1);
+			res += error_msg(main, main->curr->cmd[i], EXPORT_KEY_ERROR, 1);
 		else
 			export_add_key(main, i);
 		i++;
 	}
+	if (res > 0)
+		main->status = 1;
 }

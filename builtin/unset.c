@@ -12,16 +12,13 @@
 
 #include "minishell.h"
 
-void	remove_env(t_main_node *main, char *key)
+int	remove_env(t_main_node *main, char *key)
 {
 	t_envp_node	*pre;
 	t_envp_node	*old;
 
 	if (is_invalid_key(key, 1))
-	{
-		error_msg(main, key, UNSET_KEY_ERROR, 1);
-		return ;
-	}
+		return (error_msg(main, key, UNSET_KEY_ERROR, 1));
 	pre = main->ev_lst->next;
 	while (pre->next != NULL)
 	{
@@ -29,29 +26,35 @@ void	remove_env(t_main_node *main, char *key)
 		{
 			old = pre->next;
 			if (old == NULL)
-				return ;
+				return (0);
 			pre->next = old->next;
 			free(old->key);
 			free(old->value);
 			free(old);
-			return ;
+			return (0);
 		}
 		else
 			pre = pre->next;
 	}
+	return (0);
 }
 
 void	ft_unset(t_main_node *main)
 {
 	char		**cmd;
 	int			i;
+	int			res;
 
+	res = 0;
 	cmd = main->curr->cmd;
 	i = 1;
 	while (cmd[i])
 	{
-		remove_env(main, cmd[i]);
+		res += remove_env(main, cmd[i]);
 		i++;
 	}
-	main->status = 1;
+	if (res > 0)
+		main->status = 1;
+	else
+		main->status = 0;
 }
