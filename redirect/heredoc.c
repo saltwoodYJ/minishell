@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 21:19:00 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/14 22:37:01 by yejinam          ###   ########.fr       */
+/*   Updated: 2023/01/15 04:42:11 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,45 @@ int	read_line(char *limiter, int infile)
 	}
 }
 
+char	*make_tmp_name(int idx)
+{
+	char	*itoa_idx;
+	char	*tmp_name;
+
+	itoa_idx = ft_itoa(idx);
+	tmp_name = ft_strjoin3(".heredoc", itoa_idx, ".tmp");
+	free(itoa_idx);
+	idx++;
+	if (access(tmp_name, F_OK) == 0)
+	{
+		while (1)
+		{
+			free(tmp_name);
+			itoa_idx = ft_itoa(idx);
+			tmp_name = ft_strjoin3(".heredoc", itoa_idx, ".tmp");
+			free(itoa_idx);
+			if (access(tmp_name, F_OK) != 0)
+				break ;
+			idx++;
+		}
+	}
+	else
+		return (tmp_name);
+	return (tmp_name);
+}
+
 char	*make_heredoc(char *limiter, int idx)
 {
 	int		tmp_file;
 	char	*tmp_name;
-	char	*itoa_idx;
 	pid_t	pid;
 
 	set_signal(1, 2);
+	tmp_name = make_tmp_name(idx);
+	tmp_file = open(tmp_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	pid = fork();
 	if (pid < 0)
 		printf("fork_error");
-	itoa_idx = ft_itoa(idx);
-	tmp_name = ft_strjoin3(".heredoc", itoa_idx, ".tmp");
-	free(itoa_idx);
-	tmp_file = open(tmp_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pid == 0)
 	{
 		read_line(limiter, tmp_file);
