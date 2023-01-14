@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/14 18:27:54 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:42:43 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <errno.h>
 
 typedef enum e_type
 {
@@ -43,7 +44,6 @@ typedef enum s_error
 	MANY_ARG_ERROR,
 	EXEC_ERROR,
 	PERMISSION_ERROR,
-	IS_DIR,
 }	t_error;
 
 typedef struct s_envp_node
@@ -72,7 +72,6 @@ typedef struct s_infile_node
 	struct s_infile_node	*next;
 }	t_infile_node;
 
-// >,>>
 /* type: 0, type: 1 APPEND */
 typedef struct s_outfile_node
 {
@@ -107,8 +106,8 @@ typedef struct s_main_node
 /* parse_cmd */
 t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main);
 void		make_cmd_list(t_parsing_node *parse, t_main_node *main);
-char		**set_cmd(t_parsing_node *parsing);
-int			get_cmd_num(t_parsing_node *parsing);
+char		**set_cmd(t_parsing_node *parsing, t_main_node *main);
+int			get_cmd_num(t_parsing_node *parsing, t_main_node *main);
 void		init_cmd_node(t_cmd_node *node);
 
 /* parse_envp */
@@ -126,7 +125,7 @@ void		append_heredoc_node(t_infile_node *lst, void *red_node);
 void		append_outfile_node(t_outfile_node *lst, void *red_node);
 void		set_infile_node(t_parsing_node *parsing, void *node);
 void		set_outfile_node(t_parsing_node *parsing, void *node);
-void		*new_red_node(int size);
+void		*ft_malloc(int size);
 
 /* parsing_utils */
 void		make_sep(char *s, int *index, int *len);
@@ -146,7 +145,12 @@ int status);
 char		*interpret(char *str, t_envp_node *ev_lst, int status);
 char		*ft_strcat(char *str, char *value);
 int			get_len_ev(char *str, t_envp_node *ev_lst, int status);
+
+/* interpret_utils */
 int			check_dollar(char *str);
+int			key_to_value(char *str, t_envp_node *ev_lst,
+				char **value, int status);
+void		rm_quote(t_parsing_node *node);
 
 /* red_utils */
 void		append_infile_node(t_infile_node *lst, void *red_node);
@@ -235,7 +239,7 @@ void		ft_output_clear(t_outfile_node **lst);
 void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
-void		free_main(t_main_node *main);
+void		free_main(t_main_node *main, char *line);
 
 void		cmd_node_clear(t_cmd_node	*nodes);
 void		infile_node_clear(t_infile_node	*nodes);
@@ -244,5 +248,11 @@ void		free_double_char(char **cmd);
 void		free_one_node(t_cmd_node *node);
 void		*ft_free(void *ptr);
 void		parse_node_clear(t_parsing_node	*nodes);
+
+/* syntax_err */
+int			print_syntax_err(const char *str);
+int			check_pipe_err(t_parsing_node *parse, t_parsing_node *now);
+int			check_red_err(t_parsing_node *now);
+int			check_quote_err(char *line);
 
 #endif

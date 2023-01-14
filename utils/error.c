@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:18:17 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/14 18:13:05 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:42:52 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ int	error_msg(t_main_node *main, char *arg, t_error error, int status)
 		ft_putstr_err(arg, arg, "exec error", EXEC_ERROR);
 	else if (error == PERMISSION_ERROR)
 		ft_putstr_err(NULL, arg, "Permission denied", PERMISSION_ERROR);
-	else if (error == IS_DIR)
-		ft_putstr_err(NULL, arg, "is a directory", IS_DIR);
 	main->status = status;
 	return (status);
 }

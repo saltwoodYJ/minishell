@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   tokenize.c										 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: yejinam <marvin@42.fr>					 +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/01/14 14:33:22 by yejinam		   #+#	#+#			 */
+/*   Updated: 2023/01/14 14:33:26 by yejinam		  ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	make_token(char *line, t_main_node *main)
@@ -36,7 +48,7 @@ void	ft_parse(char *s, t_parsing_node **parse)
 	int				len;
 	int				index;
 
-	*parse = new_red_node(sizeof(t_parsing_node));
+	*parse = ft_malloc(sizeof(t_parsing_node));
 	if (!*parse)
 		exit (1);
 	now = *parse;

@@ -6,7 +6,7 @@
 #    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2023/01/14 14:36:40 by hyeokim2         ###   ########.fr        #
+#    Updated: 2023/01/14 19:38:55 by hyeokim2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ HEADER_DIR = ./header/
 
 SRCS = $(MAIN_DIR)minishell.c \
 $(PARSE_DIR)parse_cmd.c $(PARSE_DIR)parse_envp.c $(PARSE_DIR)parse_red.c $(PARSE_DIR)parsing_utils.c \
-$(PARSE_DIR)tokenize.c $(PARSE_DIR)interpret.c $(PARSE_DIR)red_utils.c \
+$(PARSE_DIR)tokenize.c $(PARSE_DIR)interpret.c $(PARSE_DIR)red_utils.c $(PARSE_DIR)syntax_err.c $(PARSE_DIR)interpret_utils.c\
 $(EXEC_DIR)make_exec.c $(EXEC_DIR)run_command.c \
 $(BUILTIN_DIR)builtin.c $(BUILTIN_DIR)cd.c $(BUILTIN_DIR)echo.c $(BUILTIN_DIR)env.c $(BUILTIN_DIR)exit.c \
 $(BUILTIN_DIR)export_util.c $(BUILTIN_DIR)export_util2.c $(BUILTIN_DIR)export.c $(BUILTIN_DIR)pwd.c $(BUILTIN_DIR)unset.c \
@@ -43,7 +43,7 @@ $(REDIR_DIR)heredoc.c $(REDIR_DIR)redirect.c \
 $(UTILS_DIR)ft_isalpha.c $(UTILS_DIR)ft_isdigit.c $(UTILS_DIR)ft_split.c $(UTILS_DIR)ft_strchr.c $(UTILS_DIR)ft_strcmp.c \
 $(UTILS_DIR)ft_strdup.c $(UTILS_DIR)ft_strjoin.c $(UTILS_DIR)ft_strlen.c $(UTILS_DIR)ft_strncmp.c $(UTILS_DIR)utils.c \
 $(UTILS_DIR)ft_itoa.c $(UTILS_DIR)ft_atoi.c $(UTILS_DIR)ft_putstr_fd.c  $(UTILS_DIR)error.c \
-$(MAIN_DIR)free_main.c $(MAIN_DIR)free_redir.c
+$(MAIN_DIR)free_main.c $(MAIN_DIR)free_redir.c $(MAIN_DIR)free_utils.c
 
 OBJS = $(SRCS:%.c=%.o)
 

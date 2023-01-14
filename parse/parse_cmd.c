@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_cmd.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 23:57:11 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/07 01:38:39 by yejinam          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   parse_cmd.c										:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: yejinam <marvin@42.fr>					 +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/01/06 23:57:11 by yejinam		   #+#	#+#			 */
+/*   Updated: 2023/01/07 01:38:39 by yejinam		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
@@ -21,14 +21,15 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	p_now = parse;
 	i = 0;
 	c_now = main->node_head;
-	while (p_now)
+	while (p_now && main->cmd_num != -1)
 	{
 		if (p_now->type == PIPE)
 		{
-			if (p_now != parse && (!p_now->next || p_now->next->type == PIPE))
+			if (check_pipe_err(parse, p_now))
 			{
-				printf("minishell: syntax error near unexpected token `newline\'\n");
-				break;
+				main->status = 258;
+				main->cmd_num = -1;
+				break ;
 			}
 			i++;
 			c_now->next = new_cmd_node(&p_now, i, main);
@@ -36,7 +37,8 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 		}
 		p_now = p_now->next;
 	}
-	main->cmd_num = i;
+	if (main->cmd_num != -1)
+		main->cmd_num = i;
 }
 
 t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
@@ -48,14 +50,14 @@ t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
 		exit (1);
 	init_cmd_node(node);
 	node->idx = i;
-	node->cmd = set_cmd(*parse);
-	node->infile_node = new_red_node(sizeof(t_infile_node));
-	node->outfile_node = new_red_node(sizeof(t_outfile_node));
+	node->cmd = set_cmd(*parse, main);
+	node->infile_node = ft_malloc(sizeof(t_infile_node));
+	node->outfile_node = ft_malloc(sizeof(t_outfile_node));
 	set_red_lst(*parse, node, main);
 	return (node);
 }
 
-char	**set_cmd(t_parsing_node *parsing)
+char	**set_cmd(t_parsing_node *parsing, t_main_node *main)
 {
 	t_parsing_node	*now;
 	char			**cmd;
@@ -63,7 +65,7 @@ char	**set_cmd(t_parsing_node *parsing)
 
 	now = parsing->next;
 	index = 0;
-	cmd = malloc(sizeof(char *) * (get_cmd_num(parsing) + 1));
+	cmd = malloc(sizeof(char *) * (get_cmd_num(parsing, main) + 1));
 	if (!cmd)
 		exit (1);
 	while (now && now->type != PIPE)
@@ -74,18 +76,15 @@ char	**set_cmd(t_parsing_node *parsing)
 				break ;
 			now = now->next;
 		}
-		else
-		{
-			cmd[index] = now->str;
-			index++;
-		}
+		else if (now->str)
+			cmd[index++] = now->str;
 		now = now->next;
 	}
 	cmd[index] = NULL;
 	return (cmd);
 }
 
-int	get_cmd_num(t_parsing_node *parsing)
+int	get_cmd_num(t_parsing_node *parsing, t_main_node *main)
 {
 	t_parsing_node	*now;
 	int				i;
@@ -97,18 +96,15 @@ int	get_cmd_num(t_parsing_node *parsing)
 		if (now->type == RED_A || now->type == RED_H
 			|| now->type == RED_I || now->type == RED_O)
 		{
-			if (now->next == NULL || now->next->type != WORD)
+			if (check_red_err(now))
 			{
-				if (now->next)
-					printf("minishell: syntax error near unexpected token `%s\'\n", now->next->str);
-				else
-					printf("minishell: syntax error near unexpected token `newline\'\n");
-				break ;
+				main->status = 258;
+				main->cmd_num = -1;
+				return (0);
 			}
 			now = now->next;
 		}
-		else if (now->type == WORD)
-			i++;
+		i++;
 		now = now->next;
 	}
 	return (i);
