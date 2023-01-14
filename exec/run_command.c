@@ -82,8 +82,6 @@ int	run_command(t_main_node *main)
 				ft_putstr_fd("^\\Quit: 3\n", STDERR_FILENO);
 			main->status = 128 + signo;
 		}
-		else
-			main->status = WEXITSTATUS(status);
 	}
 	return (0);
 }
