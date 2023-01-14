@@ -21,7 +21,7 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	p_now = parse;
 	i = 0;
 	c_now = main->node_head;
-	while (p_now)
+	while (p_now && main->cmd_num != -1)
 	{
 		if (p_now->type == PIPE)
 		{
