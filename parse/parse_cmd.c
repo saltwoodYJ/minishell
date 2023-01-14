@@ -25,9 +25,14 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	{
 		if (p_now->type == PIPE)
 		{
-			if (p_now != parse && (!p_now->next || p_now->next->type == PIPE))
+			if (!p_now->next || p_now->next->type == PIPE)
 			{
-				printf("minishell: syntax error near unexpected token `newline\'\n");
+				if (!p_now->next)
+					printf("minishell: syntax error near unexpected token `newline\'\n");
+				else
+					printf("minishell: syntax error near unexpected token `%s\'\n", p_now->next->str);
+				main->status = 258;
+				main->cmd_num = -1;
 				break;
 			}
 			i++;
@@ -36,7 +41,8 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 		}
 		p_now = p_now->next;
 	}
-	main->cmd_num = i;
+	if (main->cmd_num != -1)
+		main->cmd_num = i;
 }
 
 t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
@@ -48,14 +54,14 @@ t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main)
 		exit (1);
 	init_cmd_node(node);
 	node->idx = i;
-	node->cmd = set_cmd(*parse);
+	node->cmd = set_cmd(*parse, main);
 	node->infile_node = new_red_node(sizeof(t_infile_node));
 	node->outfile_node = new_red_node(sizeof(t_outfile_node));
 	set_red_lst(*parse, node, main);
 	return (node);
 }
 
-char	**set_cmd(t_parsing_node *parsing)
+char	**set_cmd(t_parsing_node *parsing, t_main_node *main)
 {
 	t_parsing_node	*now;
 	char			**cmd;
@@ -63,7 +69,7 @@ char	**set_cmd(t_parsing_node *parsing)
 
 	now = parsing->next;
 	index = 0;
-	cmd = malloc(sizeof(char *) * (get_cmd_num(parsing) + 1));
+	cmd = malloc(sizeof(char *) * (get_cmd_num(parsing, main) + 1));
 	if (!cmd)
 		exit (1);
 	while (now && now->type != PIPE)
@@ -85,7 +91,7 @@ char	**set_cmd(t_parsing_node *parsing)
 	return (cmd);
 }
 
-int	get_cmd_num(t_parsing_node *parsing)
+int	get_cmd_num(t_parsing_node *parsing, t_main_node *main)
 {
 	t_parsing_node	*now;
 	int				i;
@@ -103,7 +109,9 @@ int	get_cmd_num(t_parsing_node *parsing)
 					printf("minishell: syntax error near unexpected token `%s\'\n", now->next->str);
 				else
 					printf("minishell: syntax error near unexpected token `newline\'\n");
-				break ;
+				main->status = 258;
+				main->cmd_num = -1;
+				break;
 			}
 			now = now->next;
 		}

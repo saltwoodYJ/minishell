@@ -106,8 +106,8 @@ typedef struct s_main_node
 /* parse_cmd */
 t_cmd_node	*new_cmd_node(t_parsing_node **parse, int i, t_main_node *main);
 void		make_cmd_list(t_parsing_node *parse, t_main_node *main);
-char		**set_cmd(t_parsing_node *parsing);
-int			get_cmd_num(t_parsing_node *parsing);
+char		**set_cmd(t_parsing_node *parsing, t_main_node *main);
+int			get_cmd_num(t_parsing_node *parsing, t_main_node *main);
 void		init_cmd_node(t_cmd_node *node);
 
 /* parse_envp */

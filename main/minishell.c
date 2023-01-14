@@ -46,18 +46,26 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		if (line)
+		if (line[0])
 		{
+			int i = 0;
+			while (line[i]==' ' || line[i] == '\t' || line[i] == '\n')
+				i++;
+			if (line[i] == '\0')
+			{	
+				free(line);
+				continue;
+			}
 			main = new_red_node(sizeof(t_main_node));
 			make_main(main, line, status, ev_lst);
 			add_history(line);
-			if (main->cmd_num)
+			if (main->cmd_num != -1)
 			{
 				run_command(main);
 				restore_std(main);
-				status = main->status;
 				clear_heredoc(main);
 			}
+			status = main->status;
 			free_main(main);
 			free(main);
 			main = NULL;
