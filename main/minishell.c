@@ -65,6 +65,7 @@ int	main(void)
 			}
 			status = main->status;
 			free_main(main, line);
+			system("leaks minishell");
 		}
 	}
 	return (status);
