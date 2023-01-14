@@ -74,11 +74,10 @@ void	parse_node_clear(t_parsing_node	*nodes)
 	}
 }
 
-void	free_main(t_main_node *main, char *line)
+void	free_main(t_main_node *main)
 {
 	cmd_node_clear(main->node_head);
 	parse_node_clear(main->parse);
 	ft_free(main->heredoc_node);
 	ft_free(main);
-	ft_free(line);
 }

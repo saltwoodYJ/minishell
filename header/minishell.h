@@ -6,20 +6,20 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/14 19:57:25 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:12:40 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef enum e_type
 {
@@ -238,7 +238,7 @@ void		ft_output_clear(t_outfile_node **lst);
 void		ft_input_clear(t_infile_node **lst);
 void		ft_node_clear(t_cmd_node **lst);
 void		ft_envp_clear(t_envp_node **lst);
-void		free_main(t_main_node *main, char *line);
+void		free_main(t_main_node *main);
 
 void		cmd_node_clear(t_cmd_node	*nodes);
 void		infile_node_clear(t_infile_node	*nodes);
@@ -253,5 +253,9 @@ int			print_syntax_err(const char *str);
 int			check_pipe_err(t_parsing_node *parse, t_parsing_node *now);
 int			check_red_err(t_parsing_node *now);
 int			check_quote_err(char *line);
+
+/* signal */
+void		set_signal(int sigint, int sigquit);
+void		action(int signum);
 
 #endif
