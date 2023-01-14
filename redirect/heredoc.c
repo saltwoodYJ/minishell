@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 21:19:00 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/15 04:42:11 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/15 04:47:18 by hyeokim2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	*make_heredoc(char *limiter, int idx)
 	if (pid == 0)
 	{
 		read_line(limiter, tmp_file);
+		close(tmp_file);
 		exit(0);
 	}
 	if (pid > 0)
