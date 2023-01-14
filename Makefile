@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/12/10 18:30:36 by yejinam           #+#    #+#              #
-#    Updated: 2023/01/13 22:27:28 by hyeokim2         ###   ########.fr        #
-#                                                                              #
+#																			  #
+#														 :::	  ::::::::	#
+#	Makefile										   :+:	  :+:	:+:	#
+#													 +:+ +:+		 +:+	  #
+#	By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		 #
+#												 +#+#+#+#+#+   +#+			#
+#	Created: 2022/12/10 18:30:36 by yejinam		   #+#	#+#			  #
+#	Updated: 2023/01/13 22:27:28 by hyeokim2		 ###   ########.fr		#
+#																			  #
 # **************************************************************************** #
 
 CC = cc
@@ -34,7 +34,7 @@ HEADER_DIR = ./header/
 
 SRCS = $(MAIN_DIR)minishell.c \
 $(PARSE_DIR)parse_cmd.c $(PARSE_DIR)parse_envp.c $(PARSE_DIR)parse_red.c $(PARSE_DIR)parsing_utils.c \
-$(PARSE_DIR)tokenize.c $(PARSE_DIR)interpret.c $(PARSE_DIR)red_utils.c \
+$(PARSE_DIR)tokenize.c $(PARSE_DIR)interpret.c $(PARSE_DIR)red_utils.c $(PARSE_DIR)syntax_err.c \
 $(EXEC_DIR)make_exec.c $(EXEC_DIR)run_command.c \
 $(BUILTIN_DIR)builtin.c $(BUILTIN_DIR)cd.c $(BUILTIN_DIR)echo.c $(BUILTIN_DIR)env.c $(BUILTIN_DIR)exit.c \
 $(BUILTIN_DIR)export_util.c $(BUILTIN_DIR)export_util2.c $(BUILTIN_DIR)export.c $(BUILTIN_DIR)pwd.c $(BUILTIN_DIR)unset.c \

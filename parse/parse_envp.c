@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_envp.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 00:09:31 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/12 20:32:26 by hyeokim2         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   parse_envp.c									   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/01/07 00:09:31 by yejinam		   #+#	#+#			 */
+/*   Updated: 2023/01/12 20:32:26 by hyeokim2		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
@@ -43,7 +43,7 @@ t_envp_node	*new_envp_node(char *envp)
 		exit (1);
 	node->key = ft_substr(envp, 0, equal);
 	node->value = ft_substr(envp, equal + 1, len - equal - 1);
-	if(ft_strncmp(node->key, "OLDPWD", 6) == 0)
+	if (ft_strncmp(node->key, "OLDPWD", 6) == 0)
 	{
 		free(node->value);
 		node->value = NULL;

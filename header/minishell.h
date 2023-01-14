@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 02:51:49 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/13 22:11:36 by hyeokim2         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   minishell.h										:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/01/07 02:51:49 by hyeokim2		  #+#	#+#			 */
+/*   Updated: 2023/01/13 22:11:36 by hyeokim2		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -243,5 +243,11 @@ void		free_double_char(char **cmd);
 void		free_one_node(t_cmd_node *node);
 void		*ft_free(void *ptr);
 void		parse_node_clear(t_parsing_node	*nodes);
+
+/* syntax_err */
+int print_syntax_err(const char *str);
+int check_pipe_err(t_parsing_node *parse, t_parsing_node *now);
+int check_red_err(t_parsing_node *now);
+int	check_quote_err(char *line);
 
 #endif

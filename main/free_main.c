@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   free_main.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 05:18:52 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/11 13:47:47 by hyeokim2         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   free_main.c										:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/01/07 05:18:52 by hyeokim2		  #+#	#+#			 */
+/*   Updated: 2023/01/11 13:47:47 by hyeokim2		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -21,16 +21,16 @@ void	*ft_free(void *ptr)
 
 void free_one_node(t_cmd_node *node)
 {
-    int i;
+	int i;
 
-    i = 0;
+	i = 0;
 	if (node == 0)
 		return ;
 	if (node->cmd)
 	{
-    	while (node->cmd[i])
+		while (node->cmd[i])
 		{
-    		ft_free(node->cmd[i]);
+			ft_free(node->cmd[i]);
 			i++;
 		}
 		ft_free(node->cmd);
@@ -120,7 +120,7 @@ void	parse_node_clear(t_parsing_node	*nodes)
 
 void	free_main(t_main_node *main)
 {
-    cmd_node_clear(main->node_head);
+	cmd_node_clear(main->node_head);
 	parse_node_clear(main->parse);
 	ft_free(main->heredoc_node);
 }

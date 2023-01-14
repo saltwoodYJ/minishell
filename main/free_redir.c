@@ -4,10 +4,10 @@ void	free_one_input(t_infile_node *input)
 {
 	if (input == 0)
 		return ;
-    if (input->file)
-        free(input->file);
-    if (input->limiter)
-        free(input->limiter);
+	if (input->file)
+		free(input->file);
+	if (input->limiter)
+		free(input->limiter);
 	free(input);
 }
 
@@ -30,8 +30,8 @@ void	free_one_output(t_outfile_node *output)
 {
 	if (output== 0)
 		return ;
-    if (output->file)
-        free(output->file);
+	if (output->file)
+		free(output->file);
 	free(output);
 }
 

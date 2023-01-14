@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_cmd.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yejinam <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 23:57:11 by yejinam           #+#    #+#             */
-/*   Updated: 2023/01/07 01:38:39 by yejinam          ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   parse_cmd.c										:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: yejinam <marvin@42.fr>					 +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/01/06 23:57:11 by yejinam		   #+#	#+#			 */
+/*   Updated: 2023/01/07 01:38:39 by yejinam		  ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
@@ -25,12 +25,8 @@ void	make_cmd_list(t_parsing_node *parse, t_main_node *main)
 	{
 		if (p_now->type == PIPE)
 		{
-			if (!p_now->next || p_now->next->type == PIPE)
+			if (check_pipe_err(parse, p_now))
 			{
-				if (!p_now->next)
-					printf("minishell: syntax error near unexpected token `newline\'\n");
-				else
-					printf("minishell: syntax error near unexpected token `%s\'\n", p_now->next->str);
 				main->status = 258;
 				main->cmd_num = -1;
 				break;
@@ -103,20 +99,15 @@ int	get_cmd_num(t_parsing_node *parsing, t_main_node *main)
 		if (now->type == RED_A || now->type == RED_H
 			|| now->type == RED_I || now->type == RED_O)
 		{
-			if (now->next == NULL || now->next->type != WORD)
+			if (check_red_err(now))
 			{
-				if (now->next)
-					printf("minishell: syntax error near unexpected token `%s\'\n", now->next->str);
-				else
-					printf("minishell: syntax error near unexpected token `newline\'\n");
 				main->status = 258;
 				main->cmd_num = -1;
-				break;
+				return (0) ;
 			}
 			now = now->next;
 		}
-		else if (now->type == WORD)
-			i++;
+		i++;
 		now = now->next;
 	}
 	return (i);
