@@ -81,6 +81,7 @@ char	*interpret(char *str, t_envp_node *ev_lst, int status)
 			i++;
 			i += key_to_value(&str[i], ev_lst, &value, status);
 			new_str = ft_strcat(new_str, value);
+			free(value);
 		}
 		else
 			*new_str++ = str[i++];
@@ -107,6 +108,7 @@ int	get_len_ev(char *str, t_envp_node *ev_lst, int status)
 			i++;
 			i += key_to_value(&str[i], ev_lst, &value, status);
 			len += ft_strlen(value);
+			free(value);
 		}
 		else
 		{
