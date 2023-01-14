@@ -47,10 +47,14 @@ int	check_red_err(t_parsing_node *now)
 
 int	check_quote_err(char *line)
 {
+	int quote;
 	int	ret;
 
 	ret = 0;
-	if (is_quote(line, ft_strlen(line) - 1))// "hi"
+	quote = is_quote(line, ft_strlen(line) - 1);
+	if (quote == 1)
+		ret = print_syntax_err("\"");
+	if (quote == 2)
 		ret = print_syntax_err("\'");
 	return (ret);
 }
