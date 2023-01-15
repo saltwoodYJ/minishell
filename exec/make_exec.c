@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 00:12:06 by hyeokim2          #+#    #+#             */
-/*   Updated: 2023/01/14 19:36:41 by hyeokim2         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:20:56 by yejinam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	make_exec(t_main_node *main, int flag)
 
 int	run_process(t_main_node *main, pid_t pid, int fd[2], int prev_fd)
 {
-	set_signal(2, 2);
+	signal(2, action);
+	signal(3, action);
 	if (pid > 0)
 	{
 		close(fd[1]);
@@ -61,7 +62,8 @@ int	make_pipe(t_main_node *main, int prev_fd)
 		error_msg(main, "pipe", EXEC_ERROR, 1);
 		return (-1);
 	}
-	set_signal(1, 1);
+	signal(2, SIG_DFL);
+	signal(2, SIG_DFL);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -78,7 +80,8 @@ pid_t	exec_last(t_main_node *main, int prev_fd)
 	int		status;
 
 	status = 0;
-	set_signal(1, 1);
+	signal(2, SIG_DFL);
+	signal(2, SIG_DFL);
 	pid = fork();
 	if (pid < 0)
 	{

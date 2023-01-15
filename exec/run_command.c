@@ -6,7 +6,7 @@
 /*   By: hyeokim2 <hyeokim2@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/01/07 00:12:12 by hyeokim2		  #+#	#+#			 */
-/*   Updated: 2023/01/13 21:14:02 by hyeokim2		 ###   ########.fr	   */
+/*   Updated: 2023/01/15 16:19:10 by yejinam          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ void	run_waitpid(t_main_node *main, int pid, int i)
 	int			res;
 	int			status;
 
-	set_signal(0, 0);
+	signal(2, SIG_IGN);
+	signal(3, SIG_IGN);
 	res = waitpid(-1, &status, 0);
-	set_signal(2, 2);
+	signal(2, action);
+	signal(3, action);
 	if (WIFSIGNALED(status))
 	{
 		signo = WTERMSIG(status);

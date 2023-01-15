@@ -6,7 +6,7 @@
 /*   By: yejinam <marvin@42.fr>				 +#+  +:+	  +#+	   */
 /*									   +#+#+#+#+#+   +#+		 */
 /*   Created: 2023/01/14 19:47:51 by yejinam		 #+#	#+#		   */
-/*   Updated: 2023/01/14 22:32:54 by yejinam          ###   ########.fr       */
+/*   Updated: 2023/01/15 16:21:23 by yejinam          ###   ########.fr       */
 /*															 */
 /* ************************************************************************** */
 
@@ -35,20 +35,4 @@ void	rm_ctrl(void)
 	tcgetattr(STDIN_FILENO, &attr);
 	attr.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &attr);
-}
-
-void	set_signal(int sigint, int sigquit)
-{
-	if (sigint == 0)
-		signal(2, SIG_IGN);
-	if (sigint == 1)
-		signal(2, SIG_DFL);
-	if (sigint == 2)
-		signal(2, action);
-	if (sigquit == 0)
-		signal(3, SIG_IGN);
-	if (sigquit == 1)
-		signal(3, SIG_DFL);
-	if (sigquit == 2)
-		signal(3, action);
 }
